@@ -312,6 +312,10 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .cart-copy{flex:1;padding:10px;border-radius:10px;border:.5px solid var(--amber);background:var(--amber-bg);color:var(--amber);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer}
 .cart-copy:hover{background:var(--amber-dim)}
 </style>
+<!-- Firebase compat -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <div class="app">
@@ -489,38 +493,33 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
   <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
   <img id="lightboxImg" src="" alt="">
 </div>
-<script>
-// Fallback: queue calls until module loads
-window._queue=[];
-['signInWithGoogle','signOut','switchScreen','obNextStep','obPrevStep','completeOnboarding',
- 'handleAvatarPick','handleProfileAvatarPick','changeDay','markDay','saveNote','toggleMeal',
- 'toggleGlass','addCoffee','subCoffee','swapMeal','restoreMeal','toggleCartItem','openCart',
- 'closeCart','closeCartOnBg','toggleCartCheck','removeFromCart','clearCart','copyCart',
- 'dismissWS','saveProfile','saveObjective','addWeightEntry','deleteWeightEntry',
- 'addProgressPhoto','deletePhoto','openLightbox','closeLightbox','addDexaEntry',
- 'deleteDexaEntry','currentDay'
-].forEach(fn=>{
-  if(typeof window[fn]==='undefined'){
-    window[fn]=function(){window._queue.push([fn,arguments])};
-  }
-});
-</script>
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
+<script>
+window.addEventListener('load', function() {
 const FB_CFG = {
   apiKey:"AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
-  authDomain:"plan-nutrici&#243;nal-a2c88.firebaseapp.com",
-  projectId:"plan-nutrici&#243;nal-a2c88",
-  storageBucket:"plan-nutrici&#243;nal-a2c88.firebasestorage.app",
+  authDomain:"plan-nutricional-a2c88.firebaseapp.com",
+  projectId:"plan-nutricional-a2c88",
+  storageBucket:"plan-nutricional-a2c88.firebasestorage.app",
   messagingSenderId:"651954711031",
   appId:"1:651954711031:web:1d015043d591eb2b4fa6f2"
 };
-const app = initializeApp(FB_CFG);
-const auth = getAuth(app);
-const db   = getFirestore(app);
+firebase.initializeApp(FB_CFG);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// Replace module-style Firebase calls with compat equivalents
+function GoogleAuthProvider(){ return new firebase.auth.GoogleAuthProvider(); }
+function signInWithRedirect(auth, provider){ return auth.signInWithRedirect(provider); }
+function getRedirectResult(auth){ return auth.getRedirectResult(); }
+function onAuthStateChanged(auth, cb){ return auth.onAuthStateChanged(cb); }
+function fbSignOut(auth){ return auth.signOut(); }
+function doc(db, ...path){ return db.doc(path.join('/')); }
+function getDoc(ref){ return ref.get(); }
+function setDoc(ref, data, opts){ return opts && opts.merge ? ref.set(data, {merge:true}) : ref.set(data); }
+
+
+// Firebase already initialized above
 
 const DD=[
   {name:'Lunes',short:'L',train:false,prot:189.7,kcal:2160,meals:[
@@ -594,7 +593,7 @@ async function loadFromCloud(){
   if(!uid)return;
   const ref=doc(db,'users',uid,'data','main');
   const snap=await getDoc(ref);
-  if(snap.exists()){
+  if(snap.exists){
     const d=snap.data();
     D.profile=d.profile||null;D.avatar=d.avatar||null;D.dayState=d.dayState||{};
     D.dayNotes=d.dayNotes||{};D.cart=d.cart||[];D.weightLog=d.weightLog||[];
@@ -872,7 +871,7 @@ function renderProfile(){
   const p=D.profile;if(!p)return;
   const bmr=calcBMR(p);const fatKg=Math.round(p.peso*p.grasa/100);const lean=p.peso-fatKg;
   const fatPct=p.grasa;const musclePct=Math.round((lean/p.peso)*100);const otherPct=Math.max(0,100-fatPct-musclePct);
-  const d&#233;ficit=p.tdee-2240;
+  const deficit=p.tdee-2240;
   const ld=D.dexaLog.length>0?D.dexaLog[D.dexaLog.length-1]:null;
   const dG=ld?ld.grasa:p.grasa;const dD=ld?ld.date:null;const dS=ld?'DEXA &middot; '+dD:'dato perfil';
   const pd=D.dexaLog.length>1?D.dexaLog[D.dexaLog.length-2]:null;
@@ -891,7 +890,7 @@ function renderProfile(){
   renderObjProjection();
   const dCat=dG<15?'Atl&#233;tico':dG<20?'Fitness':dG<25?'Promedio':'Alto';
   const dCls=dG<20?'bmi-normal':dG<25?'bmi-over':'bmi-obese';
-  document.getElementById('statsGrid').innerHTML='<div class="stat-card"><div class="stat-label">Grasa corporal &middot; DEXA</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px"><div class="stat-val">'+dG+'<span class="stat-unit">%</span></div><div class="bmi-cat '+dCls+'">'+dCat+'</div></div><div class="stat-sub">'+dS+ts+'</div></div><div class="stat-card"><div class="stat-label">Masa magra</div><div class="stat-val">'+lean+'<span class="stat-unit">kg</span></div><div class="stat-sub">grasa: '+fatKg+' kg ('+fatPct+'%)</div></div><div class="stat-card full"><div class="stat-label">Composici&#243;n corporal</div><div class="body-comp-bar"><div style="width:'+fatPct+'%;background:var(--amber)"></div><div style="width:'+musclePct+'%;background:var(--green)"></div><div style="width:'+otherPct+'%;background:var(--border)"></div></div><div class="body-comp-legend"><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--amber)"></div>Grasa '+fatPct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--green)"></div>Masa magra '+musclePct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--border)"></div>Otros '+otherPct+'%</div></div></div><div class="stat-card highlight"><div class="stat-label">Gasto basal (BMR)</div><div class="stat-val">'+bmr+'<span class="stat-unit">kcal</span></div><div class="stat-sub">Harris-Benedict &middot; calculado</div></div><div class="stat-card"><div class="stat-label">TDEE &middot; gasto real</div><div class="stat-val">'+p.tdee+'<span class="stat-unit">kcal</span></div><div class="stat-sub">'+(d&#233;ficit>=0?'+':'')+d&#233;ficit+' vs media plan</div></div>';
+  document.getElementById('statsGrid').innerHTML='<div class="stat-card"><div class="stat-label">Grasa corporal &middot; DEXA</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px"><div class="stat-val">'+dG+'<span class="stat-unit">%</span></div><div class="bmi-cat '+dCls+'">'+dCat+'</div></div><div class="stat-sub">'+dS+ts+'</div></div><div class="stat-card"><div class="stat-label">Masa magra</div><div class="stat-val">'+lean+'<span class="stat-unit">kg</span></div><div class="stat-sub">grasa: '+fatKg+' kg ('+fatPct+'%)</div></div><div class="stat-card full"><div class="stat-label">Composici&#243;n corporal</div><div class="body-comp-bar"><div style="width:'+fatPct+'%;background:var(--amber)"></div><div style="width:'+musclePct+'%;background:var(--green)"></div><div style="width:'+otherPct+'%;background:var(--border)"></div></div><div class="body-comp-legend"><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--amber)"></div>Grasa '+fatPct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--green)"></div>Masa magra '+musclePct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--border)"></div>Otros '+otherPct+'%</div></div></div><div class="stat-card highlight"><div class="stat-label">Gasto basal (BMR)</div><div class="stat-val">'+bmr+'<span class="stat-unit">kcal</span></div><div class="stat-sub">Harris-Benedict &middot; calculado</div></div><div class="stat-card"><div class="stat-label">TDEE &middot; gasto real</div><div class="stat-val">'+p.tdee+'<span class="stat-unit">kcal</span></div><div class="stat-sub">'+(deficit>=0?'+':'')+deficit+' vs media plan</div></div>';
   renderWeightLog();renderPhotos();renderDexaLog();renderHistoric();
 }
 window.saveProfile=function(){
@@ -1009,6 +1008,7 @@ document.addEventListener('touchend',e=>{
 },{passive:true});
 
 pruneSwaps();
+}); // end window.addEventListener load
 </script>
 </body>
 </html>
