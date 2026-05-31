@@ -269,6 +269,20 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .save-confirm{text-align:center;font-size:12px;color:var(--green);margin-top:10px;height:16px;font-family:var(--mono)}
 .btn-signout{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--border);background:transparent;color:var(--text-3);font-family:var(--font);font-size:13px;cursor:pointer;margin-bottom:40px;transition:all .15s}
 .btn-signout:hover{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+/* toast */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:.5px solid var(--border);border-radius:20px;padding:9px 18px;font-size:13px;color:var(--text-1);font-family:var(--font);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:300;white-space:nowrap;box-shadow:0 4px 20px #00000044}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.green{border-color:var(--green);color:var(--green)}
+.toast.amber{border-color:var(--amber);color:var(--amber)}
+/* onboarding steps */
+.ob-steps{display:flex;gap:6px;justify-content:center;margin-bottom:28px}
+.ob-step-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .2s}
+.ob-step-dot.active{background:var(--amber)}
+.ob-step-dot.done{background:var(--green)}
+/* google drive backup */
+.btn-gdrive{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--green);background:var(--green-dim);color:var(--green);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.btn-gdrive:hover{opacity:.85}
+.gdrive-status{font-size:11px;color:var(--text-3);text-align:center;margin-bottom:24px;font-family:var(--mono)}
 .cart-overlay{display:none;position:fixed;inset:0;background:#00000088;z-index:100;align-items:flex-end;justify-content:center}
 .cart-overlay.open{display:flex}
 .cart-panel{background:var(--surface);border:.5px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-width:420px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;animation:slideUp .22s ease}
@@ -314,30 +328,45 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 <!-- ONBOARDING -->
 <div class="screen" id="screen-onboarding">
   <div class="onboarding">
-    <div class="onboarding-logo"><div class="onboarding-dot"></div><div class="onboarding-title">Bienvenido</div><div class="onboarding-sub">Configura tu perfil para empezar</div></div>
-    <div class="onboarding-form">
-      <div class="avatar-picker-wrap">
-        <div class="avatar-picker-ring" id="obAvatarRing" onclick="document.getElementById('ob-avatar-input').click()"><img id="obAvatarImg" class="avatar-picker-img" alt=""><span class="avatar-picker-placeholder" id="obAvatarIcon">&#128247;</span></div>
-        <span class="avatar-picker-label">Toca para elegir foto de perfil</span>
-        <input type="file" id="ob-avatar-input" style="display:none" accept="image/*" onchange="handleAvatarPick(this)">
+    <div class="onboarding-logo"><div class="onboarding-dot"></div><div class="onboarding-title">Bienvenido<span id="ob-welcome-name"></span></div><div class="onboarding-sub">Configura tu perfil para empezar</div></div>
+    <div class="ob-steps"><div class="ob-step-dot active" id="ob-dot-1"></div><div class="ob-step-dot" id="ob-dot-2"></div></div>
+    <!-- STEP 1 -->
+    <div id="ob-step-1">
+      <div class="onboarding-form">
+        <div class="avatar-picker-wrap">
+          <div class="avatar-picker-ring" id="obAvatarRing" onclick="document.getElementById('ob-avatar-input').click()"><img id="obAvatarImg" class="avatar-picker-img" alt=""><span class="avatar-picker-placeholder" id="obAvatarIcon">&#128247;</span></div>
+          <span class="avatar-picker-label">Toca para elegir foto de perfil</span>
+          <input type="file" id="ob-avatar-input" style="display:none" accept="image/*" onchange="handleAvatarPick(this)">
+        </div>
+        <div class="onboarding-step">Paso 1 de 2 &middot; Datos basicos</div>
+        <div class="field-row">
+          <div class="field"><label>Nombre</label><input type="text" id="ob-nombre" placeholder="Tu nombre" autocomplete="off"></div>
+          <div class="field"><label>Sexo</label><select id="ob-sexo"><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Edad</label><input type="number" id="ob-edad" placeholder="ej. 35" min="15" max="100"></div>
+          <div class="field"><label>Estatura (cm)</label><input type="number" id="ob-altura" placeholder="ej. 175" min="100" max="250"></div>
+        </div>
+        <div class="onboarding-error" id="ob-error-1"></div>
+        <button class="btn-start" onclick="obNextStep()">Siguiente &#8594;</button>
       </div>
-      <div class="onboarding-step">Datos personales</div>
-      <div class="field-row">
-        <div class="field"><label>Nombre</label><input type="text" id="ob-nombre" placeholder="Tu nombre" autocomplete="off"></div>
-        <div class="field"><label>Sexo</label><select id="ob-sexo"><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
+    </div>
+    <!-- STEP 2 -->
+    <div id="ob-step-2" style="display:none">
+      <div class="onboarding-form">
+        <div class="onboarding-step">Paso 2 de 2 &middot; Composicion corporal</div>
+        <div class="field-row">
+          <div class="field"><label>Peso (kg)</label><input type="number" id="ob-peso" placeholder="ej. 78" min="30" max="300" step="0.1"></div>
+          <div class="field"><label>Grasa corporal (%)</label><input type="number" id="ob-grasa" placeholder="DEXA" min="3" max="60" step="0.1"></div>
+        </div>
+        <div class="field"><label>TDEE (kcal)</label><input type="number" id="ob-tdee" placeholder="ej. 2300" min="1000" max="6000" step="10"></div>
+        <div class="onboarding-note">El BMR se calcula automaticamente con Harris-Benedict. El TDEE es tu gasto real incluyendo actividad fisica.</div>
+        <div class="onboarding-error" id="ob-error-2"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn-start" style="flex:.4;background:var(--surface);color:var(--text-2);border:.5px solid var(--border)" onclick="obPrevStep()">&#8592;</button>
+          <button class="btn-start" style="flex:1" onclick="completeOnboarding()">Empezar &#8594;</button>
+        </div>
       </div>
-      <div class="field-row">
-        <div class="field"><label>Edad</label><input type="number" id="ob-edad" placeholder="ej. 35" min="15" max="100"></div>
-        <div class="field"><label>Estatura (cm)</label><input type="number" id="ob-altura" placeholder="ej. 175" min="100" max="250"></div>
-      </div>
-      <div class="field-row">
-        <div class="field"><label>Peso (kg)</label><input type="number" id="ob-peso" placeholder="ej. 78" min="30" max="300" step="0.1"></div>
-        <div class="field"><label>Grasa corporal (%)</label><input type="number" id="ob-grasa" placeholder="DEXA" min="3" max="60" step="0.1"></div>
-      </div>
-      <div class="field"><label>TDEE (kcal)</label><input type="number" id="ob-tdee" placeholder="ej. 2300" min="1000" max="6000" step="10"></div>
-      <div class="onboarding-note">El BMR se calcula automaticamente con Harris-Benedict. El TDEE es tu gasto real incluyendo actividad.</div>
-      <div class="onboarding-error" id="ob-error"></div>
-      <button class="btn-start" onclick="completeOnboarding()">Empezar &#8594;</button>
     </div>
   </div>
 </div>
@@ -434,8 +463,15 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     <div class="save-confirm" id="saveConfirm"></div>
   </div>
   <div class="section-title">Cuenta</div>
+  <button class="btn-gdrive" onclick="backupToDrive()">
+    <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#34A853" d="M6.28 21L1 12l4.36-7.5h13.28L23 12l-5.28 9H6.28z" opacity=".3"/><path fill="#4285F4" d="M1 12l5.28 9h4.72L5.72 12H1z"/><path fill="#FBBC05" d="M18.28 4.5H9.72L5.36 12l4.36 7.5h8.56L22.64 12 18.28 4.5z" opacity=".5"/><path fill="#34A853" d="M18.28 4.5L23 12l-4.72 8.5H14L18.72 12 14 4.5h4.28z"/><path fill="#EA4335" d="M9.72 4.5L5 12l4.72 8.5H14L9.28 12 14 4.5H9.72z" opacity=".7"/></svg>
+    Copia de seguridad en Google Drive
+  </button>
+  <div class="gdrive-status" id="gdriveStatus"></div>
   <button class="btn-signout" onclick="signOut()">Cerrar sesion</button>
 </div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 </div>
 <!-- CART -->
@@ -563,6 +599,122 @@ function saveToCloud(){
 }
 function sv(key,val){D[key]=val;saveToCloud()}
 
+// ── TOAST ──
+let toastTimer=null;
+function toast(msg,type='green'){
+  const el=document.getElementById('toast');if(!el)return;
+  el.textContent=msg;el.className='toast show '+(type||'green');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+// ── GOOGLE DRIVE BACKUP ──
+const GDRIVE_SCOPE='https://www.googleapis.com/auth/drive.file';
+let gdriveToken=null;
+async function backupToDrive(){
+  const statusEl=document.getElementById('gdriveStatus');
+  if(statusEl)statusEl.textContent='Conectando con Google Drive...';
+  try{
+    // request Drive access token via Google Identity Services
+    await new Promise((resolve,reject)=>{
+      if(!window.google||!window.google.accounts){
+        // load GIS script dynamically
+        const s=document.createElement('script');
+        s.src='https://accounts.google.com/gsi/client';
+        s.onload=resolve;s.onerror=reject;
+        document.head.appendChild(s);
+      }else resolve();
+    });
+    await new Promise((resolve,reject)=>{
+      const client=window.google.accounts.oauth2.initTokenClient({
+        client_id:'651954711031-web',
+        scope:GDRIVE_SCOPE,
+        callback:(resp)=>{
+          if(resp.error){reject(resp.error);return}
+          gdriveToken=resp.access_token;resolve();
+        }
+      });
+      client.requestAccessToken();
+    });
+    await uploadToDrive();
+  }catch(e){
+    console.error('Drive error',e);
+    // fallback: download JSON file locally
+    downloadBackupFile();
+    if(statusEl)statusEl.textContent='Google Drive no disponible. Archivo descargado localmente.';
+    toast('Copia descargada localmente','amber');
+  }
+}
+async function uploadToDrive(){
+  const statusEl=document.getElementById('gdriveStatus');
+  const now=new Date();
+  const fname='plan_nutricional_backup_'+now.toISOString().slice(0,10)+'.json';
+  const content=JSON.stringify({version:2,exportedAt:now.toISOString(),...D},null,2);
+  const blob=new Blob([content],{type:'application/json'});
+  const meta={name:fname,mimeType:'application/json'};
+  const form=new FormData();
+  form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));
+  form.append('file',blob);
+  const res=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{
+    method:'POST',headers:{Authorization:'Bearer '+gdriveToken},body:form
+  });
+  if(!res.ok)throw new Error('Drive upload failed: '+res.status);
+  const date=now.toLocaleDateString('es-ES');
+  if(statusEl)statusEl.textContent='Ultima copia: '+date;
+  D._lastDriveBackup=now.toISOString();saveToCloud();
+  toast('Copia guardada en Google Drive ✓');
+}
+function downloadBackupFile(){
+  const now=new Date();
+  const content=JSON.stringify({version:2,exportedAt:now.toISOString(),...D},null,2);
+  const blob=new Blob([content],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const name=(D.profile&&D.profile.nombre?D.profile.nombre.toLowerCase().replace(/\s+/g,'_'):'usuario');
+  a.href=url;a.download='plan_nutricional_'+name+'_'+now.toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(url);
+}
+function checkWeeklyBackup(){
+  if(!D._lastDriveBackup)return;
+  const last=new Date(D._lastDriveBackup);
+  const diff=(Date.now()-last.getTime())/(1000*60*60*24);
+  if(diff>=7){
+    // silently attempt backup
+    backupToDrive();
+  }
+}
+function updateGdriveStatus(){
+  const el=document.getElementById('gdriveStatus');if(!el)return;
+  if(D._lastDriveBackup){
+    const d=new Date(D._lastDriveBackup).toLocaleDateString('es-ES');
+    el.textContent='Ultima copia en Drive: '+d;
+  }else{
+    el.textContent='Sin copia en Drive todavia';
+  }
+}
+
+// ── ONBOARDING STEPS ──
+window.obNextStep=function(){
+  const nombre=document.getElementById('ob-nombre').value.trim();
+  const edad=parseInt(document.getElementById('ob-edad').value);
+  const altura=parseFloat(document.getElementById('ob-altura').value);
+  const err=document.getElementById('ob-error-1');
+  if(!nombre){err.textContent='Introduce tu nombre';return}
+  if(!edad||edad<15){err.textContent='Introduce una edad valida';return}
+  if(!altura||altura<100){err.textContent='Introduce una estatura valida';return}
+  err.textContent='';
+  document.getElementById('ob-step-1').style.display='none';
+  document.getElementById('ob-step-2').style.display='block';
+  document.getElementById('ob-dot-1').className='ob-step-dot done';
+  document.getElementById('ob-dot-2').className='ob-step-dot active';
+}
+window.obPrevStep=function(){
+  document.getElementById('ob-step-2').style.display='none';
+  document.getElementById('ob-step-1').style.display='block';
+  document.getElementById('ob-dot-1').className='ob-step-dot active';
+  document.getElementById('ob-dot-2').className='ob-step-dot';
+}
+
 // ── AUTH ──
 window.signInWithGoogle=async function(){
   try{
@@ -587,6 +739,7 @@ onAuthStateChanged(auth,async user=>{
       // pre-fill name from Google account
       const gName=user.displayName?user.displayName.split(' ')[0]:'';
       document.getElementById('ob-nombre').value=gName;
+      document.getElementById('ob-welcome-name').textContent=gName?', '+gName:'';
       if(user.photoURL){
         D.avatar=user.photoURL;
         const img=document.getElementById('obAvatarImg');const icon=document.getElementById('obAvatarIcon');const ring=document.getElementById('obAvatarRing');
@@ -595,6 +748,7 @@ onAuthStateChanged(auth,async user=>{
       switchScreen('onboarding');
     }else{
       renderWS();renderPlan();switchScreen('plan');
+      checkWeeklyBackup();
     }
   }else{
     switchScreen('login');
@@ -643,16 +797,14 @@ window.completeOnboarding=function(){
   const peso=parseFloat(document.getElementById('ob-peso').value);
   const grasa=parseFloat(document.getElementById('ob-grasa').value);
   const tdee=parseInt(document.getElementById('ob-tdee').value);
-  const err=document.getElementById('ob-error');
-  if(!nombre){err.textContent='Introduce tu nombre';return}
-  if(!edad||edad<15){err.textContent='Edad invalida';return}
-  if(!altura||altura<100){err.textContent='Estatura invalida';return}
-  if(!peso||peso<30){err.textContent='Peso invalido';return}
+  const err=document.getElementById('ob-error-2');
+  if(!peso||peso<30){err.textContent='Introduce un peso valido';return}
   if(!grasa||grasa<3){err.textContent='Introduce el % de grasa';return}
   if(!tdee||tdee<1000){err.textContent='TDEE invalido';return}
   err.textContent='';
   D.profile={nombre,sexo,edad,altura,peso,grasa,tdee};
   saveToCloud();updateNames();renderWS();renderPlan();switchScreen('plan');
+  toast('Bienvenido, '+nombre+' &#127881;');
 }
 
 // ── AVATAR ──
@@ -705,7 +857,7 @@ window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>id
 
 // ── PLAN ──
 window.changeDay=function(dir){currentDay=(currentDay+dir+7)%7;renderPlan()}
-window.markDay=function(status){sds(currentDay,status);renderPlan()}
+window.markDay=function(status){sds(currentDay,status);renderPlan();toast(status==='done'?'Dia completado &#10003;':'Dia marcado como no completado')}
 window.saveNote=function(){const t=document.getElementById('dayNoteInput');if(t)sdn(currentDay,t.value)}
 window.saveOffPlan=function(){const t=document.getElementById('offPlanInput');if(t)sop(currentDay,t.value)}
 window.toggleOffPlan=function(){
@@ -777,7 +929,7 @@ function renderProfile(){
   const dCat=dG<15?'Atletico':dG<20?'Fitness':dG<25?'Promedio':'Alto';
   const dCls=dG<20?'bmi-normal':dG<25?'bmi-over':'bmi-obese';
   document.getElementById('statsGrid').innerHTML='<div class="stat-card"><div class="stat-label">Grasa corporal &middot; DEXA</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px"><div class="stat-val">'+dG+'<span class="stat-unit">%</span></div><div class="bmi-cat '+dCls+'">'+dCat+'</div></div><div class="stat-sub">'+dS+ts+'</div></div><div class="stat-card"><div class="stat-label">Masa magra</div><div class="stat-val">'+lean+'<span class="stat-unit">kg</span></div><div class="stat-sub">grasa: '+fatKg+' kg ('+fatPct+'%)</div></div><div class="stat-card full"><div class="stat-label">Composicion corporal</div><div class="body-comp-bar"><div style="width:'+fatPct+'%;background:var(--amber)"></div><div style="width:'+musclePct+'%;background:var(--green)"></div><div style="width:'+otherPct+'%;background:var(--border)"></div></div><div class="body-comp-legend"><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--amber)"></div>Grasa '+fatPct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--green)"></div>Masa magra '+musclePct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--border)"></div>Otros '+otherPct+'%</div></div></div><div class="stat-card highlight"><div class="stat-label">Gasto basal (BMR)</div><div class="stat-val">'+bmr+'<span class="stat-unit">kcal</span></div><div class="stat-sub">Harris-Benedict &middot; calculado</div></div><div class="stat-card"><div class="stat-label">TDEE &middot; gasto real</div><div class="stat-val">'+p.tdee+'<span class="stat-unit">kcal</span></div><div class="stat-sub">'+(deficit>=0?'+':'')+deficit+' vs media plan</div></div>';
-  renderWeightLog();renderPhotos();renderDexaLog();renderHistoric();
+  renderWeightLog();renderPhotos();renderDexaLog();renderHistoric();updateGdriveStatus();
 }
 window.saveProfile=function(){
   const nombre=document.getElementById('f-nombre').value.trim();
@@ -786,7 +938,8 @@ window.saveProfile=function(){
   const grasa=parseFloat(document.getElementById('f-grasa').value);const tdee=parseInt(document.getElementById('f-tdee').value);
   if(!nombre||!altura||!peso||!edad||!grasa||!tdee)return;
   D.profile={nombre,altura,peso,sexo,edad,grasa,tdee};saveToCloud();renderProfile();
-  const c=document.getElementById('saveConfirm');c.textContent='&#10003; Guardado y sincronizado';setTimeout(()=>c.textContent='',2500);
+  toast('Perfil guardado &#10003;');
+  const c=document.getElementById('saveConfirm');c.textContent='';  
 }
 window.saveObjective=function(){
   const po=parseFloat(document.getElementById('obj-peso').value);const s=parseInt(document.getElementById('obj-semanas').value);
@@ -807,6 +960,7 @@ window.addWeightEntry=function(){
   const kg=parseFloat(document.getElementById('w-peso').value);const date=document.getElementById('w-fecha').value;if(!kg||!date)return;
   D.weightLog=D.weightLog.filter(e=>e.date!==date);D.weightLog.push({date,kg});D.weightLog.sort((a,b)=>a.date.localeCompare(b.date));
   saveToCloud();document.getElementById('w-peso').value='';renderWeightLog();
+  toast('Peso registrado &#10003;');
 }
 window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);saveToCloud();renderWeightLog()}
 function renderWeightLog(){
@@ -826,6 +980,7 @@ window.addProgressPhoto=function(input){
     D.progressPhotos.unshift({date,data:e.target.result});
     if(D.progressPhotos.length>30)D.progressPhotos=D.progressPhotos.slice(0,30);
     saveToCloud();input.value='';renderPhotos();
+    toast('Foto de progreso guardada &#10003;');
   };r.readAsDataURL(file);
 }
 window.deletePhoto=function(idx){D.progressPhotos.splice(idx,1);saveToCloud();renderPhotos()}
@@ -841,6 +996,7 @@ window.addDexaEntry=function(){
   const date=document.getElementById('d-fecha').value;const grasa=parseFloat(document.getElementById('d-grasa').value);const magra=parseFloat(document.getElementById('d-magra').value);
   if(!date||!grasa||!magra)return;D.dexaLog=D.dexaLog.filter(e=>e.date!==date);D.dexaLog.push({date,grasa,magra});D.dexaLog.sort((a,b)=>a.date.localeCompare(b.date));saveToCloud();
   document.getElementById('d-grasa').value='';document.getElementById('d-magra').value='';renderDexaLog();
+  toast('Escaner DEXA guardado &#10003;');
 }
 window.deleteDexaEntry=function(date){D.dexaLog=D.dexaLog.filter(e=>e.date!==date);saveToCloud();renderDexaLog()}
 function renderDexaLog(){
