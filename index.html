@@ -269,6 +269,16 @@ body { display: flex; justify-content: center; align-items: flex-start; min-heig
 .btn-save:hover { opacity:0.88; }
 .save-confirm { text-align:center; font-size:12px; color:var(--green); margin-top:10px; height:16px; font-family:var(--mono); }
 
+/* Backup */
+.backup-section { margin-bottom:40px; }
+.backup-note { font-size:12px; color:var(--text-3); line-height:1.6; padding:10px 14px; background:var(--surface); border:0.5px solid var(--border); border-radius:12px; }
+.backup-note code { font-family:var(--mono); color:var(--amber); font-size:11px; }
+.btn-export { flex:1; padding:11px; border-radius:10px; border:0.5px solid var(--amber); background:var(--amber-bg); color:var(--amber); font-family:var(--font); font-size:13px; font-weight:500; cursor:pointer; transition:background 0.15s; }
+.btn-export:hover { background:var(--amber-dim); }
+.btn-import { flex:1; padding:11px; border-radius:10px; border:0.5px solid var(--border); background:var(--surface); color:var(--text-2); font-family:var(--font); font-size:13px; font-weight:500; cursor:pointer; transition:background 0.15s; }
+.btn-import:hover { background:var(--card); color:var(--text-1); }
+.backup-confirm { font-size:12px; color:var(--green); margin-top:8px; min-height:16px; font-family:var(--mono); text-align:center; }
+
 /* ── CART overlay ── */
 .cart-overlay { display:none; position:fixed; inset:0; background:#00000088; z-index:100; align-items:flex-end; justify-content:center; }
 .cart-overlay.open { display:flex; }
@@ -451,6 +461,20 @@ body { display: flex; justify-content: center; align-items: flex-start; min-heig
     </div>
     <button class="btn-save" onclick="saveProfile()">Guardar cambios</button>
     <div class="save-confirm" id="saveConfirm"></div>
+  </div>
+
+  <!-- Backup -->
+  <div class="section-title">Copia de seguridad</div>
+  <div class="backup-section">
+    <div class="backup-note">
+      Exporta todos tus datos — perfil, foto, cumplimiento, notas, peso, DEXA e historial — en un archivo <code>.json</code>. Guárdalo en iCloud o donde quieras. Si alguna vez pierdes los datos, impórtalo y todo vuelve exactamente igual.
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button class="btn-export" onclick="exportData()">⬇ Exportar copia</button>
+      <button class="btn-import" onclick="document.getElementById('import-input').click()">⬆ Restaurar copia</button>
+    </div>
+    <input type="file" id="import-input" style="display:none" accept=".json" onchange="importData(this)">
+    <div class="backup-confirm" id="backupConfirm"></div>
   </div>
 </div>
 
@@ -869,8 +893,6 @@ function renderPlan() {
 function renderProfile() {
   const p   = profile;
   const bmr = calcBMR(p);
-  const bmi = calcBMI(p);
-  const bmiCat  = bmiCategory(parseFloat(bmi));
   const fatKg   = Math.round(p.peso * p.grasa / 100);
   const lean    = p.peso - fatKg;
   const fatPct  = p.grasa;
@@ -895,14 +917,27 @@ function renderProfile() {
   if (!document.getElementById('w-fecha').value) document.getElementById('w-fecha').value = today;
   if (!document.getElementById('d-fecha').value) document.getElementById('d-fecha').value = today;
 
+  // most recent DEXA reading — prefer dexaLog, fall back to profile.grasa
+  const latestDexa    = dexaLog.length > 0 ? dexaLog[dexaLog.length - 1] : null;
+  const dexaGrasa     = latestDexa ? latestDexa.grasa : p.grasa;
+  const dexaMagra     = latestDexa ? latestDexa.magra : musclePct;
+  const dexaDate      = latestDexa ? latestDexa.date  : null;
+  const dexaSource    = latestDexa ? `DEXA · ${dexaDate}` : 'dato perfil · sin DEXA';
+  // trend vs previous
+  const prevDexa      = dexaLog.length > 1 ? dexaLog[dexaLog.length - 2] : null;
+  const dexaTrend     = prevDexa ? (dexaGrasa - prevDexa.grasa).toFixed(1) : null;
+  const trendStr      = dexaTrend !== null
+    ? `<span style="color:${parseFloat(dexaTrend)<=0?'var(--green)':'var(--amber)'}"> ${parseFloat(dexaTrend)>0?'+':''}${dexaTrend}% vs anterior</span>`
+    : '';
+
   document.getElementById('statsGrid').innerHTML = `
     <div class="stat-card">
-      <div class="stat-label">IMC</div>
-      <div class="bmi-row">
-        <div class="bmi-val">${bmi}</div>
-        <div class="bmi-cat ${bmiCat.cls}">${bmiCat.label}</div>
+      <div class="stat-label">Grasa corporal · DEXA</div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px;">
+        <div class="stat-val">${dexaGrasa}<span class="stat-unit">%</span></div>
+        <div class="bmi-cat ${dexaGrasa < 20 ? 'bmi-normal' : dexaGrasa < 25 ? 'bmi-over' : 'bmi-obese'}">${dexaGrasa < 15 ? 'Atlético' : dexaGrasa < 20 ? 'Fitness' : dexaGrasa < 25 ? 'Promedio' : 'Alto'}</div>
       </div>
-      <div class="stat-sub">${p.peso} kg · ${p.altura} cm</div>
+      <div class="stat-sub">${dexaSource}${trendStr}</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Masa magra</div>
@@ -1161,6 +1196,95 @@ function renderCartPanel() {
       <span class="cart-item-name${item.checked?' checked-text':''}">${item.name}</span>
       <button class="cart-remove" onclick="removeFromCart(${JSON.stringify(item.name)})">quitar</button>
     </div>`).join('');
+}
+
+/* ════════════════════════════════════════
+   EXPORT / IMPORT
+════════════════════════════════════════ */
+const BACKUP_VERSION = 1;
+
+function exportData() {
+  const backup = {
+    version:   BACKUP_VERSION,
+    exportedAt: new Date().toISOString(),
+    profile:   profile,
+    avatar:    avatarData,
+    dayState:  dayState,
+    dayNotes:  dayNotes,
+    cart:      cart,
+    weightLog: weightLog,
+    dexaLog:   dexaLog
+  };
+
+  const json     = JSON.stringify(backup, null, 2);
+  const blob     = new Blob([json], { type: 'application/json' });
+  const url      = URL.createObjectURL(blob);
+  const name     = (profile && profile.nombre ? profile.nombre.toLowerCase().replace(/\s+/g,'_') : 'usuario');
+  const date     = new Date().toISOString().slice(0,10);
+  const filename = `plan_nutricional_${name}_${date}.json`;
+
+  const a  = document.createElement('a');
+  a.href   = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  const c = document.getElementById('backupConfirm');
+  c.textContent = `✓ Exportado como ${filename}`;
+  setTimeout(() => c.textContent = '', 3500);
+}
+
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const backup = JSON.parse(e.target.result);
+
+      // basic validation
+      if (!backup.version || !backup.profile) {
+        throw new Error('Archivo no válido o corrupto.');
+      }
+
+      // restore everything
+      profile   = backup.profile;
+      avatarData= backup.avatar   || null;
+      dayState  = backup.dayState || {};
+      dayNotes  = backup.dayNotes || {};
+      cart      = backup.cart     || [];
+      weightLog = backup.weightLog|| [];
+      dexaLog   = backup.dexaLog  || [];
+
+      save('nutri_profile', profile);
+      save('nutri_avatar',  avatarData);
+      save('nutri_state',   dayState);
+      save('nutri_notes',   dayNotes);
+      save('nutri_cart',    cart);
+      save('nutri_weight',  weightLog);
+      save('nutri_dexa',    dexaLog);
+
+      // reset file input so same file can be re-imported
+      input.value = '';
+
+      const c = document.getElementById('backupConfirm');
+      c.textContent = `✓ Copia restaurada — exportada el ${backup.exportedAt ? backup.exportedAt.slice(0,10) : 'fecha desconocida'}`;
+      setTimeout(() => c.textContent = '', 4000);
+
+      // re-render everything
+      updateNameDisplays();
+      renderProfile();
+      renderPlan();
+
+    } catch(err) {
+      const c = document.getElementById('backupConfirm');
+      c.style.color = 'var(--red)';
+      c.textContent = '✗ Error al restaurar: ' + err.message;
+      setTimeout(() => { c.textContent = ''; c.style.color = 'var(--green)'; }, 4000);
+    }
+  };
+  reader.readAsText(file);
 }
 
 /* ════════════════════════════════════════
