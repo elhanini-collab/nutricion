@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Plan Nutrici&#243;nal</title>
+<title>Plan Nutricional</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Firebase compat SDK — must be in <head> before any app code -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -312,10 +316,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .cart-copy{flex:1;padding:10px;border-radius:10px;border:.5px solid var(--amber);background:var(--amber-bg);color:var(--amber);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer}
 .cart-copy:hover{background:var(--amber-dim)}
 </style>
-<!-- Firebase compat -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <div class="app">
@@ -494,33 +494,49 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
   <img id="lightboxImg" src="" alt="">
 </div>
 
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOnBg(event)">
+  <div class="cart-panel">
+    <div class="cart-header"><div class="cart-title">Lista de la compra</div><button class="cart-close" onclick="closeCart()">&#10005;</button></div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-footer"><button class="cart-clear" onclick="clearCart()">Vaciar lista</button><button class="cart-copy" onclick="copyCart()">Copiar lista</button></div>
+  </div>
+</div>
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-window.addEventListener('load', function() {
-const FB_CFG = {
-  apiKey:"AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
-  authDomain:"plan-nutricional-a2c88.firebaseapp.com",
-  projectId:"plan-nutricional-a2c88",
-  storageBucket:"plan-nutricional-a2c88.firebasestorage.app",
-  messagingSenderId:"651954711031",
-  appId:"1:651954711031:web:1d015043d591eb2b4fa6f2"
-};
-firebase.initializeApp(FB_CFG);
+// ── FIREBASE INIT ──
+const app  = firebase.initializeApp({
+  apiKey:            "AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
+  authDomain:        "plan-nutricional-a2c88.firebaseapp.com",
+  projectId:         "plan-nutricional-a2c88",
+  storageBucket:     "plan-nutricional-a2c88.firebasestorage.app",
+  messagingSenderId: "651954711031",
+  appId:             "1:651954711031:web:1d015043d591eb2b4fa6f2"
+});
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
-// Replace module-style Firebase calls with compat equivalents
-function GoogleAuthProvider(){ return new firebase.auth.GoogleAuthProvider(); }
-function signInWithRedirect(auth, provider){ return auth.signInWithRedirect(provider); }
-function getRedirectResult(auth){ return auth.getRedirectResult(); }
-function onAuthStateChanged(auth, cb){ return auth.onAuthStateChanged(cb); }
-function fbSignOut(auth){ return auth.signOut(); }
-function doc(db, ...path){ return db.doc(path.join('/')); }
-function getDoc(ref){ return ref.get(); }
-function setDoc(ref, data, opts){ return opts && opts.merge ? ref.set(data, {merge:true}) : ref.set(data); }
+// ── FIREBASE COMPAT SHIMS ──
+// These let the app code call Firebase using familiar names
+function signInWithRedirect(a, p)  { return a.signInWithRedirect(p); }
+function getRedirectResult(a)      { return a.getRedirectResult(); }
+function onAuthStateChanged(a, cb) { return a.onAuthStateChanged(cb); }
+function fbSignOut(a)              { return a.signOut(); }
+function GoogleAuthProvider()      { return new firebase.auth.GoogleAuthProvider(); }
+function doc(database, ...segs)    { return database.doc(segs.join('/')); }
+async function getDoc(ref)         { return ref.get(); }
+async function setDoc(ref, data, opts) {
+  return opts && opts.merge ? ref.set(data, {merge: true}) : ref.set(data);
+}
 
-
-// Firebase already initialized above
-
+// ── APP ──
 const DD=[
   {name:'Lunes',short:'L',train:false,prot:189.7,kcal:2160,meals:[
     {type:'Desayuno',icon:'&#9728;',title:'Yogur griego, muesli y frutos rojos',kcal:469,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Caf&#233; con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g disuelta en zumo antioxidante'},
@@ -1008,7 +1024,6 @@ document.addEventListener('touchend',e=>{
 },{passive:true});
 
 pruneSwaps();
-}); // end window.addEventListener load
 </script>
 </body>
 </html>
