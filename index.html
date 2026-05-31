@@ -453,7 +453,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </div>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const FB_CFG = {
@@ -567,7 +567,7 @@ function sv(key,val){D[key]=val;saveToCloud()}
 window.signInWithGoogle=async function(){
   try{
     const provider=new GoogleAuthProvider();
-    await signInWithPopup(auth,provider);
+    await signInWithRedirect(auth,provider);
   }catch(e){console.error(e)}
 }
 window.signOut=async function(){
@@ -576,6 +576,9 @@ window.signOut=async function(){
   D={profile:null,avatar:null,dayState:{},dayNotes:{},cart:[],weightLog:[],dexaLog:[],mealSwaps:{},waterLog:{},progressPhotos:[],objective:{pesoObj:null,semanas:null},offPlanLog:{},wsSeen:{}};
   uid=null;switchScreen('login');
 }
+// handle redirect result first
+getRedirectResult(auth).catch(e=>console.error('redirect error',e));
+
 onAuthStateChanged(auth,async user=>{
   if(user){
     uid=user.uid;
