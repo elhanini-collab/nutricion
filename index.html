@@ -489,6 +489,22 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
   <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
   <img id="lightboxImg" src="" alt="">
 </div>
+<script>
+// Fallback: queue calls until module loads
+window._queue=[];
+['signInWithGoogle','signOut','switchScreen','obNextStep','obPrevStep','completeOnboarding',
+ 'handleAvatarPick','handleProfileAvatarPick','changeDay','markDay','saveNote','toggleMeal',
+ 'toggleGlass','addCoffee','subCoffee','swapMeal','restoreMeal','toggleCartItem','openCart',
+ 'closeCart','closeCartOnBg','toggleCartCheck','removeFromCart','clearCart','copyCart',
+ 'dismissWS','saveProfile','saveObjective','addWeightEntry','deleteWeightEntry',
+ 'addProgressPhoto','deletePhoto','openLightbox','closeLightbox','addDexaEntry',
+ 'deleteDexaEntry','currentDay'
+].forEach(fn=>{
+  if(typeof window[fn]==='undefined'){
+    window[fn]=function(){window._queue.push([fn,arguments])};
+  }
+});
+</script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut as fbSignOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -648,6 +664,12 @@ window.signOut=async function(){
 }
 // handle redirect result first
 getRedirectResult(auth).catch(e=>console.error('redirect error',e));
+
+// flush any queued calls from before module loaded
+if(window._queue&&window._queue.length){
+  window._queue.forEach(([fn,args])=>{if(typeof window[fn]==='function')window[fn](...args)});
+  window._queue=[];
+}
 
 onAuthStateChanged(auth,async user=>{
   if(user){
