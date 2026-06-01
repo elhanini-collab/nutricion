@@ -429,6 +429,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 <div class="screen" id="screen-perfil">
   <div class="profile-screen-header">
     <button class="back-btn" onclick="switchScreen('plan')">&#8592;</button>
+    <button class="theme-btn" onclick="toggleTheme()" title="Cambiar tema" id="themeBtnProfile">🌙</button>
     <div class="profile-screen-avatar" id="avatarProfile" onclick="document.getElementById('profile-avatar-input').click()" title="Cambiar foto"></div>
     <input type="file" id="profile-avatar-input" style="display:none" accept="image/*" onchange="handleProfileAvatarPick(this)">
     <div style="flex:1"><div class="profile-screen-name" id="profileScreenName"></div><div class="profile-screen-sub" id="profileScreenSub"></div></div>
@@ -656,8 +657,10 @@ function applyTheme(t){
   currentTheme = t;
   document.documentElement.classList.toggle('light', t==='light');
   localStorage.setItem('nutri_theme', t);
-  const btn = document.getElementById('themeBtn');
-  if(btn) btn.textContent = t==='light' ? '🌙' : '☀️';
+  ['themeBtn','themeBtnProfile'].forEach(id=>{
+    const b=document.getElementById(id);
+    if(b) b.innerHTML = t==='light' ? '🌙' : '☀️';
+  });
 }
 window.toggleTheme = function(){
   haptic('light');
@@ -759,9 +762,9 @@ window.completeOnboarding=function(){
   const grasa=parseFloat(document.getElementById('ob-grasa').value);
   const tdee=parseInt(document.getElementById('ob-tdee').value);
   const err=document.getElementById('ob-error-2');
-  if(!peso||peso<30){err.textContent='Introduce un peso v&#225;lido';return}
+  if(!peso||peso<30){err.textContent='Introduce un peso válido';return}
   if(!grasa||grasa<3){err.textContent='Introduce el % de grasa';return}
-  if(!tdee||tdee<1000){err.textContent='TDEE inv&#225;lido';return}
+  if(!tdee||tdee<1000){err.textContent='TDEE inválido';return}
   err.textContent='';
   D.profile={nombre,sexo,edad,altura,peso,grasa,tdee};
   saveToCloud();updateNames();renderWS();renderPlan();switchScreen('plan');
@@ -837,7 +840,7 @@ function renderPlan(){
   if(!D.profile){return}
   updateNames();
   const day=DD[currentDay];const todayIdx=getTodayIndex();const wk=D.dayState[cwk()]||{};
-  document.getElementById('weekProgress').textContent=Object.values(wk).filter(v=>v==='done').length+'/7 d&#237;as completados';
+  document.getElementById('weekProgress').textContent=Object.values(wk).filter(v=>v==='done').length+'/7 días completados';
   document.getElementById('streakDays').innerHTML=DD.map((d,i)=>{
     const s=wk[i];const isT=i===todayIdx;const icon=s==='done'?'&#10003;':s==='failed'?'&#10007;':isT?'&middot;':'';
     const cls='streak-dot'+(s==='done'?' done':s==='failed'?' failed':isT?' today':'');
@@ -880,7 +883,7 @@ function renderProfile(){
   const pd=D.dexaLog.length>1?D.dexaLog[D.dexaLog.length-2]:null;
   const dt=pd?(dG-pd.grasa).toFixed(1):null;
   const ts=dt!==null?'<span style="color:'+(parseFloat(dt)<=0?'var(--green)':'var(--amber)')+'"> '+(parseFloat(dt)>0?'+':'')+dt+'% vs anterior</span>':'';
-  document.getElementById('profileScreenSub').textContent=p.peso+' kg / '+p.altura+' cm / '+p.edad+' a&#241;os';
+  document.getElementById('profileScreenSub').textContent=p.peso+' kg / '+p.altura+' cm / '+p.edad+' años';
   updateNames();
   document.getElementById('f-nombre').value=p.nombre||'';document.getElementById('f-altura').value=p.altura;
   document.getElementById('f-peso').value=p.peso;document.getElementById('f-sexo').value=p.sexo;
@@ -1031,7 +1034,7 @@ window.removeFromCart=function(n){D.cart=D.cart.filter(i=>i.name!==n);saveToClou
 window.clearCart=function(){D.cart=[];saveToCloud();updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
 window.copyCart=function(){
   const u=D.cart.filter(i=>!i.checked).map(i=>'- '+i.name);const c=D.cart.filter(i=>i.checked).map(i=>'ok '+i.name);
-  navigator.clipboard.writeText(['Lista de la compra','',...u,...(c.length?['','Ya tengo:',...c]:[])].join('\n')).then(()=>{const b=document.querySelector('.cart-copy');b.textContent='&#161;Copiado!';setTimeout(()=>b.textContent='Copiar lista',1800)})
+  navigator.clipboard.writeText(['Lista de la compra','',...u,...(c.length?['','Ya tengo:',...c]:[])].join('\n')).then(()=>{const b=document.querySelector('.cart-copy');b.textContent='¡Copiado!';setTimeout(()=>b.textContent='Copiar lista',1800)})
 }
 function renderCartPanel(){
   const body=document.getElementById('cartBody');
