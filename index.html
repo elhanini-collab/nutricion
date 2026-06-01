@@ -667,45 +667,57 @@ window.obPrevStep=function(){
 // ── AUTH ──
 window.signInWithGoogle=async function(){
   try{
-    const provider=new GoogleAuthProvider();
-    await signInWithRedirect(auth,provider);
-  }catch(e){console.error(e)}
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithRedirect(provider);
+  }catch(e){
+    console.error('signIn error:', e);
+    alert('Error: ' + e.message);
+  }
 }
 window.signOut=async function(){
   if(unsub){unsub();unsub=null;}
-  await fbSignOut(auth);
-  D={profile:null,avatar:null,dayState:{},dayNotes:{},cart:[],weightLog:[],dexaLog:[],mealSwaps:{},waterLog:{},progressPhotos:[],objective:{pesoObj:null,semanas:null},offPlanLog:{},wsSeen:{}};
-  uid=null;switchScreen('login');
+  await auth.signOut();
+  D={profile:null,avatar:null,dayState:{},dayNotes:{},cart:[],weightLog:[],dexaLog:[],mealSwaps:{},waterLog:{},progressPhotos:[],objective:{pesoObj:null,semanas:null},offPlanLog:{},wsSeen:{},coffeeLog:{}};
+  uid=null;
+  window.switchScreen('login');
 }
-// handle redirect result first
-getRedirectResult(auth).catch(e=>console.error('redirect error',e));
+// ── AUTH FLOW ──
+// With signInWithRedirect, Firebase fires onAuthStateChanged automatically
+// after the redirect completes. No need to call getRedirectResult separately.
 
-// flush any queued calls from before module loaded
-if(window._queue&&window._queue.length){
-  window._queue.forEach(([fn,args])=>{if(typeof window[fn]==='function')window[fn](...args)});
-  window._queue=[];
-}
-
-onAuthStateChanged(auth,async user=>{
-  if(user){
-    uid=user.uid;
-    await loadFromCloud();
-    if(!D.profile){
-      // pre-fill name from Google account
-      const gName=user.displayName?user.displayName.split(' ')[0]:'';
-      document.getElementById('ob-nombre').value=gName;
-      document.getElementById('ob-welcome-name').textContent=gName?', '+gName:'';
-      if(user.photoURL){
-        D.avatar=user.photoURL;
-        const img=document.getElementById('obAvatarImg');const icon=document.getElementById('obAvatarIcon');const ring=document.getElementById('obAvatarRing');
-        img.src=D.avatar;img.style.display='block';icon.style.display='none';ring.classList.add('has-photo');
-      }
-      switchScreen('onboarding');
-    }else{
-      renderWS();renderPlan();switchScreen('plan');
+auth.onAuthStateChanged(async function(user) {
+  console.log('onAuthStateChanged fired, user:', user ? user.email : 'null');
+  if (user) {
+    uid = user.uid;
+    try {
+      await loadFromCloud();
+    } catch(e) {
+      console.error('loadFromCloud error:', e);
     }
-  }else{
-    switchScreen('login');
+    if (!D.profile) {
+      const gName = user.displayName ? user.displayName.split(' ')[0] : '';
+      const obNombre = document.getElementById('ob-nombre');
+      if (obNombre) obNombre.value = gName;
+      const obWelcome = document.getElementById('ob-welcome-name');
+      if (obWelcome) obWelcome.textContent = gName ? ', ' + gName : '';
+      if (user.photoURL) {
+        D.avatar = user.photoURL;
+        const img  = document.getElementById('obAvatarImg');
+        const icon = document.getElementById('obAvatarIcon');
+        const ring = document.getElementById('obAvatarRing');
+        if (img)  { img.src = D.avatar; img.style.display = 'block'; }
+        if (icon) icon.style.display = 'none';
+        if (ring) ring.classList.add('has-photo');
+      }
+      window.switchScreen('onboarding');
+    } else {
+      renderWS();
+      renderPlan();
+      window.switchScreen('plan');
+    }
+  } else {
+    uid = null;
+    window.switchScreen('login');
   }
 });
 
