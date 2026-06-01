@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Plan Nutricional · v0006</title>
+<title>Plan Nutricional</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -19,6 +19,18 @@
   --text-1:#E8EDF7;--text-2:#8A93A8;--text-3:#4E5870;
   --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
 }
+html.light{
+  --bg:#F5F4F0;--surface:#FFFFFF;--card:#F0EDE8;--border:#DDD9D0;
+  --amber:#B8873A;--amber-dim:#B8873A22;--amber-bg:#B8873A14;
+  --green:#3A8A6E;--green-dim:#3A8A6E22;
+  --red:#B04848;--red-dim:#B0484818;
+  --blue:#3A6FAF;--blue-dim:#3A6FAF20;
+  --purple:#6B5AB4;--purple-dim:#6B5AB418;
+  --text-1:#1A1E28;--text-2:#5A6070;--text-3:#9A9FA8;
+}
+/* theme toggle */
+.theme-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:.5px solid var(--border);color:var(--text-2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.theme-btn:hover{background:var(--card)}
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--font);-webkit-font-smoothing:antialiased}
 body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .app{width:100%;max-width:420px;padding:0 16px}
@@ -233,10 +245,15 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .weight-item-delta{font-size:11px;font-family:var(--mono)}
 .weight-del{font-size:11px;color:var(--text-3);cursor:pointer;padding:2px 6px;border-radius:5px;border:.5px solid transparent;background:transparent;font-family:var(--font);transition:all .12s}
 .weight-del:hover{background:var(--red-dim);border-color:var(--red);color:var(--red)}
-.weight-chart{margin:10px 0 4px;display:flex;align-items:flex-end;gap:4px;height:60px}
+.weight-chart{margin:10px 0 4px;position:relative;height:80px}
+.weight-chart-bars{display:flex;align-items:flex-end;gap:4px;height:60px;position:relative;z-index:1}
 .weight-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
 .weight-bar{width:100%;border-radius:3px 3px 0 0;background:var(--amber);min-height:4px;transition:height .3s ease}
 .weight-bar-label{font-size:8px;color:var(--text-3);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32px}
+.weight-trend-svg{position:absolute;top:0;left:0;width:100%;height:60px;pointer-events:none;z-index:2}
+.weight-trend-info{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:11px;font-family:var(--mono)}
+.weight-trend-label{color:var(--text-3)}
+.weight-trend-val{font-weight:500}
 .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
 .photo-thumb{aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--card);border:.5px solid var(--border);cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
 .photo-thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -329,7 +346,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       Continuar con Google
     </button>
     <div class="login-note">Tus datos se guardan de forma segura en la nube y son accesibles desde cualquier dispositivo.</div>
-    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0006</div>
   </div>
 </div>
 
@@ -389,6 +405,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       <div class="profile-sub" id="weekProgress"></div>
     </div>
     <div class="header-right">
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
       <div class="sync-dot" id="syncDot" title="Sincronizado"></div>
       <button class="cart-btn" onclick="event.stopPropagation();openCart()">&#128722;<span class="cart-badge" id="cartBadge"></span></button>
     </div>
@@ -625,7 +642,28 @@ function saveToCloud(){
 }
 function sv(key,val){D[key]=val;saveToCloud()}
 
-// ── TOAST ──
+// ── HAPTIC ──
+function haptic(type='light'){
+  if(!navigator.vibrate)return;
+  if(type==='light')  navigator.vibrate(10);
+  if(type==='medium') navigator.vibrate(20);
+  if(type==='success')navigator.vibrate([10,50,10]);
+}
+
+// ── THEME ──
+let currentTheme = localStorage.getItem('nutri_theme') || 'dark';
+function applyTheme(t){
+  currentTheme = t;
+  document.documentElement.classList.toggle('light', t==='light');
+  localStorage.setItem('nutri_theme', t);
+  const btn = document.getElementById('themeBtn');
+  if(btn) btn.textContent = t==='light' ? '🌙' : '☀️';
+}
+window.toggleTheme = function(){
+  haptic('light');
+  applyTheme(currentTheme==='dark' ? 'light' : 'dark');
+};
+applyTheme(currentTheme);
 let toastTimer=null;
 function toast(msg,type='green'){
   const el=document.getElementById('toast');if(!el)return;
@@ -814,7 +852,7 @@ window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>id
 
 // ── PLAN ──
 window.changeDay=function(dir){currentDay=(currentDay+dir+7)%7;renderPlan()}
-window.markDay=function(status){sds(currentDay,status);renderPlan();toast(status==='done'?'D&#237;a completado &#10003;':'Dia marcado como no completado')}
+window.markDay=function(status){sds(currentDay,status);haptic(status==='done'?'success':'medium');renderPlan();toast(status==='done'?'D&#237;a completado &#10003;':'D&#237;a marcado como no completado')}
 window.saveNote=function(){const t=document.getElementById('dayNoteInput');if(t)sdn(currentDay,t.value)}
 window.saveOffPlan=function(){const t=document.getElementById('offPlanInput');if(t)sop(currentDay,t.value)}
 window.toggleOffPlan=function(){
@@ -926,12 +964,52 @@ window.addWeightEntry=function(){
 window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);saveToCloud();renderWeightLog()}
 function renderWeightLog(){
   const chart=document.getElementById('weightChart');const list=document.getElementById('weightList');
-  if(!D.weightLog.length){chart.innerHTML='';list.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">A&#250;n no hay entradas.</div>';return}
-  const recent=D.weightLog.slice(-8);const vals=recent.map(e=>e.kg);const minV=Math.min(...vals)-1;const maxV=Math.max(...vals)+1;const range=maxV-minV||1;
-  chart.innerHTML=recent.map(e=>'<div class="weight-bar-wrap"><div class="weight-bar" style="height:'+Math.round(((e.kg-minV)/range)*100)+'%"></div><div class="weight-bar-label">'+e.date.slice(5)+'</div></div>').join('');
+  if(!D.weightLog.length){
+    chart.innerHTML='';
+    list.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">A&#250;n no hay entradas. A&#241;ade tu primer peso.</div>';
+    return;
+  }
+  const recent=D.weightLog.slice(-8);
+  const vals=recent.map(e=>e.kg);
+  const minV=Math.min(...vals)-1;const maxV=Math.max(...vals)+1;const range=maxV-minV||1;
+  const barsHTML=recent.map(e=>{
+    const pct=Math.round(((e.kg-minV)/range)*100);
+    return'<div class="weight-bar-wrap"><div class="weight-bar" style="height:'+pct+'%"></div><div class="weight-bar-label">'+e.date.slice(5)+'</div></div>';
+  }).join('');
+  const n=vals.length;
+  let trendHTML='';let trendInfo='';
+  if(n>=2){
+    const xs=vals.map((_,i)=>i);
+    const mx=xs.reduce((a,b)=>a+b,0)/n;
+    const my=vals.reduce((a,b)=>a+b,0)/n;
+    const num=xs.reduce((s,x,i)=>s+(x-mx)*(vals[i]-my),0);
+    const den=xs.reduce((s,x)=>s+(x-mx)**2,0);
+    const slope=den?num/den:0;
+    const intercept=my-slope*mx;
+    const y0=100-Math.round(((intercept-minV)/range)*100);
+    const y1=100-Math.round((((slope*(n-1)+intercept)-minV)/range)*100);
+    const trendColor=slope<=0?'var(--green)':'var(--red)';
+    trendHTML='<svg class="weight-trend-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="'+y0+'" x2="100" y2="'+y1+'" stroke="'+trendColor+'" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.7"/></svg>';
+    const weeklyRate=(slope*7).toFixed(2);
+    const dir=slope<=0?'&#8600; Bajando':'&#8599; Subiendo';
+    const col=slope<=0?'var(--green)':'var(--red)';
+    let projStr='';
+    if(D.objective&&D.objective.pesoObj&&slope!==0){
+      const diff=D.objective.pesoObj-vals[vals.length-1];
+      const weeksLeft=Math.abs(Math.round(diff/(slope*7)));
+      if(weeksLeft>0&&weeksLeft<200)projStr=' &middot; objetivo en ~'+weeksLeft+' sem.';
+    }
+    trendInfo='<div class="weight-trend-info"><span class="weight-trend-label">Tendencia</span><span class="weight-trend-val" style="color:'+col+'">'+dir+' '+Math.abs(weeklyRate)+' kg/sem'+projStr+'</span></div>';
+  }
+  chart.innerHTML='<div class="weight-chart-bars">'+barsHTML+'</div>'+trendHTML+trendInfo;
   const rev=[...D.weightLog].reverse();
-  list.innerHTML=rev.map((e,i)=>{const prev=rev[i+1];const delta=prev?(e.kg-prev.kg):null;const ds=delta!==null?'<span class="weight-item-delta" style="color:'+(delta<=0?'var(--green)':'var(--amber)')+'"> '+(delta>0?'+':'')+delta.toFixed(1)+' kg</span>':'';return'<div class="weight-item"><span class="weight-item-date">'+e.date+'</span><span class="weight-item-val">'+e.kg+' kg</span>'+ds+'<button class="weight-del" onclick="deleteWeightEntry(\''+e.date+'\')">x borrar</button></div>'}).join('');
+  list.innerHTML=rev.map((e,i)=>{
+    const prev=rev[i+1];const delta=prev?(e.kg-prev.kg):null;
+    const ds=delta!==null?'<span class="weight-item-delta" style="color:'+(delta<=0?'var(--green)':'var(--red)')+'"> '+(delta>0?'+':'')+delta.toFixed(1)+' kg</span>':'';
+    return'<div class="weight-item"><span class="weight-item-date">'+e.date+'</span><span class="weight-item-val">'+e.kg+' kg</span>'+ds+'<button class="weight-del" onclick="deleteWeightEntry(''+e.date+'')">&#215; borrar</button></div>';
+  }).join('');
 }
+
 
 // ── PHOTOS ──
 window.addProgressPhoto=function(input){
