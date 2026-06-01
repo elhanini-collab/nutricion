@@ -397,6 +397,9 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 
 <!-- PLAN -->
 <div class="screen" id="screen-plan">
+  <div style="display:flex;justify-content:flex-end;padding-top:16px;padding-bottom:4px">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
+  </div>
   <div class="profile-header" onclick="switchScreen('perfil')">
     <div class="avatar-el" id="avatarMain"></div>
     <div class="profile-text">
@@ -405,7 +408,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       <div class="profile-sub" id="weekProgress"></div>
     </div>
     <div class="header-right">
-      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
       <div class="sync-dot" id="syncDot" title="Sincronizado"></div>
       <button class="cart-btn" onclick="event.stopPropagation();openCart()">&#128722;<span class="cart-badge" id="cartBadge"></span></button>
     </div>
