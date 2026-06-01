@@ -695,40 +695,6 @@ window.obPrevStep=function(){
   document.getElementById('ob-dot-2').className='ob-step-dot';
 }
 
-// ── AUTH ──
-
-
-// handle redirect result first
-getRedirectResult(auth).catch(e=>console.error('redirect error',e));
-
-// flush any queued calls from before module loaded
-if(window._queue&&window._queue.length){
-  window._queue.forEach(([fn,args])=>{if(typeof window[fn]==='function')window[fn](...args)});
-  window._queue=[];
-}
-
-onAuthStateChanged(auth,async user=>{
-  if(user){
-    uid=user.uid;
-    await loadFromCloud();
-    if(!D.profile){
-      // pre-fill name from Google account
-      const gName=user.displayName?user.displayName.split(' ')[0]:'';
-      document.getElementById('ob-nombre').value=gName;
-      document.getElementById('ob-welcome-name').textContent=gName?', '+gName:'';
-      if(user.photoURL){
-        D.avatar=user.photoURL;
-        const img=document.getElementById('obAvatarImg');const icon=document.getElementById('obAvatarIcon');const ring=document.getElementById('obAvatarRing');
-        img.src=D.avatar;img.style.display='block';icon.style.display='none';ring.classList.add('has-photo');
-      }
-      switchScreen('onboarding');
-    }else{
-      renderWS();renderPlan();switchScreen('plan');
-    }
-  }else{
-    switchScreen('login');
-  }
-});
 
 // ── WEEK KEY ──
 function getWeekKey(o=0){const d=new Date();d.setDate(d.getDate()-getTodayIndex()+o*7);return d.getFullYear()+'-W'+String(getISOWeek(d)).padStart(2,'0')}
@@ -1084,7 +1050,6 @@ document.addEventListener('touchend',e=>{
   mTT=null;
 },{passive:true});
 
-pruneSwaps();
 
 // ══════════════════════════════════════════════════════
 // AUTH — defined here so they have access to auth/db
