@@ -972,7 +972,7 @@ function renderWeightLog(){
   list.innerHTML=rev.map((e,i)=>{
     const prev=rev[i+1];const delta=prev?(e.kg-prev.kg):null;
     const ds=delta!==null?'<span class="weight-item-delta" style="color:'+(delta<=0?'var(--green)':'var(--red)')+'"> '+(delta>0?'+':'')+delta.toFixed(1)+' kg</span>':'';
-    return'<div class="weight-item"><span class="weight-item-date">'+e.date+'</span><span class="weight-item-val">'+e.kg+' kg</span>'+ds+'<button class="weight-del" onclick="deleteWeightEntry(''+e.date+'')">&#215; borrar</button></div>';
+    return'<div class="weight-item"><span class="weight-item-date">'+e.date+'</span><span class="weight-item-val">'+e.kg+' kg</span>'+ds+'<button class="weight-del" onclick="deleteWeightEntry(\''+e.date+'\')">&#215; borrar</button></div>';
   }).join('');
 }
 
