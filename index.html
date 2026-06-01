@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Plan Nutricional · v0003</title>
+<title>Plan Nutricional · v0004</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -329,7 +329,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       Continuar con Google
     </button>
     <div class="login-note">Tus datos se guardan de forma segura en la nube y son accesibles desde cualquier dispositivo.</div>
-    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0003</div>
+    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0004</div>
   </div>
 </div>
 
@@ -518,7 +518,7 @@ import { getFirestore, doc, getDoc, setDoc }                from 'https://www.gs
 
 const firebaseApp = initializeApp({
   apiKey:            "AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
-  authDomain:        "elhanini-collab.github.io",
+  authDomain:        "plan-nutricional-a2c88.firebaseapp.com",
   projectId:         "plan-nutricional-a2c88",
   storageBucket:     "plan-nutricional-a2c88.firebasestorage.app",
   messagingSenderId: "651954711031",
@@ -1014,15 +1014,21 @@ pruneSwaps();
 window.signInWithGoogle = async function() {
   try {
     const provider = new GoogleAuthProvider();
-    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      await signInWithRedirect(auth, provider);
-    } else {
-      await signInWithPopup(auth, provider);
-    }
+    await signInWithPopup(auth, provider);
   } catch(e) {
-    console.error('signInWithGoogle error:', e);
-    alert('Error al iniciar sesion: ' + e.message);
+    console.error('signInWithGoogle popup error:', e.code, e.message);
+    // If popup was blocked, fall back to redirect
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithRedirect(auth, provider);
+      } catch(e2) {
+        console.error('redirect fallback error:', e2);
+        alert('Error al iniciar sesion: ' + e2.message);
+      }
+    } else {
+      alert('Error al iniciar sesion: ' + e.message);
+    }
   }
 };
 
