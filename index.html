@@ -19,18 +19,6 @@
   --text-1:#E8EDF7;--text-2:#8A93A8;--text-3:#4E5870;
   --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
 }
-html.light{
-  --bg:#F5F4F0;--surface:#FFFFFF;--card:#F0EDE8;--border:#DDD9D0;
-  --amber:#B8873A;--amber-dim:#B8873A22;--amber-bg:#B8873A14;
-  --green:#3A8A6E;--green-dim:#3A8A6E22;
-  --red:#B04848;--red-dim:#B0484818;
-  --blue:#3A6FAF;--blue-dim:#3A6FAF20;
-  --purple:#6B5AB4;--purple-dim:#6B5AB418;
-  --text-1:#1A1E28;--text-2:#5A6070;--text-3:#9A9FA8;
-}
-/* theme toggle */
-.theme-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:.5px solid var(--border);color:var(--text-2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .15s}
-.theme-btn:hover{background:var(--card)}
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--font);-webkit-font-smoothing:antialiased}
 body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .app{width:100%;max-width:420px;padding:0 16px}
@@ -397,9 +385,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 
 <!-- PLAN -->
 <div class="screen" id="screen-plan">
-  <div style="display:flex;justify-content:flex-end;padding-top:16px;padding-bottom:4px">
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
-  </div>
   <div class="profile-header" onclick="switchScreen('perfil')">
     <div class="avatar-el" id="avatarMain"></div>
     <div class="profile-text">
@@ -431,7 +416,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 <div class="screen" id="screen-perfil">
   <div class="profile-screen-header">
     <button class="back-btn" onclick="switchScreen('plan')">&#8592;</button>
-    <button class="theme-btn" onclick="toggleTheme()" title="Cambiar tema" id="themeBtnProfile">🌙</button>
     <div class="profile-screen-avatar" id="avatarProfile" onclick="document.getElementById('profile-avatar-input').click()" title="Cambiar foto"></div>
     <input type="file" id="profile-avatar-input" style="display:none" accept="image/*" onchange="handleProfileAvatarPick(this)">
     <div style="flex:1"><div class="profile-screen-name" id="profileScreenName"></div><div class="profile-screen-sub" id="profileScreenSub"></div></div>
@@ -653,22 +637,6 @@ function haptic(type='light'){
   if(type==='success')navigator.vibrate([10,50,10]);
 }
 
-// ── THEME ──
-let currentTheme = localStorage.getItem('nutri_theme') || 'dark';
-function applyTheme(t){
-  currentTheme = t;
-  document.documentElement.classList.toggle('light', t==='light');
-  localStorage.setItem('nutri_theme', t);
-  ['themeBtn','themeBtnProfile'].forEach(id=>{
-    const b=document.getElementById(id);
-    if(b) b.innerHTML = t==='light' ? '🌙' : '☀️';
-  });
-}
-window.toggleTheme = function(){
-  haptic('light');
-  applyTheme(currentTheme==='dark' ? 'light' : 'dark');
-};
-applyTheme(currentTheme);
 let toastTimer=null;
 function toast(msg,type='green'){
   const el=document.getElementById('toast');if(!el)return;
