@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Plan Nutricional · v0002</title>
+<title>Plan Nutricional · v0003</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -329,7 +329,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       Continuar con Google
     </button>
     <div class="login-note">Tus datos se guardan de forma segura en la nube y son accesibles desde cualquier dispositivo.</div>
-    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0002</div>
+    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0003</div>
   </div>
 </div>
 
@@ -512,13 +512,13 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 // FIREBASE — ES module import (most reliable on mobile)
 // ══════════════════════════════════════════════════════
 import { initializeApp }                                    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithRedirect,
+import { getAuth, GoogleAuthProvider, signInWithRedirect, signInWithPopup,
          getRedirectResult, onAuthStateChanged, signOut }   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc }                from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseApp = initializeApp({
   apiKey:            "AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
-  authDomain:        "plan-nutricional-a2c88.firebaseapp.com",
+  authDomain:        "elhanini-collab.github.io",
   projectId:         "plan-nutricional-a2c88",
   storageBucket:     "plan-nutricional-a2c88.firebasestorage.app",
   messagingSenderId: "651954711031",
@@ -1014,7 +1014,12 @@ pruneSwaps();
 window.signInWithGoogle = async function() {
   try {
     const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider);
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      await signInWithRedirect(auth, provider);
+    } else {
+      await signInWithPopup(auth, provider);
+    }
   } catch(e) {
     console.error('signInWithGoogle error:', e);
     alert('Error al iniciar sesion: ' + e.message);
