@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Plan Nutricional · v0005</title>
+<title>Plan Nutricional · v0006</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -329,7 +329,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       Continuar con Google
     </button>
     <div class="login-note">Tus datos se guardan de forma segura en la nube y son accesibles desde cualquier dispositivo.</div>
-    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0005</div>
+    <div style="margin-top:32px;font-size:11px;color:var(--text-3);font-family:var(--mono);">v0006</div>
   </div>
 </div>
 
@@ -1014,10 +1014,20 @@ pruneSwaps();
 window.signInWithGoogle = async function() {
   try {
     const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider);
+    await signInWithPopup(auth, provider);
   } catch(e) {
-    console.error('signInWithGoogle error:', e);
-    alert('Error al iniciar sesion: ' + e.message);
+    console.error('signInWithGoogle popup error:', e.code, e.message);
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      try {
+        const provider2 = new GoogleAuthProvider();
+        await signInWithRedirect(auth, provider2);
+      } catch(e2) {
+        console.error('redirect fallback error:', e2);
+        alert('Error al iniciar sesion: ' + e2.message);
+      }
+    } else {
+      alert('Error al iniciar sesion: ' + e.message);
+    }
   }
 };
 
@@ -1032,17 +1042,10 @@ window.signOut = async function() {
 };
 
 // ── AUTH FLOW ──
-// First check if we're returning from a Google redirect
-getRedirectResult(auth).then(result => {
-  if (result && result.user) {
-    console.log('redirect result: signed in as', result.user.email);
-    // onAuthStateChanged will fire automatically after this
-  }
-}).catch(e => {
-  console.error('getRedirectResult error:', e.code, e.message);
-});
+getRedirectResult(auth)
+  .then(result => { if (result) console.log('redirect result ok:', result.user.email); })
+  .catch(e => console.error('getRedirectResult error:', e));
 
-// Then listen for auth state changes
 onAuthStateChanged(auth, async function(user) {
   console.log('auth state:', user ? user.email : 'signed out');
   if (user) {
@@ -1070,8 +1073,6 @@ onAuthStateChanged(auth, async function(user) {
       window.switchScreen('plan');
     }
   } else {
-    // Only show login if we are NOT in the middle of a redirect
-    // (redirect causes a brief signed-out state before signing in)
     uid = null;
     window.switchScreen('login');
   }
