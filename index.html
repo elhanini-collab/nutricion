@@ -130,6 +130,27 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .hydration-glass{width:52px;height:52px;border-radius:10px;border:.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .hydration-glass.filled{background:var(--blue-dim);border-color:var(--blue)}
 /* coffee tracker */
+/* prefs toggles */
+.pref-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:.5px solid var(--border)}
+.pref-row:last-child{border-bottom:none}
+.pref-info{display:flex;flex-direction:column;gap:3px}
+.pref-label{font-size:14px;color:var(--text-1)}
+.pref-desc{font-size:11px;color:var(--text-3)}
+.toggle{position:relative;width:44px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;border-radius:13px;background:var(--border);transition:background .2s;cursor:pointer}
+.toggle input:checked+.toggle-track{background:var(--amber)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;pointer-events:none}
+.toggle input:checked~.toggle-thumb{transform:translateX(18px)}
+.prefs-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:0 16px;margin-bottom:8px}
+/* supplements */
+.supp-bar{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:20px}
+.supp-label{font-size:11px;color:var(--text-3);margin-bottom:9px}
+.supp-btns{display:flex;gap:8px;flex-wrap:wrap}
+.supp-btn{flex:1;min-width:70px;padding:7px 6px;border-radius:10px;border:.5px solid var(--border);background:var(--card);color:var(--text-2);font-family:var(--font);font-size:11px;font-weight:500;cursor:pointer;text-align:center;transition:all .15s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.supp-btn:hover{background:var(--surface)}
+.supp-btn.taken{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+
 .coffee-bar{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:20px}
 .coffee-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .coffee-label{font-size:11px;color:var(--text-3)}
@@ -319,6 +340,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0007</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -450,6 +472,43 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
   <div id="dexaList"></div>
   <div class="section-title">Hist&#243;rico semanal</div>
   <div class="historic-weeks" id="historicWeeks"></div>
+  <div class="section-title">Seguimiento diario</div>
+  <div class="prefs-card">
+    <div class="pref-row">
+      <div class="pref-info">
+        <span class="pref-label">⚡ Suplementos</span>
+        <span class="pref-desc">Creatina, Omega-3, Vit. C, Zinc</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="pref-supp" onchange="savePref('supp',this.checked)">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+    <div class="pref-row">
+      <div class="pref-info">
+        <span class="pref-label">💧 Hidratación</span>
+        <span class="pref-desc">Registro de botellas de agua</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="pref-water" onchange="savePref('water',this.checked)">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+    <div class="pref-row">
+      <div class="pref-info">
+        <span class="pref-label">☕ Cafés del día</span>
+        <span class="pref-desc">Espresso y Latte</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="pref-coffee" onchange="savePref('coffee',this.checked)">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+  </div>
+
   <div class="section-title">Datos personales</div>
   <div class="edit-section">
     <div class="field-group">
@@ -591,7 +650,7 @@ let uid=null, userDoc=null, unsub=null;
 let D={
   profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[], dexaLog:[],
   mealSwaps:{}, waterLog:{}, progressPhotos:[], objective:{pesoObj:null,semanas:null},
-  offPlanLog:{}, wsSeen:{}, coffeeLog:{}  // { 'YYYY-MM-DD': {e:0, l:0} }
+  offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, prefs:{supp:true,water:true,coffee:true}  // { 'YYYY-MM-DD': {e:0, l:0} }
 };
 let currentDay=getTodayIndex(), currentScreen='login';
 let saveTimer=null;
@@ -612,7 +671,7 @@ async function loadFromCloud(){
     D.dayNotes=d.dayNotes||{};D.cart=d.cart||[];D.weightLog=d.weightLog||[];
     D.dexaLog=d.dexaLog||[];D.mealSwaps=d.mealSwaps||{};D.waterLog=d.waterLog||{};
     D.progressPhotos=d.progressPhotos||[];D.objective=d.objective||{pesoObj:null,semanas:null};
-    D.offPlanLog=d.offPlanLog||{};D.wsSeen=d.wsSeen||{};D.coffeeLog=d.coffeeLog||{};
+    D.offPlanLog=d.offPlanLog||{};D.wsSeen=d.wsSeen||{};D.suppLog=d.suppLog||{};D.prefs=d.prefs||{supp:true,water:true,coffee:true};D.coffeeLog=d.coffeeLog||{};
   }
 }
 function saveToCloud(){
@@ -622,7 +681,7 @@ function saveToCloud(){
   saveTimer=setTimeout(async()=>{
     try{
       const ref=doc(db,'users',uid,'data','main');
-      await setDoc(ref,{...D},{merge:true});
+      const saveData={...D};await setDoc(ref,saveData,{merge:true});
       setSyncDot('ok');
     }catch(e){setSyncDot('error');console.error(e)}
   },1200);
@@ -681,6 +740,31 @@ function todayStr(){return new Date().toISOString().slice(0,10)}
 function dfi(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toISOString().slice(0,10)}
 function gop(i){return D.offPlanLog[dfi(i)+'_'+i]||''}
 function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;saveToCloud()}
+// ── SUPPLEMENTS ──
+const SUPPS = [{id:'c',label:'⚡ Creatina'},{id:'o',label:'🐟 Omega-3'},{id:'v',label:'🍊 Vit. C'},{id:'z',label:'🦪 Zinc'}];
+function getSupp(ds){return D.suppLog[ds]||{c:false,o:false,v:false,z:false}}
+window.toggleSupp=function(ds,id){
+  const s=getSupp(ds);s[id]=!s[id];D.suppLog[ds]=s;
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatarData);sv('nsupp',D.suppLog);
+  haptic('light');renderPlan();
+}
+function renderSuppBar(ds){
+  const s=getSupp(ds);
+  const btns=SUPPS.map(({id,label})=>'<button class="supp-btn'+(s[id]?' taken':'')+'" onclick="toggleSupp(\''+ds+'\',\''+id+'\')">'+(s[id]?'✓ ':'')+label+'</button>').join('');
+  return '<div class="supp-bar"><div class="supp-label">Suplementos</div><div class="supp-btns">'+btns+'</div></div>';
+}
+
+
+// ── SAVEPREF ──
+
+
+window.savePref=function(key,val){
+  if(!D.prefs)D.prefs={supp:true,water:true,coffee:true};
+  D.prefs[key]=val;
+  saveToCloud();
+  toast(val?'Activado':'Desactivado');
+};
+
 // ── COFFEE ──
 function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
 window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;saveToCloud();renderPlan()}
@@ -827,18 +911,42 @@ function renderPlan(){
   const isDone=wk[currentDay]==='done';const isFailed=wk[currentDay]==='failed';
   const note=gdn(currentDay);
   const bal=dayBalance(currentDay);const bs=bal>=0?'+':'';
-  const bc=Math.abs(bal)<80?'kcal-balanced':bal>0?'kcal-surplus':'kcal-d&#233;ficit';
-  const bl=Math.abs(bal)<80?'En equilibrio con tu TDEE':bal>0?'Super&#225;vit respecto al TDEE':'D&#233;ficit respecto al TDEE';
+  const bc=Math.abs(bal)<80?'kcal-balanced':bal>0?'kcal-surplus':'kcal-deficit';
+  const bl=Math.abs(bal)<80?'En equilibrio con tu TDEE':bal>0?'Super\u00E1vit respecto al TDEE':'D\u00E9ficit respecto al TDEE';
   const ds=dfi(currentDay);const wc=getWater(ds);
-  const glH=Array.from({length:4},(_,i)=>'<div class="hydration-glass'+(i<wc?' filled':'')+'" onclick="toggleGlass(\''+ds+'\','+i+')">&#128167;</div>').join('');
+  const pr=D.prefs||{supp:true,water:true,coffee:true};
+  const glH=Array.from({length:4},(_,i)=>'<div class="hydration-glass'+(i<wc?' filled':'')+'" onclick="toggleGlass(\''+ds+'\','+i+')">\uD83D\uDCA7</div>').join('');
+  const hydrationHTML=pr.water!==false?'<div class="hydration-bar"><div class="hydration-header"><span class="hydration-label">Hidrataci\u00F3n (500ml)</span><span class="hydration-count">'+wc+'/4 botellas</span></div><div class="hydration-glasses">'+glH+'</div></div>':'';
+  const coffeeHTML=renderCoffeeBar(ds);
+  const suppHTML=renderSuppBar(ds);
   const mH=DD[currentDay].meals.map((m,i)=>{
     const sw=getSwapped(currentDay,i);const meal=sw||m;const isS=!!sw;
     const iH=meal.ingredients.map(ing=>{const inC=isInCart(ing);return'<li><span class="ing-text">'+ing+'</span><button class="ing-cart-btn'+(inC?' in-cart':'')+'" onclick="event.stopPropagation();toggleCartItem('+JSON.stringify(ing)+')">'+(inC?'- quitar':'+ lista')+'</button></li>'}).join('');
-    const sb=isS?'<div class="meal-swapped-badge">&#8596; cambiado &middot; '+Math.abs(meal.kcal-m.kcal)+' kcal dif.<button class="meal-restore-btn" onclick="event.stopPropagation();restoreMeal('+currentDay+','+i+')">restaurar</button></div>':'';
-    return'<div class="meal-card'+(isS?' swiped':'')+'" data-idx="'+i+'" onclick="toggleMeal('+i+',event)" data-swipe-day="'+currentDay+'" data-swipe-meal="'+i+'"><div class="meal-swap-hint left">&#8596;</div><div class="meal-swap-hint right">&#8596;</div><div class="meal-icon">'+meal.icon+'</div><div class="meal-body"><div class="meal-type">'+meal.type+'</div><div class="meal-title">'+meal.title+'</div><div class="meal-kcal">'+meal.kcal+' kcal &middot; '+meal.prot+'g prot</div>'+sb+'<div class="meal-detail"><ul class="meal-ingredients">'+iH+'</ul>'+(meal.note?'<div class="meal-note">'+meal.note+'</div>':'')+'</div></div><div class="meal-chevron">&#9662;</div></div>'
+    const sb=isS?'<div class="meal-swapped-badge">\u2194 cambiado \u00B7 '+Math.abs(meal.kcal-m.kcal)+' kcal dif.<button class="meal-restore-btn" onclick="event.stopPropagation();restoreMeal('+currentDay+','+i+')">restaurar</button></div>':'';
+    return'<div class="meal-card'+(isS?' swiped':'')+'" data-idx="'+i+'" onclick="toggleMeal('+i+',event)" data-swipe-day="'+currentDay+'" data-swipe-meal="'+i+'"><div class="meal-swap-hint left">\u2194</div><div class="meal-swap-hint right">\u2194</div><div class="meal-icon">'+meal.icon+'</div><div class="meal-body"><div class="meal-type">'+meal.type+'</div><div class="meal-title">'+meal.title+'</div><div class="meal-kcal">'+meal.kcal+' kcal \u00B7 '+meal.prot+'g prot</div>'+sb+'<div class="meal-detail"><ul class="meal-ingredients">'+iH+'</ul>'+(meal.note?'<div class="meal-note">'+meal.note+'</div>':'')+'</div></div><div class="meal-chevron">\u25BE</div></div>';
   }).join('');
-  const coffeeHTML=renderCoffeeBar(ds);
-  document.getElementById('dayContent').innerHTML='<div class="day-content"><div style="display:flex;justify-content:center">'+(day.train?'<div class="train-badge">&#127947; D&#237;a de entreno</div>':'<div class="rest-badge">&#128164; D&#237;a de descanso</div>')+'</div><div class="kcal-balance"><span class="kcal-balance-label">'+bl+'</span><span class="kcal-balance-val '+bc+'">'+bs+bal+' kcal</span></div><div class="day-complete-wrap"><button class="btn-complete'+(isDone?' done':'')+'" onclick="markDay(\'done\')">'+(isDone?'&#9989;':'&#9711;')+' '+(isDone?'Completado':'Completado')+'</button><button class="btn-complete'+(isFailed?' failed':'')+'" onclick="markDay(\'failed\')">'+(isFailed?'&#10060;':'&#9711;')+' No completado</button></div><div class="day-note-wrap"><textarea id="dayNoteInput" class="day-note-input" rows="2" placeholder="Nota del d&#237;a..." oninput="saveNote()">'+note+'</textarea></div><div class="hydration-bar"><div class="hydration-header"><span class="hydration-label">Hidrataci&#243;n (500ml)</span><span class="hydration-count">'+wc+'/4 botellas</span></div><div class="hydration-glasses">'+glH+'</div></div>'+coffeeHTML+'<div class="macros"><div class="macro-card"><div class="macro-label">Prote&#237;na</div><div class="macro-val">'+day.prot+'<span class="macro-unit">g</span></div><div class="macro-ref">m&#237;n 160g</div><span class="macro-status '+(protOk?'status-ok':'status-warn')+'">'+(protOk?'&#10003; objetivo':'&#9888; bajo m&#237;nimo')+'</span><div class="macro-bar-track"><div class="macro-bar-fill prot" style="width:'+pbw(day.prot)+'"></div></div></div><div class="macro-card"><div class="macro-label">Calor&#237;as</div><div class="macro-val">'+day.kcal.toLocaleString('es-ES')+'<span class="macro-unit">kcal</span></div><div class="macro-ref">2.100-2.300</div><span class="macro-status '+(kcalOk?'status-ok':'status-warn')+'">'+(kcalOk?'&#10003; en rango':'&#9888; fuera de rango')+'</span><div class="macro-bar-track"><div class="macro-bar-fill kcal" style="width:'+kbw(day.kcal)+'"></div></div></div></div><div class="divider"></div><div class="meals">'+mH+'</div></div>';
+  const noteHTML=isFailed
+    ?'<div class="day-note-wrap"><textarea id="dayNoteInput" class="day-note-input" rows="2" placeholder="\u00BFQu\u00E9 pas\u00F3? Anota el motivo..." oninput="saveNote()">'+note+'</textarea></div>'
+    :'';
+  document.getElementById('dayContent').innerHTML='<div class="day-content">'
+    +'<div style="display:flex;justify-content:center">'+(day.train?'<div class="train-badge">\uD83C\uDFCB\uFE0F D\u00EDa de entreno</div>':'<div class="rest-badge">\uD83D\uDCA4 D\u00EDa de descanso</div>')+'</div>'
+    +'<div class="day-complete-wrap">'
+    +'<button class="btn-complete'+(isDone?' done':'')+'" onclick="markDay(\'done\')">'+(isDone?'\u2705':'\u25CB')+' Completado</button>'
+    +'<button class="btn-complete'+(isFailed?' failed':'')+'" onclick="markDay(\'failed\')">'+(isFailed?'\u274C':'\u25CB')+' No completado</button>'
+    +'</div>'
+    +noteHTML
+    +(pr.supp!==false?suppHTML:'')
+    +hydrationHTML
+    +(pr.coffee!==false?coffeeHTML:'')
+    +'<div class="divider"></div>'
+    +'<div class="meals">'+mH+'</div>'
+    +'<div class="divider" style="margin-top:16px"></div>'
+    +'<div class="macros">'
+    +'<div class="macro-card"><div class="macro-label">Prote\u00EDna</div><div class="macro-val">'+day.prot+'<span class="macro-unit">g</span></div><div class="macro-ref">m\u00EDn 160g</div><span class="macro-status '+(protOk?'status-ok':'status-warn')+'">'+(protOk?'\u2713 objetivo':'\u26A0 bajo m\u00EDnimo')+'</span><div class="macro-bar-track"><div class="macro-bar-fill prot" style="width:'+pbw(day.prot)+'"></div></div></div>'
+    +'<div class="macro-card"><div class="macro-label">Calor\u00EDas</div><div class="macro-val">'+day.kcal.toLocaleString('es-ES')+'<span class="macro-unit">kcal</span></div><div class="macro-ref">2.100-2.300</div><span class="macro-status '+(kcalOk?'status-ok':'status-warn')+'">'+(kcalOk?'\u2713 en rango':'\u26A0 fuera de rango')+'</span><div class="macro-bar-track"><div class="macro-bar-fill kcal" style="width:'+kbw(day.kcal)+'"></div></div></div>'
+    +'</div>'
+    +'<div class="kcal-balance" style="margin-top:10px"><span class="kcal-balance-label">'+bl+'</span><span class="kcal-balance-val '+bc+'">'+bs+bal+' kcal</span></div>'
+    +'</div>'
   updateCartBadge();
 }
 
@@ -868,6 +976,10 @@ function renderProfile(){
   const dCls=dG<20?'bmi-normal':dG<25?'bmi-over':'bmi-obese';
   document.getElementById('statsGrid').innerHTML='<div class="stat-card"><div class="stat-label">Grasa corporal &middot; DEXA</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px"><div class="stat-val">'+dG+'<span class="stat-unit">%</span></div><div class="bmi-cat '+dCls+'">'+dCat+'</div></div><div class="stat-sub">'+dS+ts+'</div></div><div class="stat-card"><div class="stat-label">Masa magra</div><div class="stat-val">'+lean+'<span class="stat-unit">kg</span></div><div class="stat-sub">grasa: '+fatKg+' kg ('+fatPct+'%)</div></div><div class="stat-card full"><div class="stat-label">Composici&#243;n corporal</div><div class="body-comp-bar"><div style="width:'+fatPct+'%;background:var(--amber)"></div><div style="width:'+musclePct+'%;background:var(--green)"></div><div style="width:'+otherPct+'%;background:var(--border)"></div></div><div class="body-comp-legend"><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--amber)"></div>Grasa '+fatPct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--green)"></div>Masa magra '+musclePct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--border)"></div>Otros '+otherPct+'%</div></div></div><div class="stat-card highlight"><div class="stat-label">Gasto basal (BMR)</div><div class="stat-val">'+bmr+'<span class="stat-unit">kcal</span></div><div class="stat-sub">Harris-Benedict &middot; calculado</div></div><div class="stat-card"><div class="stat-label">TDEE &middot; gasto real</div><div class="stat-val">'+p.tdee+'<span class="stat-unit">kcal</span></div><div class="stat-sub">'+(deficit>=0?'+':'')+deficit+' vs media plan</div></div>';
   renderWeightLog();renderPhotos();renderDexaLog();renderHistoric();
+  const pr2=D.prefs||{supp:true,water:true,coffee:true};
+  const ps=document.getElementById('pref-supp');if(ps)ps.checked=pr2.supp!==false;
+  const pw=document.getElementById('pref-water');if(pw)pw.checked=pr2.water!==false;
+  const pc2=document.getElementById('pref-coffee');if(pc2)pc2.checked=pr2.coffee!==false;
 }
 window.saveProfile=function(){
   const nombre=document.getElementById('f-nombre').value.trim();
@@ -1052,7 +1164,7 @@ window.signOut = async function() {
   await signOut(auth);
   D = { profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[],
         dexaLog:[], mealSwaps:{}, waterLog:{}, progressPhotos:[],
-        objective:{pesoObj:null,semanas:null}, offPlanLog:{}, wsSeen:{}, coffeeLog:{} };
+        objective:{pesoObj:null,semanas:null}, offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, prefs:{supp:true,water:true,coffee:true} };
   uid = null;
   window.switchScreen('login');
 };
