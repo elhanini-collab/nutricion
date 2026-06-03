@@ -340,7 +340,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0007</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0009</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -898,14 +898,14 @@ function renderPlan(){
   document.getElementById('streakDays').innerHTML=DD.map((d,i)=>{
     const s=wk[i];const isT=i===todayIdx;const icon=s==='done'?'✓':s==='failed'?'✗':isT?'·':'';
     const cls='streak-dot'+(s==='done'?' done':s==='failed'?' failed':isT?' today':'');
-    return'<div class="streak-day"><div class="'+cls+'" onclick="currentDay='+i+';renderPlan()" title="'+d.name+'">'+icon+'</div><div class="streak-label">'+d.short+'</div></div>'
+    return'<div class="streak-day"><div class="'+cls+'" onclick="goToDay('+i+')" title="'+d.name+'">'+icon+'</div><div class="streak-label">'+d.short+'</div></div>'
   }).join('');
   document.getElementById('streakNum').textContent=calcStreak();
   document.getElementById('navDay').textContent=day.name;
   document.getElementById('navDate').textContent=getDateForDay(currentDay);
   document.getElementById('weekDots').innerHTML=DD.map((d,i)=>{
     const s=wk[i];let cls='week-dot';if(s==='done')cls+=' done-dot';if(s==='failed')cls+=' failed-dot';if(i===currentDay)cls+=' active';
-    return'<div class="'+cls+'" onclick="currentDay='+i+';renderPlan()" title="'+d.name+'"></div>'
+    return'<div class="'+cls+'" onclick="goToDay('+i+')" title="'+d.name+'"></div>'
   }).join('');
   const kcalOk=day.kcal>=2100&&day.kcal<=2300;const protOk=day.prot>=160;
   const isDone=wk[currentDay]==='done';const isFailed=wk[currentDay]==='failed';
@@ -1205,6 +1205,9 @@ onAuthStateChanged(auth, async function(user) {
     window.switchScreen('login');
   }
 });
+
+window.goToDay=function(i){currentDay=i;renderPlan()};
+window.renderPlan=renderPlan;
 
 pruneSwaps();
 </script>
