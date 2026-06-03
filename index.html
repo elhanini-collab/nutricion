@@ -340,7 +340,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0010</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0011</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -921,7 +921,7 @@ function renderPlan(){
   const suppHTML=renderSuppBar(ds);
   const mH=DD[currentDay].meals.map((m,i)=>{
     const sw=getSwapped(currentDay,i);const meal=sw||m;const isS=!!sw;
-    const iH=meal.ingredients.map(ing=>{const inC=isInCart(ing);return'<li><span class="ing-text">'+ing+'</span><button class="ing-cart-btn'+(inC?' in-cart':'')+'" onclick="event.stopPropagation();toggleCartItem('+encodeURIComponent(ing)+')">'+(inC?'- quitar':'+ lista')+'</button></li>'}).join('');
+    const iH=meal.ingredients.map(ing=>{const inC=isInCart(ing);const safeIng=ing.replace(/"/g,'&quot;');return'<li><span class="ing-text">'+ing+'</span><button class="ing-cart-btn'+(inC?' in-cart':'')+'" data-ing="'+safeIng+'">'+(inC?'- quitar':'+ lista')+'</button></li>'}).join('');
     const sb=isS?'<div class="meal-swapped-badge">\u2194 cambiado \u00B7 '+Math.abs(meal.kcal-m.kcal)+' kcal dif.<button class="meal-restore-btn" onclick="event.stopPropagation();restoreMeal('+currentDay+','+i+')">restaurar</button></div>':'';
     return'<div class="meal-card'+(isS?' swiped':'')+'" data-idx="'+i+'" onclick="toggleMeal('+i+',event)" data-swipe-day="'+currentDay+'" data-swipe-meal="'+i+'"><div class="meal-swap-hint left">\u2194</div><div class="meal-swap-hint right">\u2194</div><div class="meal-icon">'+meal.icon+'</div><div class="meal-body"><div class="meal-type">'+meal.type+'</div><div class="meal-title">'+meal.title+'</div><div class="meal-kcal">'+meal.kcal+' kcal \u00B7 '+meal.prot+'g prot</div>'+sb+'<div class="meal-detail"><ul class="meal-ingredients">'+iH+'</ul>'+(meal.note?'<div class="meal-note">'+meal.note+'</div>':'')+'</div></div><div class="meal-chevron">\u25BE</div></div>';
   }).join('');
@@ -948,6 +948,19 @@ function renderPlan(){
     +'<div class="kcal-balance" style="margin-top:10px"><span class="kcal-balance-label">'+bl+'</span><span class="kcal-balance-val '+bc+'">'+bs+bal+' kcal</span></div>'
     +'</div>'
   updateCartBadge();
+
+  // Event delegation for ingredient cart buttons
+  const dc=document.getElementById('dayContent');
+  if(dc){
+    dc.addEventListener('click',function(e){
+      const btn=e.target.closest('.ing-cart-btn');
+      if(!btn)return;
+      e.stopPropagation();
+      const ing=btn.getAttribute('data-ing').replace(/&quot;/g,'"');
+      toggleCartItem(ing);
+    });
+  }
+
 }
 
 // ── PROFILE ──
