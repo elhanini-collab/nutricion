@@ -179,8 +179,10 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .status-ok{color:var(--green)}.status-warn{color:#E2844A}
 .divider{height:.5px;background:var(--border);margin-bottom:16px}
 .meals{display:flex;flex-direction:column;gap:8px}
-.meal-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;transition:background .15s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;touch-action:pan-y}
+.meal-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 14px;transition:background .15s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;touch-action:pan-y}
 .meal-card:hover,.meal-card.expanded{background:var(--card);border-color:#3A4560}
+.meal-header{display:flex;align-items:flex-start;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:0}
+.meal-card.expanded .meal-detail{display:block}
 .meal-card.swiped{background:var(--card);border-color:var(--blue)}
 .meal-swap-hint{position:absolute;top:0;bottom:0;width:56px;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;pointer-events:none}
 .meal-swap-hint.left{left:0;background:linear-gradient(to right,var(--blue-dim),transparent)}
@@ -340,7 +342,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0012</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0013</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -883,8 +885,7 @@ window.toggleOffPlan=function(){
   body.classList.toggle('open');btn.classList.toggle('active');
   btn.textContent=body.classList.contains('open')?'▲ Ocultar registro fuera de plan':'Comi fuera del plan - registrar';
 }
-window.toggleMeal=function(i,e){
-  if(e&&(e.target.closest('button')||e.target.closest('a')))return;
+window.toggleMeal=function(i){
   const c=document.querySelector('.meal-card[data-idx="'+i+'"]');if(c)c.classList.toggle('expanded');
 }
 function pbw(p){return Math.min(100,Math.round((p/160)*100))+'%'}
@@ -923,7 +924,7 @@ function renderPlan(){
     const sw=getSwapped(currentDay,i);const meal=sw||m;const isS=!!sw;
     const iH=meal.ingredients.map(ing=>{const inC=isInCart(ing);const safeIng=ing.replace(/"/g,'&quot;');return'<li><span class="ing-text">'+ing+'</span><button class="ing-cart-btn'+(inC?' in-cart':'')+'" data-ing="'+safeIng+'">'+(inC?'- quitar':'+ lista')+'</button></li>'}).join('');
     const sb=isS?'<div class="meal-swapped-badge">\u2194 cambiado \u00B7 '+Math.abs(meal.kcal-m.kcal)+' kcal dif.<button class="meal-restore-btn" onclick="event.stopPropagation();restoreMeal('+currentDay+','+i+')">restaurar</button></div>':'';
-    return'<div class="meal-card'+(isS?' swiped':'')+'" data-idx="'+i+'" onclick="toggleMeal('+i+',event)" data-swipe-day="'+currentDay+'" data-swipe-meal="'+i+'"><div class="meal-swap-hint left">\u2194</div><div class="meal-swap-hint right">\u2194</div><div class="meal-icon">'+meal.icon+'</div><div class="meal-body"><div class="meal-type">'+meal.type+'</div><div class="meal-title">'+meal.title+'</div><div class="meal-kcal">'+meal.kcal+' kcal \u00B7 '+meal.prot+'g prot</div>'+sb+'<div class="meal-detail"><ul class="meal-ingredients">'+iH+'</ul>'+(meal.note?'<div class="meal-note">'+meal.note+'</div>':'')+'</div></div><div class="meal-chevron">\u25BE</div></div>';
+    return'<div class="meal-card'+(isS?' swiped':'')+'" data-idx="'+i+'" data-swipe-day="'+currentDay+'" data-swipe-meal="'+i+'"><div class="meal-swap-hint left">\u2194</div><div class="meal-swap-hint right">\u2194</div><div class="meal-header" onclick="toggleMeal('+i+')"><div class="meal-icon">'+meal.icon+'</div><div class="meal-body"><div class="meal-type">'+meal.type+'</div><div class="meal-title">'+meal.title+'</div><div class="meal-kcal">'+meal.kcal+' kcal \u00B7 '+meal.prot+'g prot</div>'+sb+'</div><div class="meal-chevron">\u25BE</div></div><div class="meal-detail"><ul class="meal-ingredients">'+iH+'</ul>'+(meal.note?'<div class="meal-note">'+meal.note+'</div>':'')+'</div></div>';
   }).join('');
   const noteHTML=isFailed
     ?'<div class="day-note-wrap"><textarea id="dayNoteInput" class="day-note-input" rows="2" placeholder="\u00BFQu\u00E9 pas\u00F3? Anota el motivo..." oninput="saveNote()">'+note+'</textarea></div>'
@@ -955,11 +956,9 @@ function renderPlan(){
     dc.addEventListener('click',function(e){
       const btn=e.target.closest('.ing-cart-btn');
       if(!btn)return;
-      e.stopPropagation();
-      e.preventDefault();
       const ing=btn.getAttribute('data-ing').replace(/&quot;/g,'"');
       window.toggleCartItem(ing);
-    },true);  // capture phase — fires before bubble reaches meal card
+    });
   }
 
 }
