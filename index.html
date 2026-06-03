@@ -112,7 +112,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .kcal-balance{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
 .kcal-balance-label{font-size:11px;color:var(--text-3)}
 .kcal-balance-val{font-size:13px;font-weight:500;font-family:var(--mono)}
-.kcal-surplus{color:var(--amber)}.kcal-d&#233;ficit{color:var(--green)}.kcal-balanced{color:var(--text-2)}
+.kcal-surplus{color:var(--amber)}.kcal-déficit{color:var(--green)}.kcal-balanced{color:var(--text-2)}
 .day-complete-wrap{margin-bottom:18px;display:flex;gap:8px}
 .btn-complete{flex:1;padding:10px 16px;border-radius:12px;border:.5px solid var(--border);background:var(--surface);color:var(--text-2);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .btn-complete:hover{background:var(--card)}
@@ -348,7 +348,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
   <div class="login-screen">
     <div class="login-logo">
       <div class="login-dot"></div>
-      <div class="login-title">Plan Nutrici&#243;nal</div>
+      <div class="login-title">Plan Nutriciónal</div>
       <div class="login-sub">Tu plan semanal, tu progreso,<br>sincronizado en todos tus dispositivos.</div>
     </div>
     <button class="btn-google" onclick="signInWithGoogle()">
@@ -372,7 +372,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
           <span class="avatar-picker-label">Toca para elegir foto de perfil</span>
           <input type="file" id="ob-avatar-input" style="display:none" accept="image/*" onchange="handleAvatarPick(this)">
         </div>
-        <div class="onboarding-step">Paso 1 de 2 &middot; Datos b&#225;sicos</div>
+        <div class="onboarding-step">Paso 1 de 2 &middot; Datos básicos</div>
         <div class="field-row">
           <div class="field"><label>Nombre</label><input type="text" id="ob-nombre" placeholder="Tu nombre" autocomplete="off"></div>
           <div class="field"><label>Sexo</label><select id="ob-sexo"><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
@@ -388,13 +388,13 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     <!-- STEP 2 -->
     <div id="ob-step-2" style="display:none">
       <div class="onboarding-form">
-        <div class="onboarding-step">Paso 2 de 2 &middot; Composici&#243;n corporal</div>
+        <div class="onboarding-step">Paso 2 de 2 &middot; Composición corporal</div>
         <div class="field-row">
           <div class="field"><label>Peso (kg)</label><input type="number" id="ob-peso" placeholder="ej. 78" min="30" max="300" step="0.1"></div>
           <div class="field"><label>Grasa corporal (%)</label><input type="number" id="ob-grasa" placeholder="DEXA" min="3" max="60" step="0.1"></div>
         </div>
         <div class="field"><label>TDEE (kcal)</label><input type="number" id="ob-tdee" placeholder="ej. 2300" min="1000" max="6000" step="10"></div>
-        <div class="onboarding-note">El BMR se calcula autom&#225;ticamente con Harris-Benedict. El TDEE es tu gasto real incluyendo actividad f&#237;sica.</div>
+        <div class="onboarding-note">El BMR se calcula automáticamente con Harris-Benedict. El TDEE es tu gasto real incluyendo actividad física.</div>
         <div class="onboarding-error" id="ob-error-2"></div>
         <div style="display:flex;gap:8px;margin-top:8px">
           <button class="btn-start" style="flex:.4;background:var(--surface);color:var(--text-2);border:.5px solid var(--border)" onclick="obPrevStep()">&#8592;</button>
@@ -442,7 +442,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     <input type="file" id="profile-avatar-input" style="display:none" accept="image/*" onchange="handleProfileAvatarPick(this)">
     <div style="flex:1"><div class="profile-screen-name" id="profileScreenName"></div><div class="profile-screen-sub" id="profileScreenSub"></div></div>
   </div>
-  <div class="section-title">M&#233;tricas actuales</div>
+  <div class="section-title">Métricas actuales</div>
   <div class="stats-grid" id="statsGrid"></div>
   <div class="section-title">Objetivo de peso</div>
   <div class="objective-card">
@@ -456,21 +456,21 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
   <div class="weight-log-form">
     <input type="number" id="w-peso" placeholder="kg" min="30" max="300" step="0.1">
     <input type="date" id="w-fecha" style="flex:1.4">
-    <button class="btn-add" onclick="addWeightEntry()">+ A&#241;adir</button>
+    <button class="btn-add" onclick="addWeightEntry()">+ Añadir</button>
   </div>
   <div class="weight-chart" id="weightChart"></div>
   <div class="weight-list" id="weightList"></div>
   <div class="section-title">Fotos de progreso</div>
   <div class="photo-grid" id="photoGrid"></div>
-  <div class="section-title">Hist&#243;rico DEXA</div>
+  <div class="section-title">Histórico DEXA</div>
   <div class="weight-log-form" style="flex-wrap:wrap;gap:8px">
     <input type="date" id="d-fecha" style="flex:1;min-width:120px">
     <input type="number" id="d-grasa" placeholder="Grasa %" min="3" max="60" step="0.1" style="flex:1;min-width:80px">
     <input type="number" id="d-magra" placeholder="Magra %" min="20" max="80" step="0.1" style="flex:1;min-width:80px">
-    <button class="btn-add" style="width:100%" onclick="addDexaEntry()">+ A&#241;adir esc&#225;ner DEXA</button>
+    <button class="btn-add" style="width:100%" onclick="addDexaEntry()">+ Añadir escáner DEXA</button>
   </div>
   <div id="dexaList"></div>
-  <div class="section-title">Hist&#243;rico semanal</div>
+  <div class="section-title">Histórico semanal</div>
   <div class="historic-weeks" id="historicWeeks"></div>
   <div class="section-title">Seguimiento diario</div>
   <div class="prefs-card">
@@ -527,14 +527,14 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
       </div>
     </div>
     <div class="formula-note">
-      <div class="formula-note-title">F&#243;rmula gasto basal (Harris-Benedict revisada)</div>
+      <div class="formula-note-title">Fórmula gasto basal (Harris-Benedict revisada)</div>
       <div class="formula-note-text">Hombre: 88.36 + (13.4 x peso) + (4.8 x altura) - (5.7 x edad)<br>Mujer: 447.6 + (9.2 x peso) + (3.1 x altura) - (4.3 x edad)</div>
     </div>
     <button class="btn-save" onclick="saveProfile()">Guardar cambios</button>
     <div class="save-confirm" id="saveConfirm"></div>
   </div>
   <div class="section-title">Cuenta</div>
-  <button class="btn-signout" onclick="signOut()">Cerrar sesi&#243;n</button>
+  <button class="btn-signout" onclick="signOut()">Cerrar sesión</button>
 </div>
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -595,53 +595,53 @@ const db   = getFirestore(firebaseApp);
 // ══════════════════════════════════════════════════════
 const DD=[
   {name:'Lunes',short:'L',train:false,prot:189.7,kcal:2160,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Yogur griego, muesli y frutos rojos',kcal:469,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Caf&#233; con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g disuelta en zumo antioxidante'},
-    {type:'Tentempie',icon:'&#129386;',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Comida',icon:'&#127869;',title:'Pollo a la plancha con arroz y brocoli',kcal:733,prot:67.6,ingredients:['Pechuga de pollo Extra Tierna (250g)','Arroz blanco hervido (167g)','Brocoli (200g)','Aceite de oliva (20g)'],note:null},
-    {type:'Merienda',icon:'&#128031;',title:'Sardinas con tomate cherry y tostada',kcal:228,prot:22.7,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Pan Espelta Integral (32g)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Bacalao con habas y esparragos',kcal:450,prot:47.6,ingredients:['Bacalao al horno (200g)','Habas baby (150g)','Esparragos (100g)','Aceite de oliva (20g)'],note:null}
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frutos rojos',kcal:469,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g disuelta en zumo antioxidante'},
+    {type:'Tentempie',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Pollo a la plancha con arroz y brocoli',kcal:733,prot:67.6,ingredients:['Pechuga de pollo Extra Tierna (250g)','Arroz blanco hervido (167g)','Brocoli (200g)','Aceite de oliva (20g)'],note:null},
+    {type:'Merienda',icon:'🐟',title:'Sardinas con tomate cherry y tostada',kcal:228,prot:22.7,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Pan Espelta Integral (32g)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Bacalao con habas y esparragos',kcal:450,prot:47.6,ingredients:['Bacalao al horno (200g)','Habas baby (150g)','Esparragos (100g)','Aceite de oliva (20g)'],note:null}
   ]},
   {name:'Martes',short:'M',train:true,prot:177.3,kcal:2266,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Yogur griego, muesli y frambuesas',kcal:472,prot:25.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Caf&#233; con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
-    {type:'Tentempie',icon:'&#128170;',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
-    {type:'Comida',icon:'&#127869;',title:'Arroz con gambas y esparragos',kcal:579,prot:41.9,ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Esparrago verde troceado (150g)','Aceite de oliva (20g)'],note:null},
-    {type:'Merienda',icon:'&#129386;',title:'Tosta de pavo con cottage',kcal:202,prot:21.2,ingredients:['Loncha de Pavo (50g)','Queso Cottage (25g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Filete de ternera con pisto',kcal:600,prot:54.8,ingredients:['Fileta ternera normal (250g)','Pisto de verduras (300g)','Aceite de oliva (10g)'],note:null}
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frambuesas',kcal:472,prot:25.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
+    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Arroz con gambas y esparragos',kcal:579,prot:41.9,ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Esparrago verde troceado (150g)','Aceite de oliva (20g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cottage',kcal:202,prot:21.2,ingredients:['Loncha de Pavo (50g)','Queso Cottage (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Filete de ternera con pisto',kcal:600,prot:54.8,ingredients:['Fileta ternera normal (250g)','Pisto de verduras (300g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Mi&#233;rcoles',short:'X',train:false,prot:194,kcal:2251,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Tortilla con tostada y zumo',kcal:439,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)','Zumo de aranda&#241;os + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
-    {type:'Tentempie',icon:'&#128031;',title:'Caballa con tomate cherry',kcal:228,prot:26.9,ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (150g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Comida',icon:'&#127869;',title:'Lentejas estofadas con pollo',kcal:671,prot:53,ingredients:['Lentejas (300g)','Pechuga de pollo (125g)','Cebolla roja (20g)','Aceite de oliva (20g)'],note:null},
-    {type:'Merienda',icon:'&#129361;',title:'Yogur con frutos rojos y frutos secos',kcal:412,prot:21.4,ingredients:['Yogur Griego Hacendado Light (150g)','Moras (50g)','Frutos secos (50g)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Muslos al horno con coliflor y guisantes',kcal:502,prot:58.9,ingredients:['Muslos de pollo al horno (250g)','Coliflor (100g)','Guisantes (100g)','Aceite de oliva (10g)'],note:null}
+  {name:'Miércoles',short:'X',train:false,prot:194,kcal:2251,meals:[
+    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo',kcal:439,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de arandaños + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
+    {type:'Tentempie',icon:'🐟',title:'Caballa con tomate cherry',kcal:228,prot:26.9,ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Lentejas estofadas con pollo',kcal:671,prot:53,ingredients:['Lentejas (300g)','Pechuga de pollo (125g)','Cebolla roja (20g)','Aceite de oliva (20g)'],note:null},
+    {type:'Merienda',icon:'🫐',title:'Yogur con frutos rojos y frutos secos',kcal:412,prot:21.4,ingredients:['Yogur Griego Hacendado Light (150g)','Moras (50g)','Frutos secos (50g)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Muslos al horno con coliflor y guisantes',kcal:502,prot:58.9,ingredients:['Muslos de pollo al horno (250g)','Coliflor (100g)','Guisantes (100g)','Aceite de oliva (10g)'],note:null}
   ]},
   {name:'Jueves',short:'J',train:true,prot:179.9,kcal:2206,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Yogur griego, muesli y moras',kcal:454,prot:26.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Caf&#233; con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g en zumo antioxidante'},
-    {type:'Tentempie',icon:'&#128170;',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
-    {type:'Comida',icon:'&#127869;',title:'Higado encebollado con arroz y coles',kcal:688,prot:56.5,ingredients:['Higado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
-    {type:'Merienda',icon:'&#129386;',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Bacalao con pisto y esparragos',kcal:370,prot:38.6,ingredients:['Bacalao al horno (200g)','Pisto de verduras (150g)','Esparragos (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y moras',kcal:454,prot:26.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Café con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g en zumo antioxidante'},
+    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Higado encebollado con arroz y coles',kcal:688,prot:56.5,ingredients:['Higado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Bacalao con pisto y esparragos',kcal:370,prot:38.6,ingredients:['Bacalao al horno (200g)','Pisto de verduras (150g)','Esparragos (100g)','Aceite de oliva (10g)'],note:null}
   ]},
   {name:'Viernes',short:'V',train:false,prot:169,kcal:2297,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
-    {type:'Tentempie',icon:'&#128031;',title:'Sardinas con tomate cherry',kcal:226,prot:24.5,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Comida',icon:'&#127869;',title:'Ternera marinada con garbanzos',kcal:628,prot:58.2,ingredients:['Fileta extra tierna marinada ternera (200g)','Garbanzos (250g)','Loncha de Pavo extra (25g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
-    {type:'Merienda',icon:'&#129361;',title:'Yogur con frambuesas, frutos secos y pavo',kcal:430,prot:25.5,ingredients:['Yogur Griego Hacendado Light (150g)','Frambuesas (50g)','Frutos secos (50g)','Loncha de Pavo (25g)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Merluza con esparragos y brocoli',kcal:524,prot:27,ingredients:['Merluza al huevo (200g)','Esparragos (100g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
+    {type:'Tentempie',icon:'🐟',title:'Sardinas con tomate cherry',kcal:226,prot:24.5,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Ternera marinada con garbanzos',kcal:628,prot:58.2,ingredients:['Fileta extra tierna marinada ternera (200g)','Garbanzos (250g)','Loncha de Pavo extra (25g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🫐',title:'Yogur con frambuesas, frutos secos y pavo',kcal:430,prot:25.5,ingredients:['Yogur Griego Hacendado Light (150g)','Frambuesas (50g)','Frutos secos (50g)','Loncha de Pavo (25g)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Merluza con esparragos y brocoli',kcal:524,prot:27,ingredients:['Merluza al huevo (200g)','Esparragos (100g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'S&#225;bado',short:'S',train:false,prot:173.2,kcal:2236,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Yogur griego, muesli y frutos rojos',kcal:443,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Caf&#233; con leche (250ml)','Zumo de aranda&#241;os + Creatina (200ml)'],note:'Creatina 4g en zumo de aranda&#241;os'},
-    {type:'Tentempie',icon:'&#128031;',title:'Caballa con tostada',kcal:265,prot:28.6,ingredients:['Lata de caballa en tomate (120g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Comida',icon:'&#127869;',title:'Pasta completa con ensalada',kcal:604,prot:31.4,ingredients:['Bolsa pasta con pollo, tomate, queso y pesto (300g)','Lechuga Iceberg (50g)','Tomate cherry (150g)','Aceite de oliva (10g)'],note:null},
-    {type:'Merienda',icon:'&#129386;',title:'Tosta de pavo con cheddar',kcal:217,prot:19.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Pollo con patatas air-fryer y esparragos',kcal:707,prot:66.5,ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Esparrago verde troceado (150g)','Aceite de oliva (10g)'],note:null}
+  {name:'Sábado',short:'S',train:false,prot:173.2,kcal:2236,meals:[
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frutos rojos',kcal:443,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Zumo de arandaños + Creatina (200ml)'],note:'Creatina 4g en zumo de arandaños'},
+    {type:'Tentempie',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,ingredients:['Lata de caballa en tomate (120g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Pasta completa con ensalada',kcal:604,prot:31.4,ingredients:['Bolsa pasta con pollo, tomate, queso y pesto (300g)','Lechuga Iceberg (50g)','Tomate cherry (150g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:217,prot:19.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Pollo con patatas air-fryer y esparragos',kcal:707,prot:66.5,ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Esparrago verde troceado (150g)','Aceite de oliva (10g)'],note:null}
   ]},
   {name:'Domingo',short:'D',train:true,prot:162.4,kcal:2267,meals:[
-    {type:'Desayuno',icon:'&#9728;',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
-    {type:'Tentempie',icon:'&#128170;',title:'Whey protein + frutos secos',kcal:204,prot:25.8,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (15g)'],note:'Batido post-entreno + frutos secos'},
-    {type:'Comida',icon:'&#127869;',title:'Macarrones bolonesa',kcal:758,prot:48.5,ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (250g)','Aceite de oliva (10g)'],note:null},
-    {type:'Merienda',icon:'&#129386;',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Caf&#233; con leche (250ml)'],note:null},
-    {type:'Cena',icon:'&#127769;',title:'Filete ruso con patatas, claras y brocoli',kcal:538,prot:29.9,ingredients:['Fileta rusa (94g)','Patata frita air-fryer (100g)','Clara de huevo (80g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
+    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:204,prot:25.8,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (15g)'],note:'Batido post-entreno + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Macarrones bolonesa',kcal:758,prot:48.5,ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (250g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Filete ruso con patatas, claras y brocoli',kcal:538,prot:29.9,ingredients:['Fileta rusa (94g)','Patata frita air-fryer (100g)','Clara de huevo (80g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
   ]}
 ];
 
@@ -775,7 +775,7 @@ function renderCoffeeBar(ds){
   const eDots=Array.from({length:Math.max(c.e,1)},(_,i)=>'<div class="coffee-dot'+(i<c.e?' filled-e':'')+'" onclick="addCoffee(\''+ds+'\',\'e\')">☕</div>').join('');
   const lDots=Array.from({length:Math.max(c.l,1)},(_,i)=>'<div class="coffee-dot'+(i<c.l?' filled-l':'')+'" onclick="addCoffee(\''+ds+'\',\'l\')">🥛</div>').join('');
   return '<div class="coffee-bar">'
-    +'<div class="coffee-header"><span class="coffee-label">Caf&#233;s del dia</span><span class="coffee-total">'+total+' total</span></div>'
+    +'<div class="coffee-header"><span class="coffee-label">Cafés del dia</span><span class="coffee-total">'+total+' total</span></div>'
     +'<div style="display:flex;flex-direction:column;gap:8px">'
     +'<div class="coffee-row"><div class="coffee-type"><span class="coffee-name">Espresso</span><div class="coffee-dots">'+eDots+'</div></div>'
     +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'e\')">+</button>'
@@ -803,7 +803,7 @@ window.dismissWS=function(wk){D.wsSeen[wk]=true;saveToCloud();document.getElemen
 function renderWS(){
   const el=document.getElementById('weeklySummaryBanner');const s=buildWS();if(!s){el.innerHTML='';return}
   const pct=Math.round((s.done/7)*100);
-  el.innerHTML='<div class="weekly-summary"><div class="weekly-summary-title">Resumen semana anterior &middot; '+s.wk+'</div><div class="weekly-summary-grid"><div class="ws-stat"><div class="ws-val">'+s.done+'/7</div><div class="ws-lbl">Completados</div></div><div class="ws-stat"><div class="ws-val">'+pct+'%</div><div class="ws-lbl">Cumplimiento</div></div><div class="ws-stat"><div class="ws-val">'+s.avgProt+'g</div><div class="ws-lbl">Prot. media</div></div></div><button class="ws-dismiss" onclick="dismissWS(\''+s.wk+'\')">Entendido &#10003;</button></div>'
+  el.innerHTML='<div class="weekly-summary"><div class="weekly-summary-title">Resumen semana anterior · '+s.wk+'</div><div class="weekly-summary-grid"><div class="ws-stat"><div class="ws-val">'+s.done+'/7</div><div class="ws-lbl">Completados</div></div><div class="ws-stat"><div class="ws-val">'+pct+'%</div><div class="ws-lbl">Cumplimiento</div></div><div class="ws-stat"><div class="ws-val">'+s.avgProt+'g</div><div class="ws-lbl">Prot. media</div></div></div><button class="ws-dismiss" onclick="dismissWS(\''+s.wk+'\')">Entendido ✓</button></div>'
 }
 
 // ── ONBOARDING ──
@@ -822,7 +822,7 @@ window.completeOnboarding=function(){
   err.textContent='';
   D.profile={nombre,sexo,edad,altura,peso,grasa,tdee};
   saveToCloud();updateNames();renderWS();renderPlan();switchScreen('plan');
-  toast('Bienvenido, '+nombre+' &#127881;');
+  toast('Bienvenido, '+nombre+' 🎉');
 }
 
 // ── AVATAR ──
@@ -875,13 +875,13 @@ window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>id
 
 // ── PLAN ──
 window.changeDay=function(dir){currentDay=(currentDay+dir+7)%7;renderPlan()}
-window.markDay=function(status){sds(currentDay,status);haptic(status==='done'?'success':'medium');renderPlan();toast(status==='done'?'D&#237;a completado &#10003;':'D&#237;a marcado como no completado')}
+window.markDay=function(status){sds(currentDay,status);haptic(status==='done'?'success':'medium');renderPlan();toast(status==='done'?'Día completado ✓':'Día marcado como no completado')}
 window.saveNote=function(){const t=document.getElementById('dayNoteInput');if(t)sdn(currentDay,t.value)}
 window.saveOffPlan=function(){const t=document.getElementById('offPlanInput');if(t)sop(currentDay,t.value)}
 window.toggleOffPlan=function(){
   const btn=document.getElementById('offPlanToggle');const body=document.getElementById('offPlanBody');if(!btn||!body)return;
   body.classList.toggle('open');btn.classList.toggle('active');
-  btn.textContent=body.classList.contains('open')?'&#9650; Ocultar registro fuera de plan':'Comi fuera del plan - registrar';
+  btn.textContent=body.classList.contains('open')?'▲ Ocultar registro fuera de plan':'Comi fuera del plan - registrar';
 }
 window.toggleMeal=function(i,e){
   if(e&&(e.target.closest('button')||e.target.closest('a')))return;
@@ -896,7 +896,7 @@ function renderPlan(){
   const day=DD[currentDay];const todayIdx=getTodayIndex();const wk=D.dayState[cwk()]||{};
   document.getElementById('weekProgress').textContent=Object.values(wk).filter(v=>v==='done').length+'/7 días completados';
   document.getElementById('streakDays').innerHTML=DD.map((d,i)=>{
-    const s=wk[i];const isT=i===todayIdx;const icon=s==='done'?'&#10003;':s==='failed'?'&#10007;':isT?'&middot;':'';
+    const s=wk[i];const isT=i===todayIdx;const icon=s==='done'?'✓':s==='failed'?'✗':isT?'·':'';
     const cls='streak-dot'+(s==='done'?' done':s==='failed'?' failed':isT?' today':'');
     return'<div class="streak-day"><div class="'+cls+'" onclick="currentDay='+i+';renderPlan()" title="'+d.name+'">'+icon+'</div><div class="streak-label">'+d.short+'</div></div>'
   }).join('');
@@ -957,7 +957,7 @@ function renderProfile(){
   const fatPct=p.grasa;const musclePct=Math.round((lean/p.peso)*100);const otherPct=Math.max(0,100-fatPct-musclePct);
   const deficit=p.tdee-2240;
   const ld=D.dexaLog.length>0?D.dexaLog[D.dexaLog.length-1]:null;
-  const dG=ld?ld.grasa:p.grasa;const dD=ld?ld.date:null;const dS=ld?'DEXA &middot; '+dD:'dato perfil';
+  const dG=ld?ld.grasa:p.grasa;const dD=ld?ld.date:null;const dS=ld?'DEXA · '+dD:'dato perfil';
   const pd=D.dexaLog.length>1?D.dexaLog[D.dexaLog.length-2]:null;
   const dt=pd?(dG-pd.grasa).toFixed(1):null;
   const ts=dt!==null?'<span style="color:'+(parseFloat(dt)<=0?'var(--green)':'var(--amber)')+'"> '+(parseFloat(dt)>0?'+':'')+dt+'% vs anterior</span>':'';
@@ -972,9 +972,9 @@ function renderProfile(){
   if(D.objective.pesoObj)document.getElementById('obj-peso').value=D.objective.pesoObj;
   if(D.objective.semanas)document.getElementById('obj-semanas').value=D.objective.semanas;
   renderObjProjection();
-  const dCat=dG<15?'Atl&#233;tico':dG<20?'Fitness':dG<25?'Promedio':'Alto';
+  const dCat=dG<15?'Atlético':dG<20?'Fitness':dG<25?'Promedio':'Alto';
   const dCls=dG<20?'bmi-normal':dG<25?'bmi-over':'bmi-obese';
-  document.getElementById('statsGrid').innerHTML='<div class="stat-card"><div class="stat-label">Grasa corporal &middot; DEXA</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px"><div class="stat-val">'+dG+'<span class="stat-unit">%</span></div><div class="bmi-cat '+dCls+'">'+dCat+'</div></div><div class="stat-sub">'+dS+ts+'</div></div><div class="stat-card"><div class="stat-label">Masa magra</div><div class="stat-val">'+lean+'<span class="stat-unit">kg</span></div><div class="stat-sub">grasa: '+fatKg+' kg ('+fatPct+'%)</div></div><div class="stat-card full"><div class="stat-label">Composici&#243;n corporal</div><div class="body-comp-bar"><div style="width:'+fatPct+'%;background:var(--amber)"></div><div style="width:'+musclePct+'%;background:var(--green)"></div><div style="width:'+otherPct+'%;background:var(--border)"></div></div><div class="body-comp-legend"><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--amber)"></div>Grasa '+fatPct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--green)"></div>Masa magra '+musclePct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--border)"></div>Otros '+otherPct+'%</div></div></div><div class="stat-card highlight"><div class="stat-label">Gasto basal (BMR)</div><div class="stat-val">'+bmr+'<span class="stat-unit">kcal</span></div><div class="stat-sub">Harris-Benedict &middot; calculado</div></div><div class="stat-card"><div class="stat-label">TDEE &middot; gasto real</div><div class="stat-val">'+p.tdee+'<span class="stat-unit">kcal</span></div><div class="stat-sub">'+(deficit>=0?'+':'')+deficit+' vs media plan</div></div>';
+  document.getElementById('statsGrid').innerHTML='<div class="stat-card"><div class="stat-label">Grasa corporal · DEXA</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px"><div class="stat-val">'+dG+'<span class="stat-unit">%</span></div><div class="bmi-cat '+dCls+'">'+dCat+'</div></div><div class="stat-sub">'+dS+ts+'</div></div><div class="stat-card"><div class="stat-label">Masa magra</div><div class="stat-val">'+lean+'<span class="stat-unit">kg</span></div><div class="stat-sub">grasa: '+fatKg+' kg ('+fatPct+'%)</div></div><div class="stat-card full"><div class="stat-label">Composición corporal</div><div class="body-comp-bar"><div style="width:'+fatPct+'%;background:var(--amber)"></div><div style="width:'+musclePct+'%;background:var(--green)"></div><div style="width:'+otherPct+'%;background:var(--border)"></div></div><div class="body-comp-legend"><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--amber)"></div>Grasa '+fatPct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--green)"></div>Masa magra '+musclePct+'%</div><div class="body-comp-leg-item"><div class="body-comp-dot" style="background:var(--border)"></div>Otros '+otherPct+'%</div></div></div><div class="stat-card highlight"><div class="stat-label">Gasto basal (BMR)</div><div class="stat-val">'+bmr+'<span class="stat-unit">kcal</span></div><div class="stat-sub">Harris-Benedict · calculado</div></div><div class="stat-card"><div class="stat-label">TDEE · gasto real</div><div class="stat-val">'+p.tdee+'<span class="stat-unit">kcal</span></div><div class="stat-sub">'+(deficit>=0?'+':'')+deficit+' vs media plan</div></div>';
   renderWeightLog();renderPhotos();renderDexaLog();renderHistoric();
   const pr2=D.prefs||{supp:true,water:true,coffee:true};
   const ps=document.getElementById('pref-supp');if(ps)ps.checked=pr2.supp!==false;
@@ -988,7 +988,7 @@ window.saveProfile=function(){
   const grasa=parseFloat(document.getElementById('f-grasa').value);const tdee=parseInt(document.getElementById('f-tdee').value);
   if(!nombre||!altura||!peso||!edad||!grasa||!tdee)return;
   D.profile={nombre,altura,peso,sexo,edad,grasa,tdee};saveToCloud();renderProfile();
-  toast('Perfil guardado &#10003;');
+  toast('Perfil guardado ✓');
   const c=document.getElementById('saveConfirm');c.textContent='';  
 }
 window.saveObjective=function(){
@@ -1002,7 +1002,7 @@ function renderObjProjection(){
   const wn=kpw>0?Math.round(Math.abs(diff)/kpw):null;
   const dir=parseFloat(diff)>0?'perder':'ganar';const weeks=D.objective.semanas||wn;if(!weeks){el.innerHTML='';return}
   const ot=wn&&wn<=weeks;
-  el.innerHTML='<div class="obj-projection">Objetivo: '+dir+' '+Math.abs(diff)+' kg en '+weeks+' semanas. '+(wn?'A tu ritmo: ~'+wn+' semanas. '+(ot?'&#10003; Vas bien.':'&#9888; Puede que necesites ajustar.'):'')+'</div>'
+  el.innerHTML='<div class="obj-projection">Objetivo: '+dir+' '+Math.abs(diff)+' kg en '+weeks+' semanas. '+(wn?'A tu ritmo: ~'+wn+' semanas. '+(ot?'✓ Vas bien.':'⚠ Puede que necesites ajustar.'):'')+'</div>'
 }
 
 // ── WEIGHT ──
@@ -1010,14 +1010,14 @@ window.addWeightEntry=function(){
   const kg=parseFloat(document.getElementById('w-peso').value);const date=document.getElementById('w-fecha').value;if(!kg||!date)return;
   D.weightLog=D.weightLog.filter(e=>e.date!==date);D.weightLog.push({date,kg});D.weightLog.sort((a,b)=>a.date.localeCompare(b.date));
   saveToCloud();document.getElementById('w-peso').value='';renderWeightLog();
-  toast('Peso registrado &#10003;');
+  toast('Peso registrado ✓');
 }
 window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);saveToCloud();renderWeightLog()}
 function renderWeightLog(){
   const chart=document.getElementById('weightChart');const list=document.getElementById('weightList');
   if(!D.weightLog.length){
     chart.innerHTML='';
-    list.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">A&#250;n no hay entradas. A&#241;ade tu primer peso.</div>';
+    list.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">Aún no hay entradas. Añade tu primer peso.</div>';
     return;
   }
   const recent=D.weightLog.slice(-8);
@@ -1042,13 +1042,13 @@ function renderWeightLog(){
     const trendColor=slope<=0?'var(--green)':'var(--red)';
     trendHTML='<svg class="weight-trend-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="'+y0+'" x2="100" y2="'+y1+'" stroke="'+trendColor+'" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.7"/></svg>';
     const weeklyRate=(slope*7).toFixed(2);
-    const dir=slope<=0?'&#8600; Bajando':'&#8599; Subiendo';
+    const dir=slope<=0?'↘ Bajando':'↗ Subiendo';
     const col=slope<=0?'var(--green)':'var(--red)';
     let projStr='';
     if(D.objective&&D.objective.pesoObj&&slope!==0){
       const diff=D.objective.pesoObj-vals[vals.length-1];
       const weeksLeft=Math.abs(Math.round(diff/(slope*7)));
-      if(weeksLeft>0&&weeksLeft<200)projStr=' &middot; objetivo en ~'+weeksLeft+' sem.';
+      if(weeksLeft>0&&weeksLeft<200)projStr=' · objetivo en ~'+weeksLeft+' sem.';
     }
     trendInfo='<div class="weight-trend-info"><span class="weight-trend-label">Tendencia</span><span class="weight-trend-val" style="color:'+col+'">'+dir+' '+Math.abs(weeklyRate)+' kg/sem'+projStr+'</span></div>';
   }
@@ -1057,7 +1057,7 @@ function renderWeightLog(){
   list.innerHTML=rev.map((e,i)=>{
     const prev=rev[i+1];const delta=prev?(e.kg-prev.kg):null;
     const ds=delta!==null?'<span class="weight-item-delta" style="color:'+(delta<=0?'var(--green)':'var(--red)')+'"> '+(delta>0?'+':'')+delta.toFixed(1)+' kg</span>':'';
-    return'<div class="weight-item"><span class="weight-item-date">'+e.date+'</span><span class="weight-item-val">'+e.kg+' kg</span>'+ds+'<button class="weight-del" onclick="deleteWeightEntry(\''+e.date+'\')">&#215; borrar</button></div>';
+    return'<div class="weight-item"><span class="weight-item-date">'+e.date+'</span><span class="weight-item-val">'+e.kg+' kg</span>'+ds+'<button class="weight-del" onclick="deleteWeightEntry(\''+e.date+'\')">× borrar</button></div>';
   }).join('');
 }
 
@@ -1070,7 +1070,7 @@ window.addProgressPhoto=function(input){
     D.progressPhotos.unshift({date,data:e.target.result});
     if(D.progressPhotos.length>30)D.progressPhotos=D.progressPhotos.slice(0,30);
     saveToCloud();input.value='';renderPhotos();
-    toast('Foto de progreso guardada &#10003;');
+    toast('Foto de progreso guardada ✓');
   };r.readAsDataURL(file);
 }
 window.deletePhoto=function(idx){D.progressPhotos.splice(idx,1);saveToCloud();renderPhotos()}
@@ -1078,7 +1078,7 @@ window.openLightbox=function(src){document.getElementById('lightboxImg').src=src
 window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('open')}
 function renderPhotos(){
   const grid=document.getElementById('photoGrid');if(!grid)return;
-  grid.innerHTML=D.progressPhotos.map((p,i)=>'<div class="photo-thumb" onclick="openLightbox(\''+p.data+'\')"><img src="'+p.data+'" alt=""><div class="photo-thumb-date">'+p.date+'</div><button class="photo-thumb-del" onclick="event.stopPropagation();deletePhoto('+i+')">&#10005;</button></div>').join('')+'<div class="photo-add-btn" onclick="document.getElementById(\'photo-input\').click()"><span>&#128247;</span><span class="photo-add-label">A&#241;adir foto</span></div><input type="file" id="photo-input" style="display:none" accept="image/*" onchange="addProgressPhoto(this)">';
+  grid.innerHTML=D.progressPhotos.map((p,i)=>'<div class="photo-thumb" onclick="openLightbox(\''+p.data+'\')"><img src="'+p.data+'" alt=""><div class="photo-thumb-date">'+p.date+'</div><button class="photo-thumb-del" onclick="event.stopPropagation();deletePhoto('+i+')">✕</button></div>').join('')+'<div class="photo-add-btn" onclick="document.getElementById(\'photo-input\').click()"><span>📷</span><span class="photo-add-label">Añadir foto</span></div><input type="file" id="photo-input" style="display:none" accept="image/*" onchange="addProgressPhoto(this)">';
 }
 
 // ── DEXA ──
@@ -1086,12 +1086,12 @@ window.addDexaEntry=function(){
   const date=document.getElementById('d-fecha').value;const grasa=parseFloat(document.getElementById('d-grasa').value);const magra=parseFloat(document.getElementById('d-magra').value);
   if(!date||!grasa||!magra)return;D.dexaLog=D.dexaLog.filter(e=>e.date!==date);D.dexaLog.push({date,grasa,magra});D.dexaLog.sort((a,b)=>a.date.localeCompare(b.date));saveToCloud();
   document.getElementById('d-grasa').value='';document.getElementById('d-magra').value='';renderDexaLog();
-  toast('Esc&#225;ner DEXA guardado &#10003;');
+  toast('Escáner DEXA guardado ✓');
 }
 window.deleteDexaEntry=function(date){D.dexaLog=D.dexaLog.filter(e=>e.date!==date);saveToCloud();renderDexaLog()}
 function renderDexaLog(){
   const el=document.getElementById('dexaList');if(!el)return;
-  if(!D.dexaLog.length){el.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">A&#250;n no hay esc&#225;neres.</div>';return}
+  if(!D.dexaLog.length){el.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">Aún no hay escáneres.</div>';return}
   const rev=[...D.dexaLog].reverse();
   el.innerHTML=rev.map((e,i)=>{const prev=rev[i+1];const dG=prev?(e.grasa-prev.grasa).toFixed(1):null;const dM=prev?(e.magra-prev.magra).toFixed(1):null;const other=Math.max(0,Math.round(100-e.grasa-e.magra));return'<div class="dexa-entry"><div class="dexa-entry-header"><span class="dexa-entry-date">'+e.date+'</span><button class="dexa-entry-del" onclick="deleteDexaEntry(\''+e.date+'\')">x borrar</button></div><div class="dexa-entry-stats"><div class="dexa-stat"><div class="dexa-stat-val" style="color:var(--amber)">'+e.grasa+'%</div><div class="dexa-stat-lbl">Grasa'+(dG!==null?' ('+dG+'%)':'')+'</div></div><div class="dexa-stat"><div class="dexa-stat-val" style="color:var(--green)">'+e.magra+'%</div><div class="dexa-stat-lbl">Masa magra'+(dM!==null?' ('+dM+'%)':'')+'</div></div><div class="dexa-stat"><div class="dexa-stat-val" style="color:var(--text-3)">'+other+'%</div><div class="dexa-stat-lbl">Otros</div></div></div><div class="dexa-entry-bar"><div style="width:'+e.grasa+'%;background:var(--amber)"></div><div style="width:'+e.magra+'%;background:var(--green)"></div><div style="flex:1;background:var(--border)"></div></div></div>'}).join('');
 }
@@ -1100,8 +1100,8 @@ function renderDexaLog(){
 function renderHistoric(){
   const el=document.getElementById('historicWeeks');if(!el)return;
   const keys=Object.keys(D.dayState).sort().reverse();
-  if(!keys.length){el.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">El historial aparecera aqu&#237; conforme vayas completando semanas.</div>';return}
-  el.innerHTML=keys.slice(0,8).map(wk=>{const d=D.dayState[wk]||{};const done=Object.values(d).filter(v=>v==='done').length;const pct=Math.round((done/7)*100);const dots=DD.map((day,i)=>{const s=d[i];const cls=s==='done'?'done':s==='failed'?'failed':'';const icon=s==='done'?'&#10003;':s==='failed'?'&#10007;':'';return'<div class="historic-dot'+(cls?' '+cls:'')+'" title="'+day.name+'">'+icon+'</div>'}).join('');return'<div class="historic-week"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span class="historic-week-label">'+wk+'</span><span class="historic-week-pct">'+done+'/7 &middot; '+pct+'%</span></div><div class="historic-dots">'+dots+'</div></div>'}).join('');
+  if(!keys.length){el.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">El historial aparecera aquí conforme vayas completando semanas.</div>';return}
+  el.innerHTML=keys.slice(0,8).map(wk=>{const d=D.dayState[wk]||{};const done=Object.values(d).filter(v=>v==='done').length;const pct=Math.round((done/7)*100);const dots=DD.map((day,i)=>{const s=d[i];const cls=s==='done'?'done':s==='failed'?'failed':'';const icon=s==='done'?'✓':s==='failed'?'✗':'';return'<div class="historic-dot'+(cls?' '+cls:'')+'" title="'+day.name+'">'+icon+'</div>'}).join('');return'<div class="historic-week"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span class="historic-week-label">'+wk+'</span><span class="historic-week-pct">'+done+'/7 · '+pct+'%</span></div><div class="historic-dots">'+dots+'</div></div>'}).join('');
 }
 
 // ── CART ──
@@ -1120,8 +1120,8 @@ window.copyCart=function(){
 }
 function renderCartPanel(){
   const body=document.getElementById('cartBody');
-  if(!D.cart.length){body.innerHTML='<div class="cart-empty">La lista est&#225; vac&#237;a.</div>';return}
-  body.innerHTML=[...D.cart].sort((a,b)=>a.checked-b.checked).map(item=>'<div class="cart-item"><div class="cart-item-check'+(item.checked?' checked':'')+'" onclick="toggleCartCheck('+JSON.stringify(item.name)+')">'+(item.checked?'&#10003;':'')+'</div><span class="cart-item-name'+(item.checked?' checked-text':'')+'">'+item.name+'</span><button class="cart-remove" onclick="removeFromCart('+JSON.stringify(item.name)+')">quitar</button></div>').join('');
+  if(!D.cart.length){body.innerHTML='<div class="cart-empty">La lista está vacía.</div>';return}
+  body.innerHTML=[...D.cart].sort((a,b)=>a.checked-b.checked).map(item=>'<div class="cart-item"><div class="cart-item-check'+(item.checked?' checked':'')+'" onclick="toggleCartCheck('+JSON.stringify(item.name)+')">'+(item.checked?'✓':'')+'</div><span class="cart-item-name'+(item.checked?' checked-text':'')+'">'+item.name+'</span><button class="cart-remove" onclick="removeFromCart('+JSON.stringify(item.name)+')">quitar</button></div>').join('');
 }
 
 // ── SWIPE ──
