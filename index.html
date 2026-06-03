@@ -340,7 +340,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0011</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0012</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -956,9 +956,10 @@ function renderPlan(){
       const btn=e.target.closest('.ing-cart-btn');
       if(!btn)return;
       e.stopPropagation();
+      e.preventDefault();
       const ing=btn.getAttribute('data-ing').replace(/&quot;/g,'"');
-      toggleCartItem(ing);
-    });
+      window.toggleCartItem(ing);
+    },true);  // capture phase — fires before bubble reaches meal card
   }
 
 }
