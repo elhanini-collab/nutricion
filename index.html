@@ -359,7 +359,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0042</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0043</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -602,45 +602,12 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- Firebase compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-// Proxy functions available immediately — queues calls until module loads
-(function() {
-  var queue = [];
-  var fns = ['signInWithGoogle','signOut','switchScreen','obNextStep','obPrevStep',
-             'completeOnboarding','handleAvatarPick','handleProfileAvatarPick',
-             'changeDay','markDay','saveNote','toggleMeal','toggleGlass',
-             'toggleSupp','addCoffee','subCoffee','addSleepHour','setSleepQuality',
-             'toggleWorkout','toggleCartItem','openCart','closeCart','closeCartOnBg',
-             'toggleCartCheck','removeFromCart','clearCart','copyCart','dismissWS',
-             'saveProfile','saveObjective','addWeightEntry','deleteWeightEntry',
-             'addProgressPhoto','deletePhoto','openLightbox','closeLightbox',
-             'addDexaEntry','deleteDexaEntry','savePref','confirmReset','goToDay'];
-  fns.forEach(function(fn) {
-    window[fn] = function() {
-      var args = arguments;
-      // If real function already loaded, call it
-      if (window['_real_' + fn]) return window['_real_' + fn].apply(this, args);
-      queue.push([fn, args]);
-    };
-  });
-  window._flushQueue = function() {
-    queue.forEach(function(item) {
-      if (window['_real_' + item[0]]) window['_real_' + item[0]].apply(null, item[1]);
-    });
-    queue = [];
-  };
-})();
-</script>
-<script type="module">
-// ══════════════════════════════════════════════════════
-// FIREBASE — ES module import (most reliable on mobile)
-// ══════════════════════════════════════════════════════
-import { initializeApp }                                    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithRedirect, signInWithPopup,
-         getRedirectResult, onAuthStateChanged, signOut }   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc }                from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-const firebaseApp = initializeApp({
+firebase.initializeApp({
   apiKey:            "AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
   authDomain:        "plan-nutricional-a2c88.firebaseapp.com",
   projectId:         "plan-nutricional-a2c88",
@@ -648,12 +615,10 @@ const firebaseApp = initializeApp({
   messagingSenderId: "651954711031",
   appId:             "1:651954711031:web:1d015043d591eb2b4fa6f2"
 });
-const auth = getAuth(firebaseApp);
-const db   = getFirestore(firebaseApp);
-
-// ══════════════════════════════════════════════════════
-// APP CODE
-// ══════════════════════════════════════════════════════
+const auth = firebase.auth();
+const db   = firebase.firestore();
+</script>
+<script>
 const DD=[
   {name:'Lunes',short:'L',train:false,prot:195.2,kcal:2246,meals:[
     {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina disuelta en agua. Sin zumo.'},
@@ -724,8 +689,8 @@ function setSyncDot(state){
 }
 async function loadFromCloud(){
   if(!uid)return;
-  const ref=doc(db,'users',uid,'data','main');
-  const snap=await getDoc(ref);
+  const ref=db.doc('users/'+uid+'/data/main');
+  const snap=await ref.get();
   if(snap.exists){
     const d=snap.data();
     D.profile=d.profile||null;D.avatar=d.avatar||null;D.dayState=d.dayState||{};
@@ -741,8 +706,8 @@ function saveToCloud(){
   setSyncDot('syncing');
   saveTimer=setTimeout(async()=>{
     try{
-      const ref=doc(db,'users',uid,'data','main');
-      const saveData={...D};await setDoc(ref,saveData,{merge:true});
+      const ref=db.doc('users/'+uid+'/data/main');
+      const saveData={...D};await ref.set(saveData,{merge:true});
       setSyncDot('ok');
     }catch(e){setSyncDot('error');console.error(e)}
   },1200);
@@ -1046,8 +1011,7 @@ function renderPlan(){
     ?'<div class="day-note-wrap"><textarea id="dayNoteInput" class="day-note-input" rows="2" placeholder="\u00BFQu\u00E9 pas\u00F3? Anota el motivo..." oninput="saveNote()">'+note+'</textarea></div>'
     :'';
   document.getElementById('dayContent').innerHTML='<div class="day-content">'
-    +'<div style="display:flex;justify-content:center">'+(day.train?(isWorkoutDone(currentDay)?'<div class="train-badge workout-done" data-workout-day="'+currentDay+'" style="cursor:pointer">✓ Entreno completado</div>':'<div class="train-badge" data-workout-day="'+currentDay+'" style="cursor:pointer">🏋️ Día de entreno</div>'):'<div class="rest-badge">💤 Día de descanso</div>')+'
-    +'</div>'
+    +'<div style="display:flex;justify-content:center">'+(day.train?(isWorkoutDone(currentDay)?'<div class="train-badge workout-done" data-workout-day="'+currentDay+'" style="cursor:pointer">✓ Entreno completado</div>':'<div class="train-badge" data-workout-day="'+currentDay+'" style="cursor:pointer">🏋️ Día de entreno</div>'):'<div class="rest-badge">💤 Día de descanso</div>')+'</div>'
     +'<div class="day-complete-wrap">'
     +'<button class="btn-complete'+(isDone?' done':'')+'" onclick="markDay(\'done\')">'+(isDone?'\u2705':'\u25CB')+' Completado</button>'
     +'<button class="btn-complete'+(isFailed?' failed':'')+'" onclick="markDay(\'failed\')">'+(isFailed?'\u274C':'\u25CB')+' No completado</button>'
@@ -1281,8 +1245,8 @@ document.addEventListener('touchend',e=>{
 // ══════════════════════════════════════════════════════
 window.signInWithGoogle = async function() {
   try {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
   } catch(e) {
     console.error('signInWithGoogle popup error:', e.code, e.message);
     if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
@@ -1301,7 +1265,7 @@ window.signInWithGoogle = async function() {
 
 window.signOut = async function() {
   if (unsub) { unsub(); unsub = null; }
-  await signOut(auth);
+  await auth.signOut();
   D = { profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[],
         dexaLog:[], mealSwaps:{}, waterLog:{}, progressPhotos:[],
         objective:{pesoObj:null,semanas:null}, offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, sleepLog:{}, prefs:{supp:true,water:true,coffee:true,sleep:true} };
@@ -1310,11 +1274,11 @@ window.signOut = async function() {
 };
 
 // ── AUTH FLOW ──
-getRedirectResult(auth)
+auth.getRedirectResult()
   .then(result => { if (result) console.log('redirect result ok:', result.user.email); })
   .catch(e => console.error('getRedirectResult error:', e));
 
-onAuthStateChanged(auth, async function(user) {
+auth.onAuthStateChanged(async function(user) {
   console.log('auth state:', user ? user.email : 'signed out');
   if (user) {
     uid = user.uid;
@@ -1387,16 +1351,8 @@ document.addEventListener('click', function(e) {
 
 pruneSwaps();
 
-// Expose real functions and flush any queued calls
-Object.keys(window).forEach(function(k) {
-  if (typeof window[k] === 'function' && !k.startsWith('_')) {
-    window['_real_' + k] = window[k];
-  }
-});
-window._real_signInWithGoogle = window.signInWithGoogle;
-window._real_signOut = window.signOut;
-window._real_goToDay = window.goToDay;
-if (window._flushQueue) window._flushQueue();
+
+
 
 </script>
 </body>
