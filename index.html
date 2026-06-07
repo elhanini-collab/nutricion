@@ -359,7 +359,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0040</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0041</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -626,54 +626,54 @@ const db   = getFirestore(firebaseApp);
 // APP CODE
 // ══════════════════════════════════════════════════════
 const DD=[
-  {name:'Lunes',short:'L',train:false,prot:189.7,kcal:2160,meals:[
-    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frutos rojos',kcal:469,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g disuelta en zumo antioxidante'},
-    {type:'Tentempie',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🍽️',title:'Pollo a la plancha con arroz y brocoli',kcal:733,prot:67.6,ingredients:['Pechuga de pollo Extra Tierna (250g)','Arroz blanco hervido (167g)','Brocoli (200g)','Aceite de oliva (20g)'],note:null},
+  {name:'Lunes',short:'L',train:false,prot:195.2,kcal:2246,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina disuelta en agua. Sin zumo.'},
+    {type:'Tentempié',icon:'🥪',title:'Tosta de pavo con cheddar y frutos secos',kcal:429,prot:29.9,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Frutos secos (25g)'],note:'Tosta de pavo con cheddar + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Pollo a la plancha con arroz y brócoli',kcal:733,prot:67.6,ingredients:['Pechuga de pollo Extra Tierna (250g)','Arroz blanco hervido (167g)','Brócoli (200g)','Aceite de oliva (20g)'],note:null},
     {type:'Merienda',icon:'🐟',title:'Sardinas con tomate cherry y tostada',kcal:228,prot:22.7,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Pan Espelta Integral (32g)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Bacalao con habas y esparragos',kcal:450,prot:47.6,ingredients:['Bacalao al horno (200g)','Habas baby (150g)','Esparragos (100g)','Aceite de oliva (20g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Bacalao con habas y espárragos',kcal:450,prot:47.6,ingredients:['Bacalao al horno (200g)','Habas baby (150g)','Espárragos (100g)','Aceite de oliva (20g)'],note:null}
   ]},
   {name:'Martes',short:'M',train:true,prot:177.3,kcal:2266,meals:[
-    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frambuesas',kcal:472,prot:25.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
-    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
-    {type:'Comida',icon:'🍽️',title:'Arroz con gambas y esparragos',kcal:579,prot:41.9,ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Esparrago verde troceado (150g)','Aceite de oliva (20g)'],note:null},
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frambuesas',kcal:384,prot:25.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua. Zumo reservado para el batido.'},
+    {type:'Tentempié',icon:'💪',title:'Whey protein en zumo de naranja + frutos secos',kcal:502,prot:33.5,ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (50g)'],note:'Batido post-entreno en zumo de naranja'},
+    {type:'Comida',icon:'🍽️',title:'Arroz con gambas y espárragos',kcal:579,prot:41.9,ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Espárrago verde troceado (150g)','Aceite de oliva (20g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cottage',kcal:202,prot:21.2,ingredients:['Loncha de Pavo (50g)','Queso Cottage (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
     {type:'Cena',icon:'🌙',title:'Filete de ternera con pisto',kcal:600,prot:54.8,ingredients:['Fileta ternera normal (250g)','Pisto de verduras (300g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Miércoles',short:'X',train:false,prot:194,kcal:2251,meals:[
-    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo',kcal:439,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de arandaños + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
-    {type:'Tentempie',icon:'🐟',title:'Caballa con tomate cherry',kcal:228,prot:26.9,ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🍽️',title:'Lentejas estofadas con pollo',kcal:671,prot:53,ingredients:['Lentejas (300g)','Pechuga de pollo (125g)','Cebolla roja (20g)','Aceite de oliva (20g)'],note:null},
+  {name:'Miércoles',short:'X',train:false,prot:177.2,kcal:2162,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Tortilla con tostada. Creatina en agua.'},
+    {type:'Tentempié',icon:'🐟',title:'Caballa con tomate cherry',kcal:228,prot:26.9,ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Lentejas (ración completa)',kcal:620,prot:36.2,ingredients:['Ración de Lentejas (450g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:'Ración completa de lentejas'},
     {type:'Merienda',icon:'🫐',title:'Yogur con frutos rojos y frutos secos',kcal:412,prot:21.4,ingredients:['Yogur Griego Hacendado Light (150g)','Moras (50g)','Frutos secos (50g)'],note:null},
     {type:'Cena',icon:'🌙',title:'Muslos al horno con coliflor y guisantes',kcal:502,prot:58.9,ingredients:['Muslos de pollo al horno (250g)','Coliflor (100g)','Guisantes (100g)','Aceite de oliva (10g)'],note:null}
   ]},
   {name:'Jueves',short:'J',train:true,prot:179.9,kcal:2206,meals:[
-    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y moras',kcal:454,prot:26.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Café con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g en zumo antioxidante'},
-    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
-    {type:'Comida',icon:'🍽️',title:'Higado encebollado con arroz y coles',kcal:688,prot:56.5,ingredients:['Higado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y moras',kcal:390,prot:26.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua. Zumo reservado para el batido.'},
+    {type:'Tentempié',icon:'💪',title:'Whey protein en zumo antioxidante + frutos secos',kcal:478,prot:33.5,ingredients:['Whey Protein (30g) + Zumo antioxidante (200ml)','Frutos secos (50g)'],note:'Batido post-entreno en zumo antioxidante'},
+    {type:'Comida',icon:'🍽️',title:'Hígado encebollado con arroz y coles',kcal:688,prot:56.5,ingredients:['Hígado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Bacalao con pisto y esparragos',kcal:370,prot:38.6,ingredients:['Bacalao al horno (200g)','Pisto de verduras (150g)','Esparragos (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Bacalao con pisto y espárragos',kcal:370,prot:38.6,ingredients:['Bacalao al horno (200g)','Pisto de verduras (150g)','Espárragos (100g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Viernes',short:'V',train:false,prot:169,kcal:2297,meals:[
-    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
-    {type:'Tentempie',icon:'🐟',title:'Sardinas con tomate cherry',kcal:226,prot:24.5,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🍽️',title:'Ternera marinada con garbanzos',kcal:628,prot:58.2,ingredients:['Fileta extra tierna marinada ternera (200g)','Garbanzos (250g)','Loncha de Pavo extra (25g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
+  {name:'Viernes',short:'V',train:false,prot:167,kcal:2246,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Tortilla con tostada. Creatina en agua.'},
+    {type:'Tentempié',icon:'🐟',title:'Sardinas con tomate cherry',kcal:226,prot:24.5,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Ternera marinada con garbanzos',kcal:665,prot:56.2,ingredients:['Fileta extra tierna marinada ternera (200g)','Ración de Garbanzos (300g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🫐',title:'Yogur con frambuesas, frutos secos y pavo',kcal:430,prot:25.5,ingredients:['Yogur Griego Hacendado Light (150g)','Frambuesas (50g)','Frutos secos (50g)','Loncha de Pavo (25g)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Merluza con esparragos y brocoli',kcal:524,prot:27,ingredients:['Merluza al huevo (200g)','Esparragos (100g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Merluza con espárragos y brócoli',kcal:524,prot:27,ingredients:['Merluza al huevo (200g)','Espárragos (100g)','Brócoli (100g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Sábado',short:'S',train:false,prot:173.2,kcal:2236,meals:[
-    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frutos rojos',kcal:443,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Zumo de arandaños + Creatina (200ml)'],note:'Creatina 4g en zumo de arandaños'},
-    {type:'Tentempie',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,ingredients:['Lata de caballa en tomate (120g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🍽️',title:'Pasta completa con ensalada',kcal:604,prot:31.4,ingredients:['Bolsa pasta con pollo, tomate, queso y pesto (300g)','Lechuga Iceberg (50g)','Tomate cherry (150g)','Aceite de oliva (10g)'],note:null},
+  {name:'Sábado',short:'S',train:false,prot:181.9,kcal:2182,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua.'},
+    {type:'Tentempié',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,ingredients:['Lata de caballa en tomate (120g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🌯',title:'Taco francés / Burrito de pollo',kcal:588,prot:40.1,ingredients:['Pechuga de pollo (70g)','Queso Cheddar 2 lonchas (50g)','Tortita de avena (60g)','Salsa burguer (30g)','Tomate cherry (150g)','Lechuga Iceberg (50g)'],note:'¡Día de taco francés! No añadir aceite este día.'},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:217,prot:19.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Pollo con patatas air-fryer y esparragos',kcal:707,prot:66.5,ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Esparrago verde troceado (150g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Pollo con patatas air-fryer y espárragos',kcal:707,prot:66.5,ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Espárrago verde troceado (150g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Domingo',short:'D',train:true,prot:162.4,kcal:2267,meals:[
-    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
-    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:204,prot:25.8,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (15g)'],note:'Batido post-entreno + frutos secos'},
-    {type:'Comida',icon:'🍽️',title:'Macarrones bolonesa',kcal:758,prot:48.5,ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (250g)','Aceite de oliva (10g)'],note:null},
+  {name:'Domingo',short:'D',train:true,prot:162.4,kcal:2240,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua. Zumo reservado para el batido.'},
+    {type:'Tentempié',icon:'💪',title:'Whey protein en zumo de naranja + frutos secos',kcal:292,prot:25.8,ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (15g)'],note:'Batido post-entreno en zumo de naranja'},
+    {type:'Comida',icon:'🍽️',title:'Macarrones boloñesa',kcal:758,prot:48.5,ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (250g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Filete ruso con patatas, claras y brocoli',kcal:538,prot:29.9,ingredients:['Fileta rusa (94g)','Patata frita air-fryer (100g)','Clara de huevo (80g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Filete ruso con patatas, claras y brócoli',kcal:511,prot:29.9,ingredients:['Filete ruso (94g)','Patata frita air-fryer (100g)','Clara de huevo (80g)','Brócoli (100g)','Aceite de oliva (10g)'],note:null}
   ]}
 ];
 
