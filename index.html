@@ -108,6 +108,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .nav-day{font-size:24px;font-weight:500;color:var(--text-1);letter-spacing:-.5px;line-height:1}
 .nav-date{font-size:12px;color:var(--text-3);margin-top:3px;font-family:var(--mono)}
 .train-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--amber-bg);border:.5px solid var(--amber);border-radius:20px;font-size:12px;font-weight:500;color:var(--amber);margin:0 auto 18px;width:fit-content}
+.train-badge.workout-done{background:var(--green-dim);border-color:var(--green);color:var(--green)}
 .rest-badge{display:flex;align-items:center;gap:6px;padding:5px 14px;border:.5px solid var(--border);border-radius:20px;font-size:12px;color:var(--text-3);margin:0 auto 18px;width:fit-content}
 .kcal-balance{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
 .kcal-balance-label{font-size:11px;color:var(--text-3)}
@@ -143,6 +144,20 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;pointer-events:none}
 .toggle input:checked~.toggle-thumb{transform:translateX(18px)}
 .prefs-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:0 16px;margin-bottom:8px}
+
+/* sleep tracker */
+.sleep-bar{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:20px}
+.sleep-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sleep-label{font-size:11px;color:var(--text-3)}
+.sleep-val{font-size:13px;font-weight:500;color:var(--purple);font-family:var(--mono)}
+.sleep-controls{display:flex;align-items:center;gap:10px}
+.sleep-btn{width:32px;height:32px;border-radius:50%;border:.5px solid var(--border);background:var(--card);color:var(--text-2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;-webkit-tap-highlight-color:transparent;flex-shrink:0;line-height:1}
+.sleep-btn:hover{background:var(--surface);color:var(--text-1)}
+.sleep-hours{font-size:28px;font-weight:300;color:var(--text-1);letter-spacing:-1px;min-width:60px;text-align:center}
+.sleep-unit{font-size:13px;color:var(--text-3)}
+.sleep-quality{display:flex;gap:6px;margin-top:10px;justify-content:center}
+.sleep-star{font-size:20px;cursor:pointer;opacity:.3;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.sleep-star.active{opacity:1}
 /* supplements */
 .supp-bar{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:20px}
 .supp-label{font-size:11px;color:var(--text-3);margin-bottom:9px}
@@ -302,6 +317,8 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .btn-save{width:100%;padding:13px;border-radius:12px;border:none;background:var(--amber);color:#171B23;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;margin-top:20px;transition:opacity .15s}
 .btn-save:hover{opacity:.88}
 .save-confirm{text-align:center;font-size:12px;color:var(--green);margin-top:10px;height:16px;font-family:var(--mono)}
+.btn-reset{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--red);background:var(--red-dim);color:var(--red);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:12px;transition:all .15s}
+.btn-reset:hover{background:var(--red);color:#fff}
 .btn-signout{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--border);background:transparent;color:var(--text-3);font-family:var(--font);font-size:13px;cursor:pointer;margin-bottom:40px;transition:all .15s}
 .btn-signout:hover{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 /* toast */
@@ -342,7 +359,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0020</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0040</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -500,6 +517,17 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     </div>
     <div class="pref-row">
       <div class="pref-info">
+        <span class="pref-label">😴 Sueño</span>
+        <span class="pref-desc">Horas y calidad de sueño</span>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="pref-sleep" onchange="savePref('sleep',this.checked)">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+    <div class="pref-row">
+      <div class="pref-info">
         <span class="pref-label">☕ Cafés del día</span>
         <span class="pref-desc">Espresso y Latte</span>
       </div>
@@ -535,6 +563,8 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     <button class="btn-save" onclick="saveProfile()">Guardar cambios</button>
     <div class="save-confirm" id="saveConfirm"></div>
   </div>
+  <div class="section-title">Zona de peligro</div>
+  <button class="btn-reset" onclick="confirmReset()">🗑 Borrar todo el historial</button>
   <div class="section-title">Cuenta</div>
   <button class="btn-signout" onclick="signOut()">Cerrar sesión</button>
 </div>
@@ -652,7 +682,7 @@ let uid=null, userDoc=null, unsub=null;
 let D={
   profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[], dexaLog:[],
   mealSwaps:{}, waterLog:{}, progressPhotos:[], objective:{pesoObj:null,semanas:null},
-  offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, prefs:{supp:true,water:true,coffee:true}  // { 'YYYY-MM-DD': {e:0, l:0} }
+  offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, sleepLog:{}, prefs:{supp:true,water:true,coffee:true,sleep:true}  // { 'YYYY-MM-DD': {e:0, l:0} }
 };
 let currentDay=getTodayIndex(), currentScreen='login';
 let saveTimer=null;
@@ -673,7 +703,7 @@ async function loadFromCloud(){
     D.dayNotes=d.dayNotes||{};D.cart=d.cart||[];D.weightLog=d.weightLog||[];
     D.dexaLog=d.dexaLog||[];D.mealSwaps=d.mealSwaps||{};D.waterLog=d.waterLog||{};
     D.progressPhotos=d.progressPhotos||[];D.objective=d.objective||{pesoObj:null,semanas:null};
-    D.offPlanLog=d.offPlanLog||{};D.wsSeen=d.wsSeen||{};D.suppLog=d.suppLog||{};D.prefs=d.prefs||{supp:true,water:true,coffee:true};D.coffeeLog=d.coffeeLog||{};
+    D.offPlanLog=d.offPlanLog||{};D.wsSeen=d.wsSeen||{};D.sleepLog=d.sleepLog||{};D.suppLog=d.suppLog||{};D.prefs=d.prefs||{supp:true,water:true,coffee:true};D.coffeeLog=d.coffeeLog||{};
   }
 }
 function saveToCloud(){
@@ -735,19 +765,19 @@ function getWeekKey(o=0){const d=new Date();d.setDate(d.getDate()-getTodayIndex(
 function getISOWeek(d){const D2=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dy=D2.getUTCDay()||7;D2.setUTCDate(D2.getUTCDate()+4-dy);const y=new Date(Date.UTC(D2.getUTCFullYear(),0,1));return Math.ceil((((D2-y)/86400000)+1)/7)}
 function cwk(){return getWeekKey(0)}function pwk(){return getWeekKey(-1)}
 function gds(i){return(D.dayState[cwk()]||{})[i]}
-function sds(i,v){if(!D.dayState[cwk()])D.dayState[cwk()]={};if(D.dayState[cwk()][i]===v)delete D.dayState[cwk()][i];else D.dayState[cwk()][i]=v;saveToCloud()}
+function sds(i,v){if(!D.dayState[cwk()])D.dayState[cwk()]={};if(D.dayState[cwk()][i]===v)delete D.dayState[cwk()][i];else D.dayState[cwk()][i]=v;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ns',D.dayState);}
 function gdn(i){return D.dayNotes[cwk()+'_'+i]||''}
-function sdn(i,t){D.dayNotes[cwk()+'_'+i]=t;saveToCloud()}
+function sdn(i,t){D.dayNotes[cwk()+'_'+i]=t;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nn',D.dayNotes);}
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function dfi(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toISOString().slice(0,10)}
 function gop(i){return D.offPlanLog[dfi(i)+'_'+i]||''}
-function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;saveToCloud()}
+function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nop',D.offPlanLog);}
 // ── SUPPLEMENTS ──
 const SUPPS = [{id:'c',label:'⚡ Creatina'},{id:'o',label:'🐟 Omega-3'},{id:'v',label:'🍊 Vit. C'},{id:'z',label:'🦪 Zinc'}];
 function getSupp(ds){return D.suppLog[ds]||{c:false,o:false,v:false,z:false}}
 window.toggleSupp=function(ds,id){
   const s=getSupp(ds);s[id]=!s[id];D.suppLog[ds]=s;
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatarData);sv('nsupp',D.suppLog);
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatarData);sv('nsupp',D.suppLog);sv('nslp',D.sleepLog);
   haptic('light');renderPlan();
 }
 function renderSuppBar(ds){
@@ -760,12 +790,58 @@ function renderSuppBar(ds){
 // ── SAVEPREF ──
 
 
+window.confirmReset=function(){
+  if(!confirm('¿Seguro? Esto borrará todo el historial de días, suplementos, hidratación, cafés, peso, fotos y DEXA. Tu perfil y datos personales se conservan.'))return;
+  D.dayState={};D.dayNotes={};D.waterLog={};D.coffeeLog={};D.suppLog={};
+  D.weightLog=[];D.dexaLog=[];D.progressPhotos=[];D.mealSwaps={};
+  D.offPlanLog={};D.wsSeen={};D.cart=[];D.objective={pesoObj:null,semanas:null};
+  if(typeof saveToCloud!=='undefined')saveToCloud();
+  else{sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nwat',D.waterLog);sv('ncf',D.coffeeLog);
+    sv('nsupp',D.suppLog);sv('nslp',D.sleepLog);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nph',D.progressPhotos);
+    sv('nm',D.mealSwaps);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('nc',D.cart);sv('nobj',D.objective);}
+  toast('Historial borrado ✓');
+  renderProfile();
+  renderPlan();
+};
+
 window.savePref=function(key,val){
   if(!D.prefs)D.prefs={supp:true,water:true,coffee:true};
   D.prefs[key]=val;
   saveToCloud();
   toast(val?'Activado':'Desactivado');
 };
+
+
+// ── SLEEP ──
+function getSleep(ds){return D.sleepLog[ds]||{h:0,q:0}}
+window.addSleepHour=function(ds,delta){
+  const s=getSleep(ds);
+  s.h=Math.max(0,Math.min(12,Math.round((s.h+delta)*2)/2));
+  D.sleepLog[ds]=s;
+  if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nslp',D.sleepLog);
+  renderPlan();
+}
+window.setSleepQuality=function(ds,q){
+  const s=getSleep(ds);
+  s.q=s.q===q?0:q;
+  D.sleepLog[ds]=s;
+  if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nslp',D.sleepLog);
+  renderPlan();
+}
+function renderSleepBar(ds){
+  const s=getSleep(ds);
+  const hLabel=s.h===0?'Sin registrar':s.h+'h';
+  const stars=Array.from({length:5},(_,i)=>'<span class="sleep-star'+(i<s.q?' active':'')+'" onclick="setSleepQuality(\''+ds+'\','+(i+1)+')">★</span>').join('');
+  return '<div class="sleep-bar">'
+    +'<div class="sleep-header"><span class="sleep-label">😴 Horas de sueño</span><span class="sleep-val">'+hLabel+'</span></div>'
+    +'<div class="sleep-controls">'
+    +'<button class="sleep-btn" onclick="addSleepHour(\''+ds+'\',-0.5)">−</button>'
+    +'<div><span class="sleep-hours">'+s.h+'</span><span class="sleep-unit">h</span></div>'
+    +'<button class="sleep-btn" onclick="addSleepHour(\''+ds+'\',0.5)">+</button>'
+    +'</div>'
+    +(s.h>0?'<div class="sleep-quality">'+stars+'</div>':'')
+    +'</div>';
+}
 
 // ── COFFEE ──
 function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
@@ -891,6 +967,16 @@ window.toggleMeal=function(i){
 function pbw(p){return Math.min(100,Math.round((p/160)*100))+'%'}
 function kbw(k){return Math.min(100,Math.max(10,Math.round(((k-2000)/400)*100)))+'%'}
 
+function getWorkoutKey(i){return dfi(i)+'_w'+i}
+function isWorkoutDone(i){return D.offPlanLog[getWorkoutKey(i)]===true}
+window.toggleWorkout=function(i){
+  const k=getWorkoutKey(i);
+  D.offPlanLog[k]=!D.offPlanLog[k];
+  if(D.offPlanLog[k])haptic('success');
+  if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nop',D.offPlanLog);
+  renderPlan();
+}
+
 function renderPlan(){
   if(!D.profile){return}
   updateNames();
@@ -920,6 +1006,7 @@ function renderPlan(){
   const hydrationHTML=pr.water!==false?'<div class="hydration-bar"><div class="hydration-header"><span class="hydration-label">Hidrataci\u00F3n (500ml)</span><span class="hydration-count">'+wc+'/4 botellas</span></div><div class="hydration-glasses">'+glH+'</div></div>':'';
   const coffeeHTML=renderCoffeeBar(ds);
   const suppHTML=renderSuppBar(ds);
+  const sleepHTML=(pr.sleep!==false)?renderSleepBar(ds):'';
   const mH=DD[currentDay].meals.map((m,i)=>{
     const sw=getSwapped(currentDay,i);const meal=sw||m;const isS=!!sw;
     const iH=meal.ingredients.map(ing=>{const inC=isInCart(ing);const safeIng=ing.replace(/"/g,'&quot;');return'<li><span class="ing-text">'+ing+'</span><button class="ing-cart-btn'+(inC?' in-cart':'')+'" data-ing="'+safeIng+'">'+(inC?'✓ en lista':'+ lista')+'</button></li>'}).join('');
@@ -930,7 +1017,8 @@ function renderPlan(){
     ?'<div class="day-note-wrap"><textarea id="dayNoteInput" class="day-note-input" rows="2" placeholder="\u00BFQu\u00E9 pas\u00F3? Anota el motivo..." oninput="saveNote()">'+note+'</textarea></div>'
     :'';
   document.getElementById('dayContent').innerHTML='<div class="day-content">'
-    +'<div style="display:flex;justify-content:center">'+(day.train?'<div class="train-badge">\uD83C\uDFCB\uFE0F D\u00EDa de entreno</div>':'<div class="rest-badge">\uD83D\uDCA4 D\u00EDa de descanso</div>')+'</div>'
+    +'<div style="display:flex;justify-content:center">'+(day.train?(isWorkoutDone(currentDay)?'<div class="train-badge workout-done" data-workout-day="'+currentDay+'" style="cursor:pointer">✓ Entreno completado</div>':'<div class="train-badge" data-workout-day="'+currentDay+'" style="cursor:pointer">🏋️ Día de entreno</div>'):'<div class="rest-badge">💤 Día de descanso</div>')+'
+    +'</div>'
     +'<div class="day-complete-wrap">'
     +'<button class="btn-complete'+(isDone?' done':'')+'" onclick="markDay(\'done\')">'+(isDone?'\u2705':'\u25CB')+' Completado</button>'
     +'<button class="btn-complete'+(isFailed?' failed':'')+'" onclick="markDay(\'failed\')">'+(isFailed?'\u274C':'\u25CB')+' No completado</button>'
@@ -939,6 +1027,7 @@ function renderPlan(){
     +(pr.supp!==false?suppHTML:'')
     +hydrationHTML
     +(pr.coffee!==false?coffeeHTML:'')
+    +sleepHTML
     +'<div class="divider"></div>'
     +'<div class="meals">'+mH+'</div>'
     +'<div class="divider" style="margin-top:16px"></div>'
@@ -983,6 +1072,7 @@ function renderProfile(){
   const ps=document.getElementById('pref-supp');if(ps)ps.checked=pr2.supp!==false;
   const pw=document.getElementById('pref-water');if(pw)pw.checked=pr2.water!==false;
   const pc2=document.getElementById('pref-coffee');if(pc2)pc2.checked=pr2.coffee!==false;
+  const psl=document.getElementById('pref-sleep');if(psl)psl.checked=pr2.sleep!==false;
 }
 window.saveProfile=function(){
   const nombre=document.getElementById('f-nombre').value.trim();
@@ -1185,7 +1275,7 @@ window.signOut = async function() {
   await signOut(auth);
   D = { profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[],
         dexaLog:[], mealSwaps:{}, waterLog:{}, progressPhotos:[],
-        objective:{pesoObj:null,semanas:null}, offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, prefs:{supp:true,water:true,coffee:true} };
+        objective:{pesoObj:null,semanas:null}, offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, sleepLog:{}, prefs:{supp:true,water:true,coffee:true,sleep:true} };
   uid = null;
   window.switchScreen('login');
 };
@@ -1232,6 +1322,11 @@ window.renderPlan=renderPlan;
 
 // Single global listener for dynamic elements - registered once only
 document.addEventListener('click', function(e) {
+  var workoutEl = e.target.closest('[data-workout-day]');
+  if (workoutEl) {
+    window.toggleWorkout(parseInt(workoutEl.getAttribute('data-workout-day')));
+    return;
+  }
   var cartBtn = e.target.closest('.ing-cart-btn');
   if (cartBtn) {
     e.stopPropagation();
