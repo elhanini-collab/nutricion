@@ -359,7 +359,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 </style>
 </head>
 <body>
-<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0041</div>
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0042</div>
 <div class="app">
 
 <!-- LOGIN -->
@@ -602,6 +602,35 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<script>
+// Proxy functions available immediately — queues calls until module loads
+(function() {
+  var queue = [];
+  var fns = ['signInWithGoogle','signOut','switchScreen','obNextStep','obPrevStep',
+             'completeOnboarding','handleAvatarPick','handleProfileAvatarPick',
+             'changeDay','markDay','saveNote','toggleMeal','toggleGlass',
+             'toggleSupp','addCoffee','subCoffee','addSleepHour','setSleepQuality',
+             'toggleWorkout','toggleCartItem','openCart','closeCart','closeCartOnBg',
+             'toggleCartCheck','removeFromCart','clearCart','copyCart','dismissWS',
+             'saveProfile','saveObjective','addWeightEntry','deleteWeightEntry',
+             'addProgressPhoto','deletePhoto','openLightbox','closeLightbox',
+             'addDexaEntry','deleteDexaEntry','savePref','confirmReset','goToDay'];
+  fns.forEach(function(fn) {
+    window[fn] = function() {
+      var args = arguments;
+      // If real function already loaded, call it
+      if (window['_real_' + fn]) return window['_real_' + fn].apply(this, args);
+      queue.push([fn, args]);
+    };
+  });
+  window._flushQueue = function() {
+    queue.forEach(function(item) {
+      if (window['_real_' + item[0]]) window['_real_' + item[0]].apply(null, item[1]);
+    });
+    queue = [];
+  };
+})();
+</script>
 <script type="module">
 // ══════════════════════════════════════════════════════
 // FIREBASE — ES module import (most reliable on mobile)
@@ -1357,6 +1386,18 @@ document.addEventListener('click', function(e) {
 
 
 pruneSwaps();
+
+// Expose real functions and flush any queued calls
+Object.keys(window).forEach(function(k) {
+  if (typeof window[k] === 'function' && !k.startsWith('_')) {
+    window['_real_' + k] = window[k];
+  }
+});
+window._real_signInWithGoogle = window.signInWithGoogle;
+window._real_signOut = window.signOut;
+window._real_goToDay = window.goToDay;
+if (window._flushQueue) window._flushQueue();
+
 </script>
 </body>
 </html>
