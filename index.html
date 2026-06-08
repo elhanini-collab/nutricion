@@ -719,7 +719,9 @@ function saveToCloud(){
       // Exclude base64 data from Firestore (too large, use localStorage instead)
       delete saveData.progressPhotos;
       delete saveData.avatar;
-      await ref.set(saveData,{merge:true});
+      // Remove any undefined values (Firestore rejects them)
+      const cleanData = JSON.parse(JSON.stringify(saveData, (k,v) => v === undefined ? null : v));
+      await ref.set(cleanData,{merge:true});
       // Save large data to localStorage as backup
       try{localStorage.setItem('nph',JSON.stringify(D.progressPhotos||[]));
           localStorage.setItem('na',JSON.stringify(D.avatar||null));}catch(e){}
