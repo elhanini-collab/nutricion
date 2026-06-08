@@ -150,12 +150,16 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .sleep-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .sleep-label{font-size:11px;color:var(--text-3)}
 .sleep-val{font-size:13px;font-weight:500;color:var(--purple);font-family:var(--mono)}
-.sleep-slider-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.sleep-slider-hours{font-size:28px;font-weight:300;color:var(--text-1);letter-spacing:-1px;min-width:52px;text-align:right;flex-shrink:0}
-.sleep-slider-unit{font-size:13px;color:var(--text-3);flex-shrink:0}
-.sleep-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer}
-.sleep-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--purple);cursor:pointer;box-shadow:0 0 0 3px var(--purple-dim)}
-.sleep-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--purple);cursor:pointer;border:none}
+.sleep-picker-wrap{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.sleep-picker{height:120px;overflow:hidden;position:relative;width:80px;cursor:ns-resize;-webkit-tap-highlight-color:transparent;user-select:none}
+.sleep-picker::before,.sleep-picker::after{content:'';position:absolute;left:0;right:0;height:36px;z-index:2;pointer-events:none}
+.sleep-picker::before{top:0;background:linear-gradient(to bottom,var(--surface),transparent)}
+.sleep-picker::after{bottom:0;background:linear-gradient(to top,var(--surface),transparent)}
+.sleep-picker-inner{display:flex;flex-direction:column;align-items:center;will-change:transform}
+.sleep-picker-item{height:40px;line-height:40px;font-size:22px;font-weight:300;color:var(--text-3);text-align:center;width:80px;flex-shrink:0;transition:color .1s,font-size .1s}
+.sleep-picker-item.sel{color:var(--text-1);font-size:28px;font-weight:400}
+.sleep-picker-line{position:absolute;left:0;right:0;top:40px;height:40px;border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);pointer-events:none;z-index:1}
+.sleep-picker-unit{font-size:15px;color:var(--text-3);line-height:120px}
 .sleep-quality{display:flex;gap:6px;justify-content:center}
 .sleep-star{font-size:20px;cursor:pointer;opacity:.3;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
 .sleep-star.active{opacity:1}
@@ -844,25 +848,23 @@ function renderSleepBar(ds){
   const s=getSleep(ds);
   const hLabel=s.h===0?'Sin registrar':s.h+'h';
   const stars=Array.from({length:5},(_,i)=>'<span class="sleep-star'+(i<s.q?' active':'')+'" data-sleep-ds="'+ds+'" data-sleep-q="'+(i+1)+'">\u2605</span>').join('');
+  const vals=[];for(let v=0;v<=12;v+=0.5)vals.push(v);
+  const si=Math.max(0,vals.indexOf(s.h));
+  const items=vals.map((v,i)=>'<div class="sleep-picker-item'+(i===si?' sel':'')+'" data-i="'+i+'">'+v+'</div>').join('');
+  const ty=(1-si)*40;
   return '<div class="sleep-bar">'
     +'<div class="sleep-header"><span class="sleep-label">\uD83D\uDE34 Horas de sue\u00F1o</span><span class="sleep-val">'+hLabel+'</span></div>'
-    +'<div class="sleep-slider-wrap">'
-    +'<span class="sleep-slider-hours">'+s.h+'</span><span class="sleep-slider-unit">h</span>'
-    +'<input type="range" class="sleep-slider" min="0" max="12" step="0.5" value="'+s.h+'" data-sleep-ds="'+ds+'" oninput="handleSleepSlider(this)">'
+    +'<div class="sleep-picker-wrap">'
+    +'<div class="sleep-picker" data-ds="'+ds+'" data-si="'+si+'">'
+    +'<div class="sleep-picker-line"></div>'
+    +'<div class="sleep-picker-inner" style="transform:translateY('+ty+'px)">'+items+'</div>'
+    +'</div>'
+    +'<span class="sleep-picker-unit">h</span>'
     +'</div>'
     +(s.h>0?'<div class="sleep-quality">'+stars+'</div>':'')
     +'</div>';
 }
 
-window.handleSleepSlider=function(input){
-  const ds=input.getAttribute('data-sleep-ds');
-  const s=getSleep(ds);s.h=parseFloat(input.value);D.sleepLog[ds]=s;
-  const wrap=input.closest('.sleep-slider-wrap');
-  if(wrap){const el=wrap.querySelector('.sleep-slider-hours');if(el)el.textContent=s.h;}
-  const hdr=input.closest('.sleep-bar').querySelector('.sleep-val');
-  if(hdr)hdr.textContent=s.h===0?'Sin registrar':s.h+'h';
-  saveToCloud();
-};
 
 // ── SAVEPREF ──
 
