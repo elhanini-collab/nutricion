@@ -412,7 +412,7 @@ const db   = firebase.firestore();
   </div>
   <div id="dayContent"></div>
   <div class="week-dots" id="weekDots"></div>
-  <div class="swipe-hint">&#8592; &#8594; dias &middot; desliza comidas para cambiarlas</div>
+  <div class="swipe-hint">desliza comidas para cambiarlas</div>
 </div>
 
 <!-- PERFIL -->
@@ -1290,7 +1290,6 @@ document.addEventListener('touchstart',e=>{const c=e.target.closest('[data-swipe
 document.addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-mTSX;const dy=e.changedTouches[0].clientY-mTSY;
   if(mTT&&Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.5){swapMeal(parseInt(mTT.dataset.swipeDay),parseInt(mTT.dataset.swipeMeal));mTT=null;return}
-  if(!mTT){const ddx=e.changedTouches[0].clientX-tSX;if(Math.abs(ddx)>50&&!document.getElementById('cartOverlay').classList.contains('open')&&currentScreen==='plan')changeDay(ddx<0?1:-1)}
   mTT=null;
 },{passive:true});
 
