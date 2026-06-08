@@ -317,6 +317,9 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .btn-save{width:100%;padding:13px;border-radius:12px;border:none;background:var(--amber);color:#171B23;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;margin-top:20px;transition:opacity .15s}
 .btn-save:hover{opacity:.88}
 .save-confirm{text-align:center;font-size:12px;color:var(--green);margin-top:10px;height:16px;font-family:var(--mono)}
+
+.btn-export-pdf{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--blue);background:var(--blue-dim);color:var(--blue);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:12px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-export-pdf:hover{opacity:.85}
 .btn-reset{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--red);background:var(--red-dim);color:var(--red);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:12px;transition:all .15s}
 .btn-reset:hover{background:var(--red);color:#fff}
 .btn-signout{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--border);background:transparent;color:var(--text-3);font-family:var(--font);font-size:13px;cursor:pointer;margin-bottom:40px;transition:all .15s}
@@ -357,6 +360,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .cart-copy{flex:1;padding:10px;border-radius:10px;border:.5px solid var(--amber);background:var(--amber-bg);color:var(--amber);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer}
 .cart-copy:hover{background:var(--amber-dim)}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -562,6 +566,8 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     <button class="btn-save" onclick="saveProfile()">Guardar cambios</button>
     <div class="save-confirm" id="saveConfirm"></div>
   </div>
+  <div class="section-title">Exportar</div>
+  <button class="btn-export-pdf" onclick="exportPDF()">📄 Exportar historial en PDF</button>
   <div class="section-title">Zona de peligro</div>
   <button class="btn-reset" onclick="confirmReset()">🗑 Borrar todo el historial</button>
   <div class="section-title">Cuenta</div>
@@ -697,6 +703,9 @@ async function loadFromCloud(){
     D.dexaLog=d.dexaLog||[];D.mealSwaps=d.mealSwaps||{};D.waterLog=d.waterLog||{};
     D.progressPhotos=d.progressPhotos||[];D.objective=d.objective||{pesoObj:null,semanas:null};
     D.offPlanLog=d.offPlanLog||{};D.wsSeen=d.wsSeen||{};D.sleepLog=d.sleepLog||{};D.suppLog=d.suppLog||{};D.prefs=d.prefs||{supp:true,water:true,coffee:true};D.coffeeLog=d.coffeeLog||{};
+    // Restore large data from localStorage
+    try{const ph=localStorage.getItem('nph');if(ph)D.progressPhotos=JSON.parse(ph);
+        const av=localStorage.getItem('na');if(av)D.avatar=JSON.parse(av);}catch(e){}
   }
 }
 function saveToCloud(){
@@ -706,9 +715,16 @@ function saveToCloud(){
   saveTimer=setTimeout(async()=>{
     try{
       const ref=db.doc('users/'+uid+'/data/main');
-      const saveData={...D};await ref.set(saveData,{merge:true});
+      const saveData={...D};
+      // Exclude base64 data from Firestore (too large, use localStorage instead)
+      delete saveData.progressPhotos;
+      delete saveData.avatar;
+      await ref.set(saveData,{merge:true});
+      // Save large data to localStorage as backup
+      try{localStorage.setItem('nph',JSON.stringify(D.progressPhotos||[]));
+          localStorage.setItem('na',JSON.stringify(D.avatar||null));}catch(e){}
       setSyncDot('ok');
-    }catch(e){setSyncDot('error');console.error(e)}
+    }catch(e){setSyncDot('error');console.error('saveToCloud error:', e.code, e.message, e);}
   },1200);
 }
 function sv(key,val){D[key]=val;saveToCloud()}
@@ -782,6 +798,211 @@ function renderSuppBar(ds){
 
 // ── SAVEPREF ──
 
+
+window.exportPDF = function() {
+  const { jsPDF } = window.jspdf;
+  if (!jsPDF) { alert('jsPDF no disponible'); return; }
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const p = D.profile || {};
+  const pageW = 210, margin = 14, contentW = pageW - margin * 2;
+  let y = margin;
+  const lineH = 6, sectionH = 10;
+  const amber = [200, 155, 60], green = [74, 155, 127], gray = [80, 90, 110], dark = [30, 35, 48], light = [232, 237, 247];
+
+  function checkPage(needed) {
+    if (y + needed > 280) { doc.addPage(); y = margin; }
+  }
+  function header(text) {
+    checkPage(sectionH + 2);
+    doc.setFillColor(...amber);
+    doc.rect(margin, y, contentW, sectionH, 'F');
+    doc.setTextColor(30, 35, 48);
+    doc.setFontSize(10); doc.setFont('helvetica','bold');
+    doc.text(text, margin + 3, y + 6.5);
+    y += sectionH + 2;
+    doc.setTextColor(...light);
+  }
+  function row(label, value, indent) {
+    checkPage(lineH);
+    doc.setFontSize(9); doc.setFont('helvetica','normal');
+    doc.setTextColor(...gray);
+    doc.text((indent ? '  ' : '') + label, margin + (indent?4:0), y);
+    doc.setTextColor(...light);
+    doc.setFont('helvetica','bold');
+    doc.text(String(value), margin + contentW - 2, y, { align: 'right' });
+    doc.setFont('helvetica','normal');
+    y += lineH;
+  }
+  function divider() {
+    checkPage(3);
+    doc.setDrawColor(...dark);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y, margin + contentW, y);
+    y += 3;
+  }
+
+  // ── COVER ──
+  doc.setFillColor(...dark);
+  doc.rect(0, 0, pageW, 297, 'F');
+  doc.setFillColor(...amber);
+  doc.rect(0, 0, pageW, 40, 'F');
+  doc.setTextColor(30,35,48);
+  doc.setFontSize(22); doc.setFont('helvetica','bold');
+  doc.text('Plan Nutricional', pageW/2, 18, { align: 'center' });
+  doc.setFontSize(11); doc.setFont('helvetica','normal');
+  doc.text('Historial completo', pageW/2, 26, { align: 'center' });
+  doc.setTextColor(...light);
+  doc.setFontSize(9);
+  doc.text('Exportado el ' + new Date().toLocaleDateString('es-ES', {day:'numeric',month:'long',year:'numeric'}), pageW/2, 35, { align: 'center' });
+  y = 50;
+
+  // ── DATOS PERSONALES ──
+  doc.setTextColor(...light);
+  header('DATOS PERSONALES');
+  if (p.nombre) row('Nombre', p.nombre);
+  if (p.edad)   row('Edad', p.edad + ' años');
+  if (p.altura) row('Estatura', p.altura + ' cm');
+  if (p.peso)   row('Peso actual', p.peso + ' kg');
+  if (p.grasa)  row('Grasa corporal', p.grasa + '%');
+  if (p.tdee)   row('TDEE', p.tdee + ' kcal');
+  const bmr = p.sexo==='hombre'
+    ? Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*(p.edad||30))
+    : Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*(p.edad||30));
+  row('BMR (Harris-Benedict)', bmr + ' kcal');
+  y += 4;
+
+  // ── REGISTRO DE PESO ──
+  if (D.weightLog && D.weightLog.length) {
+    header('REGISTRO DE PESO');
+    [...D.weightLog].reverse().forEach(e => row(e.date, e.kg + ' kg'));
+    y += 4;
+  }
+
+  // ── HISTÓRICO DEXA ──
+  if (D.dexaLog && D.dexaLog.length) {
+    header('HISTÓRICO DEXA');
+    [...D.dexaLog].reverse().forEach(e => {
+      row(e.date, 'Grasa: '+e.grasa+'% · Magra: '+e.magra+'%');
+    });
+    y += 4;
+  }
+
+  // ── HISTÓRICO DE DÍAS ──
+  const allWeeks = Object.keys(D.dayState || {}).sort().reverse();
+  if (allWeeks.length) {
+    header('HISTÓRICO DE DÍAS');
+    const dayNames = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+    allWeeks.forEach(wk => {
+      const wkData = D.dayState[wk] || {};
+      const hasDays = Object.keys(wkData).length > 0;
+      if (!hasDays) return;
+      checkPage(lineH + 2);
+      doc.setFontSize(9); doc.setFont('helvetica','bold');
+      doc.setTextColor(...amber);
+      doc.text('Semana ' + wk, margin, y); y += lineH;
+      doc.setFont('helvetica','normal');
+      doc.setTextColor(...light);
+      Object.keys(wkData).forEach(dayIdx => {
+        const status = wkData[dayIdx];
+        const dayName = dayNames[parseInt(dayIdx)] || ('Día ' + dayIdx);
+        const icon = status === 'done' ? '✓' : '✗';
+        const statusLabel = status === 'done' ? 'Completado' : 'No completado';
+        checkPage(lineH);
+        doc.setFontSize(8.5);
+        doc.text('  ' + icon + ' ' + dayName + ': ' + statusLabel, margin, y);
+
+        // Notes
+        const noteKey = wk + '_' + dayIdx;
+        const note = (D.dayNotes || {})[noteKey];
+        if (note) {
+          y += lineH - 1;
+          checkPage(lineH);
+          doc.setTextColor(...gray);
+          doc.setFontSize(7.5);
+          const noteLines = doc.splitTextToSize('    Nota: ' + note, contentW - 10);
+          noteLines.forEach(nl => { checkPage(lineH-1); doc.text(nl, margin, y); y += lineH-1; });
+          doc.setTextColor(...light);
+          doc.setFontSize(8.5);
+        } else {
+          y += lineH;
+        }
+
+        // Daily tracking data — find date for this day
+        // Use offPlanLog keys to find date
+        const offKeys = Object.keys(D.offPlanLog || {}).filter(k => k.endsWith('_'+dayIdx));
+        let dayDate = null;
+        if (offKeys.length) dayDate = offKeys[0].slice(0,10);
+
+        if (dayDate) {
+          // Supplements
+          const supp = (D.suppLog || {})[dayDate] || {};
+          const suppTaken = ['c','o','v','z'].filter(k=>supp[k]);
+          const suppNames = {c:'Creatina',o:'Omega-3',v:'Vit. C',z:'Zinc'};
+          if (suppTaken.length) {
+            checkPage(lineH-1);
+            doc.setTextColor(...green); doc.setFontSize(7.5);
+            doc.text('    Suplementos: ' + suppTaken.map(k=>suppNames[k]).join(', '), margin, y);
+            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
+          }
+          // Hydration
+          const water = (D.waterLog || {})[dayDate] || 0;
+          if (water > 0) {
+            checkPage(lineH-1); doc.setTextColor(...gray); doc.setFontSize(7.5);
+            doc.text('    Hidratación: ' + water + '/4 botellas', margin, y);
+            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
+          }
+          // Coffee
+          const coffee = (D.coffeeLog || {})[dayDate] || {};
+          if ((coffee.e||0)+(coffee.l||0) > 0) {
+            checkPage(lineH-1); doc.setTextColor(...gray); doc.setFontSize(7.5);
+            doc.text('    Cafés: ' + (coffee.e||0) + ' espresso · ' + (coffee.l||0) + ' latte', margin, y);
+            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
+          }
+          // Sleep
+          const sleep = (D.sleepLog || {})[dayDate] || {};
+          if (sleep.h > 0) {
+            checkPage(lineH-1); doc.setTextColor(...gray); doc.setFontSize(7.5);
+            const stars = sleep.q ? ' · Calidad: ' + '★'.repeat(sleep.q) + '☆'.repeat(5-sleep.q) : '';
+            doc.text('    Sueño: ' + sleep.h + 'h' + stars, margin, y);
+            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
+          }
+        }
+      });
+      y += 2; divider();
+    });
+  }
+
+  // ── ALIMENTOS DEL PLAN ──
+  header('PLAN NUTRICIONAL SEMANAL');
+  const DD_NAMES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  if (typeof DD !== 'undefined') {
+    DD.forEach((day, di) => {
+      checkPage(sectionH + lineH * 3);
+      doc.setFontSize(9); doc.setFont('helvetica','bold');
+      doc.setTextColor(...amber);
+      doc.text(day.name + (day.train ? ' 🏋️' : '') + ' — ' + day.prot + 'g prot · ' + day.kcal + ' kcal', margin, y);
+      y += lineH;
+      doc.setFont('helvetica','normal');
+      day.meals.forEach(meal => {
+        checkPage(lineH * (meal.ingredients.length + 2));
+        doc.setTextColor(...green); doc.setFontSize(8);
+        doc.text('  ' + meal.type + ': ' + meal.title, margin, y); y += lineH - 1;
+        doc.setTextColor(...gray); doc.setFontSize(7.5);
+        meal.ingredients.forEach(ing => {
+          checkPage(lineH - 1);
+          doc.text('    · ' + ing, margin, y); y += lineH - 1;
+        });
+        y += 1;
+      });
+      y += 3;
+    });
+  }
+
+  // Save
+  const name = (p.nombre || 'historial').toLowerCase().replace(/\s+/g,'_');
+  doc.save('plan_nutricional_' + name + '_' + new Date().toISOString().slice(0,10) + '.pdf');
+  toast('PDF exportado correctamente ✓');
+};
 
 window.confirmReset=function(){
   if(!confirm('¿Seguro? Esto borrará todo el historial de días, suplementos, hidratación, cafés, peso, fotos y DEXA. Tu perfil y datos personales se conservan.'))return;
