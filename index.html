@@ -22,7 +22,7 @@
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--font);-webkit-font-smoothing:antialiased}
 body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .app{width:100%;max-width:420px;padding:0 16px}
-.screen{display:none}.screen.active{display:block;animation:fadeUp .22s ease}
+.screen{display:none}.screen.active{display:block;animation:fadeUp .22s ease;max-width:420px;width:100%;margin-left:auto;margin-right:auto}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .section-title{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin:24px 0 10px}
 .back-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:.5px solid var(--border);color:var(--text-2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
@@ -156,7 +156,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .sleep-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer}
 .sleep-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--purple);cursor:pointer;box-shadow:0 0 0 3px var(--purple-dim)}
 .sleep-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--purple);cursor:pointer;border:none}
-.sleep-quality{display:flex;gap:6px;margin-top:8px;justify-content:center}
+.sleep-quality{display:flex;gap:6px;justify-content:center}
 .sleep-star{font-size:20px;cursor:pointer;opacity:.3;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
 .sleep-star.active{opacity:1}
 /* supplements */
@@ -684,6 +684,8 @@ let D={
   mealSwaps:{}, waterLog:{}, progressPhotos:[], objective:{pesoObj:null,semanas:null},
   offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, sleepLog:{}, prefs:{supp:true,water:true,coffee:true,sleep:true}  // { 'YYYY-MM-DD': {e:0, l:0} }
 };
+function getDateForDay(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}
+function getTodayIndex(){const d=new Date().getDay();return d===0?6:d-1}
 let currentDay=getTodayIndex(), currentScreen='login';
 let saveTimer=null;
 
@@ -777,13 +779,13 @@ function getWeekKey(o=0){const d=new Date();d.setDate(d.getDate()-getTodayIndex(
 function getISOWeek(d){const D2=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dy=D2.getUTCDay()||7;D2.setUTCDate(D2.getUTCDate()+4-dy);const y=new Date(Date.UTC(D2.getUTCFullYear(),0,1));return Math.ceil((((D2-y)/86400000)+1)/7)}
 function cwk(){return getWeekKey(0)}function pwk(){return getWeekKey(-1)}
 function gds(i){return(D.dayState[cwk()]||{})[i]}
-function sds(i,v){if(!D.dayState[cwk()])D.dayState[cwk()]={};if(D.dayState[cwk()][i]===v)delete D.dayState[cwk()][i];else D.dayState[cwk()][i]=v;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ns',D.dayState);}
+function sds(i,v){if(!D.dayState[cwk()])D.dayState[cwk()]={};if(D.dayState[cwk()][i]===v)delete D.dayState[cwk()][i];else D.dayState[cwk()][i]=v;saveToCloud();}
 function gdn(i){return D.dayNotes[cwk()+'_'+i]||''}
-function sdn(i,t){D.dayNotes[cwk()+'_'+i]=t;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nn',D.dayNotes);}
+function sdn(i,t){D.dayNotes[cwk()+'_'+i]=t;saveToCloud();}
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function dfi(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toISOString().slice(0,10)}
 function gop(i){return D.offPlanLog[dfi(i)+'_'+i]||''}
-function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nop',D.offPlanLog);}
+function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;saveToCloud();}
 // ── SUPPLEMENTS ──
 const SUPPS = [{id:'c',label:'⚡ Creatina'},{id:'o',label:'🐟 Omega-3'},{id:'v',label:'🍊 Vit. C'},{id:'z',label:'🦪 Zinc'}];
 function getSupp(ds){return D.suppLog[ds]||{c:false,o:false,v:false,z:false}}
@@ -798,6 +800,67 @@ function renderSuppBar(ds){
   return '<div class="supp-bar"><div class="supp-label">Suplementos</div><div class="supp-btns">'+btns+'</div></div>';
 }
 
+
+function buildWS(){
+  const wk=pwk();if(D.wsSeen[wk])return null;
+  const d=D.dayState[wk]||{};const done=Object.values(d).filter(v=>v==='done').length;
+  if(done===0&&Object.keys(d).length===0)return null;
+  let tp=0,tk=0,cd=0;
+  for(let i=0;i<7;i++){if(d[i]==='done'){tp+=DD[i].prot;tk+=DD[i].kcal;cd++;}}
+  return{wk,done,avgProt:cd?Math.round(tp/cd):0};
+}
+function calcStreak(){
+  const wk=D.dayState[cwk()]||{};let s=0;
+  for(let i=getTodayIndex();i>=0;i--){if(wk[i]==='done')s++;else break;}
+  return s;
+}
+function dayBalance(i){
+  const tdee=(D.profile&&D.profile.tdee)||2300;
+  return DD[i].kcal-(DD[i].train?tdee+150:tdee);
+}
+function calcBMR(p){
+  const e=p.edad||30;
+  return p.sexo==='hombre'
+    ?Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*e)
+    :Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*e);
+}
+function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
+window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ncf',D.coffeeLog);renderPlan();}
+window.subCoffee=function(ds,type){const c=getCoffee(ds);c[type]=Math.max(0,(c[type]||0)-1);D.coffeeLog[ds]=c;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ncf',D.coffeeLog);renderPlan();}
+function renderCoffeeBar(ds){
+  const c=getCoffee(ds);const total=(c.e||0)+(c.l||0);
+  return '<div class="coffee-bar"><div class="cf-header"><span class="coffee-label">Caf\u00E9s del d\u00EDa</span><span class="coffee-total">'+total+' total</span></div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px">'
+    +'<div class="coffee-row"><span class="coffee-name">Espresso</span><span>\u2615</span>'
+    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'e\')">+</button>'
+    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'e\')">\u2212</button></div>'
+    +'<div class="coffee-row"><span class="coffee-name">Latte</span><span>\uD83E\uDD5B</span>'
+    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'l\')">+</button>'
+    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'l\')">\u2212</button></div>'
+    +'</div></div>';
+}
+function getSleep(ds){return D.sleepLog[ds]||{h:0,q:0}}
+function renderSleepBar(ds){
+  const s=getSleep(ds);const hLabel=s.h===0?'Sin registrar':s.h+'h';
+  const stars=Array.from({length:5},(_,i)=>'<span class="sleep-star'+(i<s.q?' active':'')+'" data-sleep-ds="'+ds+'" data-sleep-q="'+(i+1)+'">\u2605</span>').join('');
+  return '<div class="sleep-bar">'
+    +'<div class="sleep-header"><span class="sleep-label">\uD83D\uDE34 Horas de sue\u00F1o</span><span class="sleep-val">'+hLabel+'</span></div>'
+    +'<div class="sleep-input-wrap">'
+    +'<input type="number" class="sleep-input" min="0" max="12" step="0.5" value="'+(s.h||'')+'" placeholder="0" data-sleep-ds="'+ds+'" inputmode="decimal" oninput="handleSleepInput(this)" onchange="handleSleepInput(this)">'
+    +'<span class="sleep-input-unit">h</span>'
+    +'</div>'
+    +(s.h>0?'<div class="sleep-quality">'+stars+'</div>':'')
+    +'</div>';
+}
+window.handleSleepInput=function(input){
+  const ds=input.getAttribute('data-sleep-ds');
+  const val=parseFloat(input.value);
+  if(isNaN(val)||val<0||val>12)return;
+  const s=getSleep(ds);s.h=Math.round(val*2)/2;D.sleepLog[ds]=s;
+  const hdr=input.closest('.sleep-bar').querySelector('.sleep-val');
+  if(hdr)hdr.textContent=s.h===0?'Sin registrar':s.h+'h';
+  if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nslp',D.sleepLog);
+};
 
 // ── SAVEPREF ──
 
@@ -1031,74 +1094,7 @@ window.savePref=function(key,val){
 
 // ── SLEEP ──
 function getSleep(ds){return D.sleepLog[ds]||{h:0,q:0}}
-window.handleSleepSlider=function(input){
-  const ds=input.getAttribute('data-sleep-ds');
-  const s=getSleep(ds);
-  s.h=parseFloat(input.value);
-  D.sleepLog[ds]=s;
-  // Update display without full re-render
-  const wrap=input.closest('.sleep-slider-wrap');
-  if(wrap){const hoursEl=wrap.querySelector('.sleep-slider-hours');if(hoursEl)hoursEl.textContent=s.h;}
-  const header=input.closest('.sleep-bar').querySelector('.sleep-val');
-  if(header)header.textContent=s.h===0?'Sin registrar':s.h+'h';
-  if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nslp',D.sleepLog);
-}
-window.setSleepQuality=function(ds,q){
-  const s=getSleep(ds);
-  s.q=s.q===q?0:q;
-  D.sleepLog[ds]=s;
-  if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nslp',D.sleepLog);
-  renderPlan();
-}
-function renderSleepBar(ds){
-  const s=getSleep(ds);
-  const hLabel=s.h===0?'Sin registrar':s.h+'h';
-  const stars=Array.from({length:5},(_,i)=>'<span class="sleep-star'+(i<s.q?' active':'')+'" onclick="setSleepQuality(\''+ds+'\','+(i+1)+')">★</span>').join('');
-  return '<div class="sleep-bar">'
-    +'<div class="sleep-header"><span class="sleep-label">😴 Horas de sueño</span><span class="sleep-val">'+hLabel+'</span></div>'
-    +'<div class="sleep-controls">'
-    +'<button class="sleep-btn" onclick="addSleepHour(\''+ds+'\',-0.5)">−</button>'
-    +'<div><span class="sleep-hours">'+s.h+'</span><span class="sleep-unit">h</span></div>'
-    +'<button class="sleep-btn" onclick="addSleepHour(\''+ds+'\',0.5)">+</button>'
-    +'</div>'
-    +(s.h>0?'<div class="sleep-quality">'+stars+'</div>':'')
-    +'</div>';
-}
-
-// ── COFFEE ──
-function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
-window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;saveToCloud();renderPlan()}
-window.subCoffee=function(ds,type){const c=getCoffee(ds);c[type]=Math.max(0,(c[type]||0)-1);D.coffeeLog[ds]=c;saveToCloud();renderPlan()}
-function renderCoffeeBar(ds){
-  const c=getCoffee(ds);
-  const total=c.e+c.l;
-  const eDots=Array.from({length:Math.max(c.e,1)},(_,i)=>'<div class="coffee-dot'+(i<c.e?' filled-e':'')+'" onclick="addCoffee(\''+ds+'\',\'e\')">☕</div>').join('');
-  const lDots=Array.from({length:Math.max(c.l,1)},(_,i)=>'<div class="coffee-dot'+(i<c.l?' filled-l':'')+'" onclick="addCoffee(\''+ds+'\',\'l\')">🥛</div>').join('');
-  return '<div class="coffee-bar">'
-    +'<div class="coffee-header"><span class="coffee-label">Cafés del dia</span><span class="coffee-total">'+total+' total</span></div>'
-    +'<div style="display:flex;flex-direction:column;gap:8px">'
-    +'<div class="coffee-row"><div class="coffee-type"><span class="coffee-name">Espresso</span><div class="coffee-dots">'+eDots+'</div></div>'
-    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'e\')">+</button>'
-    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'e\')">−</button></div>'
-    +'<div class="coffee-row"><div class="coffee-type"><span class="coffee-name">Latte</span><div class="coffee-dots">'+lDots+'</div></div>'
-    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'l\')">+</button>'
-    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'l\')">−</button></div>'
-    +'</div></div>';
-}
-function getTodayIndex(){const d=new Date().getDay();return d===0?6:d-1}
-function getDateForDay(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}
-function calcBMR(p){const e=p.edad||30;return p.sexo==='hombre'?Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*e):Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*e)}
-function calcStreak(){const wk=D.dayState[cwk()]||{};let s=0;for(let i=getTodayIndex();i>=0;i--){if(wk[i]==='done')s++;else break}return s}
-function dayBalance(i){const tdee=(D.profile&&D.profile.tdee)||2300;return DD[i].kcal-(DD[i].train?tdee+150:tdee)}
-
-// ── WEEKLY SUMMARY ──
-function buildWS(){
-  const wk=pwk();if(D.wsSeen[wk])return null;
-  const d=D.dayState[wk]||{};const done=Object.values(d).filter(v=>v==='done').length;
-  if(done===0&&Object.keys(d).length===0)return null;
-  let tp=0,tk=0,cd=0;for(let i=0;i<7;i++){if(d[i]==='done'){tp+=DD[i].prot;tk+=DD[i].kcal;cd++}}
-  return{wk,done,avgProt:cd?Math.round(tp/cd):0}
-}
+// Sleep picker touch handler — registered once after render
 window.dismissWS=function(wk){D.wsSeen[wk]=true;saveToCloud();document.getElementById('weeklySummaryBanner').innerHTML=''}
 function renderWS(){
   const el=document.getElementById('weeklySummaryBanner');const s=buildWS();if(!s){el.innerHTML='';return}
@@ -1427,6 +1423,7 @@ function updateCartButtons(){
     btn.textContent=inCart?'✓ en lista':'+ lista';
   });
   updateCartBadge();
+  setTimeout(initSleepPickers,0);
 }
 
 function isInCart(n){return D.cart.some(i=>i.name===n)}
