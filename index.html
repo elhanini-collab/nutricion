@@ -860,7 +860,7 @@ const SUPPS = [{id:'c',label:'⚡ Creatina'},{id:'o',label:'🐟 Omega-3'},{id:'
 function getSupp(ds){return D.suppLog[ds]||{c:false,o:false,v:false,z:false}}
 window.toggleSupp=function(ds,id){
   const s=getSupp(ds);s[id]=!s[id];D.suppLog[ds]=s;
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatarData);sv('nsupp',D.suppLog);
+  saveToCloud();
   haptic('light');renderPlan();
 }
 function renderSuppBar(ds){
@@ -890,14 +890,14 @@ window.confirmReset=function(){
 window.savePref=function(key,val){
   if(!D.prefs)D.prefs={supp:true,water:true,coffee:true};
   D.prefs[key]=val;
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);
+  saveToCloud();
   toast(val?'Activado':'Desactivado');
 };
 
 // ── COFFEE ──
 function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
-window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
-window.subCoffee=function(ds,type){const c=getCoffee(ds);c[type]=Math.max(0,(c[type]||0)-1);D.coffeeLog[ds]=c;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
+window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;saveToCloud();renderPlan()}
+window.subCoffee=function(ds,type){const c=getCoffee(ds);c[type]=Math.max(0,(c[type]||0)-1);D.coffeeLog[ds]=c;saveToCloud();renderPlan()}
 function renderCoffeeBar(ds){
   const c=getCoffee(ds);
   const total=c.e+c.l;
@@ -928,7 +928,7 @@ function buildWS(){
   let tp=0,tk=0,cd=0;for(let i=0;i<7;i++){if(d[i]==='done'){tp+=DD[i].prot;tk+=DD[i].kcal;cd++}}
   return{wk,done,avgProt:cd?Math.round(tp/cd):0}
 }
-window.dismissWS=function(wk){D.wsSeen[wk]=true;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);document.getElementById('weeklySummaryBanner').innerHTML=''}
+window.dismissWS=function(wk){D.wsSeen[wk]=true;saveToCloud();document.getElementById('weeklySummaryBanner').innerHTML=''}
 function renderWS(){
   const el=document.getElementById('weeklySummaryBanner');const s=buildWS();if(!s){el.innerHTML='';return}
   const pct=Math.round((s.done/7)*100);
@@ -950,7 +950,7 @@ window.completeOnboarding=function(){
   if(!tdee||tdee<1000){err.textContent='TDEE inválido';return}
   err.textContent='';
   D.profile={nombre,sexo,edad,altura,peso,grasa,tdee};
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateNames();renderWS();renderPlan();switchScreen('plan');
+  saveToCloud();updateNames();renderWS();renderPlan();switchScreen('plan');
   toast('Bienvenido, '+nombre+' 🎉');
 }
 
@@ -958,14 +958,14 @@ window.completeOnboarding=function(){
 window.handleAvatarPick=function(input){
   const file=input.files[0];if(!file)return;
   const r=new FileReader();r.onload=e=>{
-    D.avatar=e.target.result;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);
+    D.avatar=e.target.result;saveToCloud();
     const img=document.getElementById('obAvatarImg');const icon=document.getElementById('obAvatarIcon');const ring=document.getElementById('obAvatarRing');
     img.src=D.avatar;img.style.display='block';icon.style.display='none';ring.classList.add('has-photo');
   };r.readAsDataURL(file);
 }
 window.handleProfileAvatarPick=function(input){
   const file=input.files[0];if(!file)return;
-  const r=new FileReader();r.onload=e=>{D.avatar=e.target.result;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateNames()};r.readAsDataURL(file);
+  const r=new FileReader();r.onload=e=>{D.avatar=e.target.result;saveToCloud();updateNames()};r.readAsDataURL(file);
 }
 function updateNames(){
   if(!D.profile)return;
@@ -993,14 +993,14 @@ window.swapMeal=function(di,mi){
   const alts=[];for(let d=0;d<7;d++){if(d===di)continue;const c=DD[d].meals[mi];if(!c||c.title===orig.title)continue;alts.push({fromDay:d,diff:Math.abs(c.kcal-orig.kcal)})}
   alts.sort((a,b)=>a.diff-b.diff);if(!alts.length)return;
   if(!cur){D.mealSwaps[key]=alts[0]}else{const ci=alts.findIndex(a=>a.fromDay===cur.fromDay);const ni=(ci+1)%alts.length;if(ci===alts.length-1&&ni===0)delete D.mealSwaps[key];else D.mealSwaps[key]=alts[ni]}
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan();
+  saveToCloud();renderPlan();
 }
-window.restoreMeal=function(di,mi){delete D.mealSwaps[swapKey(di,mi)];sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
+window.restoreMeal=function(di,mi){delete D.mealSwaps[swapKey(di,mi)];saveToCloud();renderPlan()}
 function pruneSwaps(){const t=todayStr();Object.keys(D.mealSwaps).forEach(k=>{if(k.slice(0,10)<t)delete D.mealSwaps[k]})}
 
 // ── HYDRATION ──
 function getWater(ds){return D.waterLog[ds]||0}
-window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>idx?idx:idx+1;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
+window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>idx?idx:idx+1;saveToCloud();renderPlan()}
 
 // ── PLAN ──
 window.changeDay=function(dir){currentDay=(currentDay+dir+7)%7;renderPlan()}
@@ -1128,13 +1128,13 @@ window.saveProfile=function(){
   const sexo=document.getElementById('f-sexo').value;const edad=parseInt(document.getElementById('f-edad').value);
   const grasa=parseFloat(document.getElementById('f-grasa').value);const tdee=parseInt(document.getElementById('f-tdee').value);
   if(!nombre||!altura||!peso||!edad||!grasa||!tdee)return;
-  D.profile={nombre,altura,peso,sexo,edad,grasa,tdee};sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderProfile();
+  D.profile={nombre,altura,peso,sexo,edad,grasa,tdee};saveToCloud();renderProfile();
   toast('Perfil guardado ✓');
   const c=document.getElementById('saveConfirm');c.textContent='';  
 }
 window.saveObjective=function(){
   const po=parseFloat(document.getElementById('obj-peso').value);const s=parseInt(document.getElementById('obj-semanas').value);
-  D.objective={pesoObj:po||null,semanas:s||null};sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderObjProjection();
+  D.objective={pesoObj:po||null,semanas:s||null};saveToCloud();renderObjProjection();
 }
 function renderObjProjection(){
   const el=document.getElementById('objProjection');if(!el||!D.objective.pesoObj||!D.profile){if(el)el.innerHTML='';return}
@@ -1150,10 +1150,10 @@ function renderObjProjection(){
 window.addWeightEntry=function(){
   const kg=parseFloat(document.getElementById('w-peso').value);const date=document.getElementById('w-fecha').value;if(!kg||!date)return;
   D.weightLog=D.weightLog.filter(e=>e.date!==date);D.weightLog.push({date,kg});D.weightLog.sort((a,b)=>a.date.localeCompare(b.date));
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);document.getElementById('w-peso').value='';renderWeightLog();
+  saveToCloud();document.getElementById('w-peso').value='';renderWeightLog();
   toast('Peso registrado ✓');
 }
-window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderWeightLog()}
+window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);saveToCloud();renderWeightLog()}
 function renderWeightLog(){
   const chart=document.getElementById('weightChart');const list=document.getElementById('weightList');
   if(!D.weightLog.length){
@@ -1210,11 +1210,11 @@ window.addProgressPhoto=function(input){
   const r=new FileReader();r.onload=e=>{
     D.progressPhotos.unshift({date,data:e.target.result});
     if(D.progressPhotos.length>30)D.progressPhotos=D.progressPhotos.slice(0,30);
-    sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);input.value='';renderPhotos();
+    saveToCloud();input.value='';renderPhotos();
     toast('Foto de progreso guardada ✓');
   };r.readAsDataURL(file);
 }
-window.deletePhoto=function(idx){D.progressPhotos.splice(idx,1);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPhotos()}
+window.deletePhoto=function(idx){D.progressPhotos.splice(idx,1);saveToCloud();renderPhotos()}
 window.openLightbox=function(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open')}
 window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('open')}
 function renderPhotos(){
@@ -1225,11 +1225,11 @@ function renderPhotos(){
 // ── DEXA ──
 window.addDexaEntry=function(){
   const date=document.getElementById('d-fecha').value;const grasa=parseFloat(document.getElementById('d-grasa').value);const magra=parseFloat(document.getElementById('d-magra').value);
-  if(!date||!grasa||!magra)return;D.dexaLog=D.dexaLog.filter(e=>e.date!==date);D.dexaLog.push({date,grasa,magra});D.dexaLog.sort((a,b)=>a.date.localeCompare(b.date));sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);
+  if(!date||!grasa||!magra)return;D.dexaLog=D.dexaLog.filter(e=>e.date!==date);D.dexaLog.push({date,grasa,magra});D.dexaLog.sort((a,b)=>a.date.localeCompare(b.date));saveToCloud();
   document.getElementById('d-grasa').value='';document.getElementById('d-magra').value='';renderDexaLog();
   toast('Escáner DEXA guardado ✓');
 }
-window.deleteDexaEntry=function(date){D.dexaLog=D.dexaLog.filter(e=>e.date!==date);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderDexaLog()}
+window.deleteDexaEntry=function(date){D.dexaLog=D.dexaLog.filter(e=>e.date!==date);saveToCloud();renderDexaLog()}
 function renderDexaLog(){
   const el=document.getElementById('dexaList');if(!el)return;
   if(!D.dexaLog.length){el.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">Aún no hay escáneres.</div>';return}
@@ -1258,14 +1258,14 @@ function updateCartButtons(){
 
 function isInCart(n){return D.cart.some(i=>i.name===n)}
 function decodeIng(n){try{return decodeURIComponent(n)}catch(e){return n}}
-window.toggleCartItem=function(raw){const n=decodeIng(raw);const i=D.cart.findIndex(i=>i.name===n);if(i>=0){D.cart.splice(i,1);}else{D.cart.push({name:n,checked:false});toast('✓ Añadido a la lista');}sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateCartButtons();}
+window.toggleCartItem=function(raw){const n=decodeIng(raw);const i=D.cart.findIndex(i=>i.name===n);if(i>=0){D.cart.splice(i,1);}else{D.cart.push({name:n,checked:false});toast('✓ Añadido a la lista');}saveToCloud();updateCartButtons();}
 function updateCartBadge(){const b=document.getElementById('cartBadge');if(D.cart.length>0){b.textContent=D.cart.length>99?'99+':D.cart.length;b.classList.add('visible')}else b.classList.remove('visible')}
 window.openCart=function(){renderCartPanel();document.getElementById('cartOverlay').classList.add('open')}
 window.closeCart=function(){document.getElementById('cartOverlay').classList.remove('open')}
 window.closeCartOnBg=function(e){if(e.target===document.getElementById('cartOverlay'))closeCart()}
-window.toggleCartCheck=function(n){const i=D.cart.find(i=>i.name===n);if(i){i.checked=!i.checked;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderCartPanel()}}
-window.removeFromCart=function(n){D.cart=D.cart.filter(i=>i.name!==n);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
-window.clearCart=function(){D.cart=[];sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
+window.toggleCartCheck=function(n){const i=D.cart.find(i=>i.name===n);if(i){i.checked=!i.checked;saveToCloud();renderCartPanel()}}
+window.removeFromCart=function(n){D.cart=D.cart.filter(i=>i.name!==n);saveToCloud();updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
+window.clearCart=function(){D.cart=[];saveToCloud();updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
 window.copyCart=function(){
   const u=D.cart.filter(i=>!i.checked).map(i=>'- '+i.name);const c=D.cart.filter(i=>i.checked).map(i=>'ok '+i.name);
   navigator.clipboard.writeText(['Lista de la compra','',...u,...(c.length?['','Ya tengo:',...c]:[])].join('\n')).then(()=>{const b=document.querySelector('.cart-copy');b.textContent='¡Copiado!';setTimeout(()=>b.textContent='Copiar lista',1800)})
