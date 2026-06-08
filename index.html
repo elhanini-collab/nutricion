@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Plan Nutricional</title>
+<title>Plan Nutricional — Preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--font);-webkit-font-smoothing:antialiased}
 body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .app{width:100%;max-width:420px;padding:0 16px}
-.screen{display:none}.screen.active{display:block;animation:fadeUp .22s ease;max-width:420px;width:100%;margin-left:auto;margin-right:auto}
+.screen{display:none}.screen.active{display:block;animation:fadeUp .22s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .section-title{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin:24px 0 10px}
 .back-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:.5px solid var(--border);color:var(--text-2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
@@ -144,25 +144,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;pointer-events:none}
 .toggle input:checked~.toggle-thumb{transform:translateX(18px)}
 .prefs-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:0 16px;margin-bottom:8px}
-
-/* sleep tracker */
-.sleep-bar{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:20px}
-.sleep-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sleep-label{font-size:11px;color:var(--text-3)}
-.sleep-val{font-size:13px;font-weight:500;color:var(--purple);font-family:var(--mono)}
-.sleep-picker-wrap{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
-.sleep-picker{height:120px;overflow:hidden;position:relative;width:80px;cursor:ns-resize;-webkit-tap-highlight-color:transparent;user-select:none}
-.sleep-picker::before,.sleep-picker::after{content:'';position:absolute;left:0;right:0;height:36px;z-index:2;pointer-events:none}
-.sleep-picker::before{top:0;background:linear-gradient(to bottom,var(--surface),transparent)}
-.sleep-picker::after{bottom:0;background:linear-gradient(to top,var(--surface),transparent)}
-.sleep-picker-inner{display:flex;flex-direction:column;align-items:center;will-change:transform}
-.sleep-picker-item{height:40px;line-height:40px;font-size:22px;font-weight:300;color:var(--text-3);text-align:center;width:80px;flex-shrink:0;transition:color .1s,font-size .1s}
-.sleep-picker-item.sel{color:var(--text-1);font-size:28px;font-weight:400}
-.sleep-picker-line{position:absolute;left:0;right:0;top:40px;height:40px;border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);pointer-events:none;z-index:1}
-.sleep-picker-unit{font-size:15px;color:var(--text-3);line-height:120px}
-.sleep-quality{display:flex;gap:6px;justify-content:center}
-.sleep-star{font-size:20px;cursor:pointer;opacity:.3;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
-.sleep-star.active{opacity:1}
 /* supplements */
 .supp-bar{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:20px}
 .supp-label{font-size:11px;color:var(--text-3);margin-bottom:9px}
@@ -322,9 +303,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .btn-save{width:100%;padding:13px;border-radius:12px;border:none;background:var(--amber);color:#171B23;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;margin-top:20px;transition:opacity .15s}
 .btn-save:hover{opacity:.88}
 .save-confirm{text-align:center;font-size:12px;color:var(--green);margin-top:10px;height:16px;font-family:var(--mono)}
-
-.btn-export-pdf{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--blue);background:var(--blue-dim);color:var(--blue);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:12px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-export-pdf:hover{opacity:.85}
 .btn-reset{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--red);background:var(--red-dim);color:var(--red);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:12px;transition:all .15s}
 .btn-reset:hover{background:var(--red);color:#fff}
 .btn-signout{width:100%;padding:11px;border-radius:10px;border:.5px solid var(--border);background:transparent;color:var(--text-3);font-family:var(--font);font-size:13px;cursor:pointer;margin-bottom:40px;transition:all .15s}
@@ -364,71 +342,48 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .cart-clear:hover{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 .cart-copy{flex:1;padding:10px;border-radius:10px;border:.5px solid var(--amber);background:var(--amber-bg);color:var(--amber);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer}
 .cart-copy:hover{background:var(--amber-dim)}
+
+.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 24px;text-align:center;gap:0}
+.login-logo{font-size:48px;margin-bottom:20px}
+.login-title{font-size:28px;font-weight:500;color:var(--text-1);margin-bottom:10px}
+.login-sub{font-size:14px;color:var(--text-3);line-height:1.6;margin-bottom:40px}
+.btn-google{display:flex;align-items:center;gap:12px;background:#fff;color:#1a1a2e;border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weight:500;cursor:pointer;width:100%;max-width:280px;justify-content:center;transition:opacity .15s;margin-bottom:20px}
+.btn-google:hover{opacity:.9}
+.login-note{font-size:11px;color:var(--text-3);line-height:1.6;max-width:260px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.sync-dot.error{background:var(--red)}
+.sync-dot.syncing{background:var(--amber);animation:pulse .8s infinite}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Firebase compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:            "AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
+  authDomain:        "plan-nutricional-a2c88.firebaseapp.com",
+  projectId:         "plan-nutricional-a2c88",
+  storageBucket:     "plan-nutricional-a2c88.firebasestorage.app",
+  messagingSenderId: "651954711031",
+  appId:             "1:651954711031:web:1d015043d591eb2b4fa6f2"
+});
+const auth = firebase.auth();
+const db   = firebase.firestore();
+</script>
 </head>
 <body>
-<div class="app">
-
+<div style="text-align:center;font-size:10px;color:#4E5870;padding:8px 0 0;font-family:'DM Mono',monospace">v0037-preview</div>
 <!-- LOGIN -->
 <div class="screen active" id="screen-login">
-  <div class="login-screen">
-    <div class="login-logo">
-      <div class="login-dot"></div>
-      <div class="login-title">Plan Nutriciónal</div>
-      <div class="login-sub">Tu plan semanal, tu progreso,<br>sincronizado en todos tus dispositivos.</div>
-    </div>
+  <div class="login-wrap">
+    <div class="login-logo">📋</div>
+    <div class="login-title">Plan Nutricional</div>
+    <div class="login-sub">Tu plan semanal, tu progreso,<br>sincronizado en todos tus dispositivos.</div>
     <button class="btn-google" onclick="signInWithGoogle()">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
       Continuar con Google
     </button>
-    <div class="login-note">Tus datos se guardan de forma segura en la nube y son accesibles desde cualquier dispositivo.</div>
-  </div>
-</div>
-
-<!-- ONBOARDING -->
-<div class="screen" id="screen-onboarding">
-  <div class="onboarding">
-    <div class="onboarding-logo"><div class="onboarding-dot"></div><div class="onboarding-title">Bienvenido<span id="ob-welcome-name"></span></div><div class="onboarding-sub">Configura tu perfil para empezar</div></div>
-    <div class="ob-steps"><div class="ob-step-dot active" id="ob-dot-1"></div><div class="ob-step-dot" id="ob-dot-2"></div></div>
-    <!-- STEP 1 -->
-    <div id="ob-step-1">
-      <div class="onboarding-form">
-        <div class="avatar-picker-wrap">
-          <div class="avatar-picker-ring" id="obAvatarRing" onclick="document.getElementById('ob-avatar-input').click()"><img id="obAvatarImg" class="avatar-picker-img" alt=""><span class="avatar-picker-placeholder" id="obAvatarIcon">&#128247;</span></div>
-          <span class="avatar-picker-label">Toca para elegir foto de perfil</span>
-          <input type="file" id="ob-avatar-input" style="display:none" accept="image/*" onchange="handleAvatarPick(this)">
-        </div>
-        <div class="onboarding-step">Paso 1 de 2 &middot; Datos básicos</div>
-        <div class="field-row">
-          <div class="field"><label>Nombre</label><input type="text" id="ob-nombre" placeholder="Tu nombre" autocomplete="off"></div>
-          <div class="field"><label>Sexo</label><select id="ob-sexo"><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Edad</label><input type="number" id="ob-edad" placeholder="ej. 35" min="15" max="100"></div>
-          <div class="field"><label>Estatura (cm)</label><input type="number" id="ob-altura" placeholder="ej. 175" min="100" max="250"></div>
-        </div>
-        <div class="onboarding-error" id="ob-error-1"></div>
-        <button class="btn-start" onclick="obNextStep()">Siguiente &#8594;</button>
-      </div>
-    </div>
-    <!-- STEP 2 -->
-    <div id="ob-step-2" style="display:none">
-      <div class="onboarding-form">
-        <div class="onboarding-step">Paso 2 de 2 &middot; Composición corporal</div>
-        <div class="field-row">
-          <div class="field"><label>Peso (kg)</label><input type="number" id="ob-peso" placeholder="ej. 78" min="30" max="300" step="0.1"></div>
-          <div class="field"><label>Grasa corporal (%)</label><input type="number" id="ob-grasa" placeholder="DEXA" min="3" max="60" step="0.1"></div>
-        </div>
-        <div class="field"><label>TDEE (kcal)</label><input type="number" id="ob-tdee" placeholder="ej. 2300" min="1000" max="6000" step="10"></div>
-        <div class="onboarding-note">El BMR se calcula automáticamente con Harris-Benedict. El TDEE es tu gasto real incluyendo actividad física.</div>
-        <div class="onboarding-error" id="ob-error-2"></div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="btn-start" style="flex:.4;background:var(--surface);color:var(--text-2);border:.5px solid var(--border)" onclick="obPrevStep()">&#8592;</button>
-          <button class="btn-start" style="flex:1" onclick="completeOnboarding()">Empezar &#8594;</button>
-        </div>
-      </div>
-    </div>
+    <div class="login-note">Tus datos se guardan de forma segura en la nube y<br>son accesibles desde cualquier dispositivo.</div>
   </div>
 </div>
 
@@ -525,17 +480,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     </div>
     <div class="pref-row">
       <div class="pref-info">
-        <span class="pref-label">😴 Sueño</span>
-        <span class="pref-desc">Horas y calidad de sueño</span>
-      </div>
-      <label class="toggle">
-        <input type="checkbox" id="pref-sleep" onchange="savePref('sleep',this.checked)">
-        <div class="toggle-track"></div>
-        <div class="toggle-thumb"></div>
-      </label>
-    </div>
-    <div class="pref-row">
-      <div class="pref-info">
         <span class="pref-label">☕ Cafés del día</span>
         <span class="pref-desc">Espresso y Latte</span>
       </div>
@@ -571,8 +515,6 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
     <button class="btn-save" onclick="saveProfile()">Guardar cambios</button>
     <div class="save-confirm" id="saveConfirm"></div>
   </div>
-  <div class="section-title">Exportar</div>
-  <button class="btn-export-pdf" onclick="exportPDF()">📄 Exportar historial en PDF</button>
   <div class="section-title">Zona de peligro</div>
   <button class="btn-reset" onclick="confirmReset()">🗑 Borrar todo el historial</button>
   <div class="section-title">Cuenta</div>
@@ -612,131 +554,185 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- Firebase compat SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOnBg(event)">
+  <div class="cart-panel">
+    <div class="cart-header"><div class="cart-title">Lista de la compra</div><button class="cart-close" onclick="closeCart()">✕</button></div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-footer"><button class="cart-clear" onclick="clearCart()">Vaciar lista</button><button class="cart-copy" onclick="copyCart()">Copiar lista</button></div>
+  </div>
+</div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><button class="lightbox-close" onclick="closeLightbox()">✕</button><img id="lightboxImg" src="" alt=""></div>
+<div class="toast" id="toast"></div>
+
 <script>
-firebase.initializeApp({
-  apiKey:            "AIzaSyAAOIwfJddVPdt8PW6aQQ5HZ8nGWAZ1S4U",
-  authDomain:        "plan-nutricional-a2c88.firebaseapp.com",
-  projectId:         "plan-nutricional-a2c88",
-  storageBucket:     "plan-nutricional-a2c88.firebasestorage.app",
-  messagingSenderId: "651954711031",
-  appId:             "1:651954711031:web:1d015043d591eb2b4fa6f2"
+function ld(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function setSyncDot(){}
+
+
+// ── FIREBASE SYNC ──
+async function saveToCloud() {
+  if (!uid) return;
+  setSyncDot('syncing');
+  try {
+    const ref = db.doc('users/' + uid + '/data/main');
+    const saveData = {...D};
+    delete saveData.progressPhotos;
+    delete saveData.avatar;
+    const clean = JSON.parse(JSON.stringify(saveData, (k,v) => v===undefined ? null : v));
+    await ref.set(clean, {merge:true});
+    setSyncDot('ok');
+  } catch(e) {
+    setSyncDot('error');
+    console.error('saveToCloud:', e.message);
+  }
+}
+
+async function loadFromCloud() {
+  if (!uid) return;
+  try {
+    const ref = db.doc('users/' + uid + '/data/main');
+    const snap = await ref.get();
+    if (snap.exists) {
+      const d = snap.data();
+      D.dayState   = d.dayState   || {};
+      D.dayNotes   = d.dayNotes   || {};
+      D.cart       = d.cart       || [];
+      D.weightLog  = d.weightLog  || [];
+      D.dexaLog    = d.dexaLog    || [];
+      D.mealSwaps  = d.mealSwaps  || {};
+      D.waterLog   = d.waterLog   || {};
+      D.objective  = d.objective  || {pesoObj:null,semanas:null};
+      D.offPlanLog = d.offPlanLog || {};
+      D.wsSeen     = d.wsSeen     || {};
+      D.coffeeLog  = d.coffeeLog  || {};
+      D.suppLog    = d.suppLog    || {};
+      D.prefs      = d.prefs      || {supp:true,water:true,coffee:true};
+      D.profile    = d.profile    || null;
+      // Restore photos from localStorage
+      try {
+        const ph = localStorage.getItem('nph');
+        if (ph) D.progressPhotos = JSON.parse(ph);
+        const av = localStorage.getItem('na');
+        if (av) D.avatar = JSON.parse(av);
+      } catch(e) {}
+    }
+  } catch(e) {
+    console.error('loadFromCloud:', e.message);
+  }
+}
+
+let uid = null;
+
+window.signInWithGoogle = async function() {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
+  } catch(e) {
+    if (e.code === 'auth/popup-blocked') {
+      await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    } else {
+      console.error('signInWithGoogle:', e.message);
+    }
+  }
+};
+
+window.signOut = async function() {
+  await auth.signOut();
+};
+
+function setSyncDot(state) {
+  const d = document.getElementById('syncDot');
+  if (!d) return;
+  d.className = 'sync-dot' + (state==='syncing'?' syncing':state==='error'?' error':'');
+  d.title = state==='ok'?'Sincronizado':state==='syncing'?'Guardando...':'Error al guardar';
+}
+
+auth.onAuthStateChanged(async function(user) {
+  if (user) {
+    uid = user.uid;
+    await loadFromCloud();
+    if (!D.profile) {
+      D.profile = {nombre: user.displayName || '', sexo:'hombre', edad:null, altura:null, peso:null, grasa:null, tdee:2300};
+    }
+    D.avatar = D.avatar || user.photoURL || null;
+    updateNames();
+    renderWS();
+    renderPlan();
+    switchScreen('plan');
+  } else {
+    uid = null;
+    switchScreen('login');
+  }
 });
-const auth = firebase.auth();
-const db   = firebase.firestore();
-</script>
-<script>
+
+
+
+
+
+
+// APP CODE
 const DD=[
-  {name:'Lunes',short:'L',train:false,prot:195.2,kcal:2246,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina disuelta en agua. Sin zumo.'},
-    {type:'Tentempié',icon:'🥪',title:'Tosta de pavo con cheddar y frutos secos',kcal:429,prot:29.9,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Frutos secos (25g)'],note:'Tosta de pavo con cheddar + frutos secos'},
-    {type:'Comida',icon:'🍽️',title:'Pollo a la plancha con arroz y brócoli',kcal:733,prot:67.6,ingredients:['Pechuga de pollo Extra Tierna (250g)','Arroz blanco hervido (167g)','Brócoli (200g)','Aceite de oliva (20g)'],note:null},
+  {name:'Lunes',short:'L',train:false,prot:189.7,kcal:2160,meals:[
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frutos rojos',kcal:469,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g disuelta en zumo antioxidante'},
+    {type:'Tentempie',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Pollo a la plancha con arroz y brocoli',kcal:733,prot:67.6,ingredients:['Pechuga de pollo Extra Tierna (250g)','Arroz blanco hervido (167g)','Brocoli (200g)','Aceite de oliva (20g)'],note:null},
     {type:'Merienda',icon:'🐟',title:'Sardinas con tomate cherry y tostada',kcal:228,prot:22.7,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Pan Espelta Integral (32g)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Bacalao con habas y espárragos',kcal:450,prot:47.6,ingredients:['Bacalao al horno (200g)','Habas baby (150g)','Espárragos (100g)','Aceite de oliva (20g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Bacalao con habas y esparragos',kcal:450,prot:47.6,ingredients:['Bacalao al horno (200g)','Habas baby (150g)','Esparragos (100g)','Aceite de oliva (20g)'],note:null}
   ]},
   {name:'Martes',short:'M',train:true,prot:177.3,kcal:2266,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frambuesas',kcal:384,prot:25.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua. Zumo reservado para el batido.'},
-    {type:'Tentempié',icon:'💪',title:'Whey protein en zumo de naranja + frutos secos',kcal:502,prot:33.5,ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (50g)'],note:'Batido post-entreno en zumo de naranja'},
-    {type:'Comida',icon:'🍽️',title:'Arroz con gambas y espárragos',kcal:579,prot:41.9,ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Espárrago verde troceado (150g)','Aceite de oliva (20g)'],note:null},
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frambuesas',kcal:472,prot:25.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
+    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Arroz con gambas y esparragos',kcal:579,prot:41.9,ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Esparrago verde troceado (150g)','Aceite de oliva (20g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cottage',kcal:202,prot:21.2,ingredients:['Loncha de Pavo (50g)','Queso Cottage (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
     {type:'Cena',icon:'🌙',title:'Filete de ternera con pisto',kcal:600,prot:54.8,ingredients:['Fileta ternera normal (250g)','Pisto de verduras (300g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Miércoles',short:'X',train:false,prot:177.2,kcal:2162,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Tortilla con tostada. Creatina en agua.'},
-    {type:'Tentempié',icon:'🐟',title:'Caballa con tomate cherry',kcal:228,prot:26.9,ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🍽️',title:'Lentejas (ración completa)',kcal:620,prot:36.2,ingredients:['Ración de Lentejas (450g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:'Ración completa de lentejas'},
+  {name:'Miércoles',short:'X',train:false,prot:194,kcal:2251,meals:[
+    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo',kcal:439,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de arandaños + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
+    {type:'Tentempie',icon:'🐟',title:'Caballa con tomate cherry',kcal:228,prot:26.9,ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Lentejas estofadas con pollo',kcal:671,prot:53,ingredients:['Lentejas (300g)','Pechuga de pollo (125g)','Cebolla roja (20g)','Aceite de oliva (20g)'],note:null},
     {type:'Merienda',icon:'🫐',title:'Yogur con frutos rojos y frutos secos',kcal:412,prot:21.4,ingredients:['Yogur Griego Hacendado Light (150g)','Moras (50g)','Frutos secos (50g)'],note:null},
     {type:'Cena',icon:'🌙',title:'Muslos al horno con coliflor y guisantes',kcal:502,prot:58.9,ingredients:['Muslos de pollo al horno (250g)','Coliflor (100g)','Guisantes (100g)','Aceite de oliva (10g)'],note:null}
   ]},
   {name:'Jueves',short:'J',train:true,prot:179.9,kcal:2206,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y moras',kcal:390,prot:26.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua. Zumo reservado para el batido.'},
-    {type:'Tentempié',icon:'💪',title:'Whey protein en zumo antioxidante + frutos secos',kcal:478,prot:33.5,ingredients:['Whey Protein (30g) + Zumo antioxidante (200ml)','Frutos secos (50g)'],note:'Batido post-entreno en zumo antioxidante'},
-    {type:'Comida',icon:'🍽️',title:'Hígado encebollado con arroz y coles',kcal:688,prot:56.5,ingredients:['Hígado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y moras',kcal:454,prot:26.9,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Café con leche (250ml)','Zumo antioxidante + Creatina (200ml)'],note:'Creatina 4g en zumo antioxidante'},
+    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:414,prot:33.5,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (50g)'],note:'Batido post-entreno + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Higado encebollado con arroz y coles',kcal:688,prot:56.5,ingredients:['Higado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Bacalao con pisto y espárragos',kcal:370,prot:38.6,ingredients:['Bacalao al horno (200g)','Pisto de verduras (150g)','Espárragos (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Bacalao con pisto y esparragos',kcal:370,prot:38.6,ingredients:['Bacalao al horno (200g)','Pisto de verduras (150g)','Esparragos (100g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Viernes',short:'V',train:false,prot:167,kcal:2246,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Tortilla con tostada. Creatina en agua.'},
-    {type:'Tentempié',icon:'🐟',title:'Sardinas con tomate cherry',kcal:226,prot:24.5,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🍽️',title:'Ternera marinada con garbanzos',kcal:665,prot:56.2,ingredients:['Fileta extra tierna marinada ternera (200g)','Ración de Garbanzos (300g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
+  {name:'Viernes',short:'V',train:false,prot:169,kcal:2297,meals:[
+    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Tortilla con tostada. Creatina en zumo.'},
+    {type:'Tentempie',icon:'🐟',title:'Sardinas con tomate cherry',kcal:226,prot:24.5,ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (150g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Ternera marinada con garbanzos',kcal:628,prot:58.2,ingredients:['Fileta extra tierna marinada ternera (200g)','Garbanzos (250g)','Loncha de Pavo extra (25g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🫐',title:'Yogur con frambuesas, frutos secos y pavo',kcal:430,prot:25.5,ingredients:['Yogur Griego Hacendado Light (150g)','Frambuesas (50g)','Frutos secos (50g)','Loncha de Pavo (25g)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Merluza con espárragos y brócoli',kcal:524,prot:27,ingredients:['Merluza al huevo (200g)','Espárragos (100g)','Brócoli (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Merluza con esparragos y brocoli',kcal:524,prot:27,ingredients:['Merluza al huevo (200g)','Esparragos (100g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Sábado',short:'S',train:false,prot:181.9,kcal:2182,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua.'},
-    {type:'Tentempié',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,ingredients:['Lata de caballa en tomate (120g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Comida',icon:'🌯',title:'Taco francés / Burrito de pollo',kcal:588,prot:40.1,ingredients:['Pechuga de pollo (70g)','Queso Cheddar 2 lonchas (50g)','Tortita de avena (60g)','Salsa burguer (30g)','Tomate cherry (150g)','Lechuga Iceberg (50g)'],note:'¡Día de taco francés! No añadir aceite este día.'},
+  {name:'Sábado',short:'S',train:false,prot:173.2,kcal:2236,meals:[
+    {type:'Desayuno',icon:'☀',title:'Yogur griego, muesli y frutos rojos',kcal:443,prot:27.4,ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Zumo de arandaños + Creatina (200ml)'],note:'Creatina 4g en zumo de arandaños'},
+    {type:'Tentempie',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,ingredients:['Lata de caballa en tomate (120g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Pasta completa con ensalada',kcal:604,prot:31.4,ingredients:['Bolsa pasta con pollo, tomate, queso y pesto (300g)','Lechuga Iceberg (50g)','Tomate cherry (150g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:217,prot:19.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Pollo con patatas air-fryer y espárragos',kcal:707,prot:66.5,ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Espárrago verde troceado (150g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Pollo con patatas air-fryer y esparragos',kcal:707,prot:66.5,ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Esparrago verde troceado (150g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Domingo',short:'D',train:true,prot:162.4,kcal:2240,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],note:'Creatina en agua. Zumo reservado para el batido.'},
-    {type:'Tentempié',icon:'💪',title:'Whey protein en zumo de naranja + frutos secos',kcal:292,prot:25.8,ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (15g)'],note:'Batido post-entreno en zumo de naranja'},
-    {type:'Comida',icon:'🍽️',title:'Macarrones boloñesa',kcal:758,prot:48.5,ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (250g)','Aceite de oliva (10g)'],note:null},
+  {name:'Domingo',short:'D',train:true,prot:162.4,kcal:2267,meals:[
+    {type:'Desayuno',icon:'☀',title:'Tortilla con tostada y zumo de naranja',kcal:489,prot:33.8,ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta Integral (32g)','Café con leche (250ml)','Zumo de naranja + Creatina (200ml)'],note:'Creatina 4g en zumo de naranja'},
+    {type:'Tentempie',icon:'💪',title:'Whey protein + frutos secos',kcal:204,prot:25.8,ingredients:['Whey Protein (30g) en agua/leche desnatada','Frutos secos (15g)'],note:'Batido post-entreno + frutos secos'},
+    {type:'Comida',icon:'🍽️',title:'Macarrones bolonesa',kcal:758,prot:48.5,ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (250g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Tosta de pavo con cheddar',kcal:279,prot:24.4,ingredients:['Loncha de Pavo (50g)','Queso Cheddar (25g)','Pan Espelta Integral (32g)','Café con leche (250ml)'],note:null},
-    {type:'Cena',icon:'🌙',title:'Filete ruso con patatas, claras y brócoli',kcal:511,prot:29.9,ingredients:['Filete ruso (94g)','Patata frita air-fryer (100g)','Clara de huevo (80g)','Brócoli (100g)','Aceite de oliva (10g)'],note:null}
+    {type:'Cena',icon:'🌙',title:'Filete ruso con patatas, claras y brocoli',kcal:538,prot:29.9,ingredients:['Fileta rusa (94g)','Patata frita air-fryer (100g)','Clara de huevo (80g)','Brocoli (100g)','Aceite de oliva (10g)'],note:null}
   ]}
 ];
 
 // ── STATE ──
-let uid=null, userDoc=null, unsub=null;
 let D={
   profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[], dexaLog:[],
   mealSwaps:{}, waterLog:{}, progressPhotos:[], objective:{pesoObj:null,semanas:null},
-  offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, sleepLog:{}, prefs:{supp:true,water:true,coffee:true,sleep:true}  // { 'YYYY-MM-DD': {e:0, l:0} }
+  offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, prefs:{supp:true,water:true,coffee:true}  // { 'YYYY-MM-DD': {e:0, l:0} }
 };
-function getDateForDay(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}
-function getTodayIndex(){const d=new Date().getDay();return d===0?6:d-1}
 let currentDay=getTodayIndex(), currentScreen='login';
 let saveTimer=null;
 
-// ── SYNC ──
-function setSyncDot(state){
-  const d=document.getElementById('syncDot');if(!d)return;
-  d.className='sync-dot'+(state==='syncing'?' syncing':state==='error'?' error':'');
-  d.title=state==='syncing'?'Guardando...':state==='error'?'Error al guardar':'Sincronizado';
-}
-async function loadFromCloud(){
-  if(!uid)return;
-  const ref=db.doc('users/'+uid+'/data/main');
-  const snap=await ref.get();
-  if(snap.exists){
-    const d=snap.data();
-    D.profile=d.profile||null;D.avatar=d.avatar||null;D.dayState=d.dayState||{};
-    D.dayNotes=d.dayNotes||{};D.cart=d.cart||[];D.weightLog=d.weightLog||[];
-    D.dexaLog=d.dexaLog||[];D.mealSwaps=d.mealSwaps||{};D.waterLog=d.waterLog||{};
-    D.progressPhotos=d.progressPhotos||[];D.objective=d.objective||{pesoObj:null,semanas:null};
-    D.offPlanLog=d.offPlanLog||{};D.wsSeen=d.wsSeen||{};D.sleepLog=d.sleepLog||{};D.suppLog=d.suppLog||{};D.prefs=d.prefs||{supp:true,water:true,coffee:true};D.coffeeLog=d.coffeeLog||{};
-    // Restore large data from localStorage
-    try{const ph=localStorage.getItem('nph');if(ph)D.progressPhotos=JSON.parse(ph);
-        const av=localStorage.getItem('na');if(av)D.avatar=JSON.parse(av);}catch(e){}
-  }
-}
-function saveToCloud(){
-  if(!uid)return;
-  clearTimeout(saveTimer);
-  setSyncDot('syncing');
-  saveTimer=setTimeout(async()=>{
-    try{
-      const ref=db.doc('users/'+uid+'/data/main');
-      const saveData={...D};
-      // Exclude base64 data from Firestore (too large, use localStorage instead)
-      delete saveData.progressPhotos;
-      delete saveData.avatar;
-      // Remove any undefined values (Firestore rejects them)
-      const cleanData = JSON.parse(JSON.stringify(saveData, (k,v) => v === undefined ? null : v));
-      await ref.set(cleanData,{merge:true});
-      // Save large data to localStorage as backup
-      try{localStorage.setItem('nph',JSON.stringify(D.progressPhotos||[]));
-          localStorage.setItem('na',JSON.stringify(D.avatar||null));}catch(e){}
-      setSyncDot('ok');
-    }catch(e){setSyncDot('error');console.error('saveToCloud error:', e.code, e.message, e);}
-  },1200);
-}
-function sv(key,val){D[key]=val;saveToCloud()}
 
 // ── HAPTIC ──
 function haptic(type='light'){
@@ -783,19 +779,19 @@ function getWeekKey(o=0){const d=new Date();d.setDate(d.getDate()-getTodayIndex(
 function getISOWeek(d){const D2=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dy=D2.getUTCDay()||7;D2.setUTCDate(D2.getUTCDate()+4-dy);const y=new Date(Date.UTC(D2.getUTCFullYear(),0,1));return Math.ceil((((D2-y)/86400000)+1)/7)}
 function cwk(){return getWeekKey(0)}function pwk(){return getWeekKey(-1)}
 function gds(i){return(D.dayState[cwk()]||{})[i]}
-function sds(i,v){if(!D.dayState[cwk()])D.dayState[cwk()]={};if(D.dayState[cwk()][i]===v)delete D.dayState[cwk()][i];else D.dayState[cwk()][i]=v;saveToCloud();}
+function sds(i,v){if(!D.dayState[cwk()])D.dayState[cwk()]={};if(D.dayState[cwk()][i]===v)delete D.dayState[cwk()][i];else D.dayState[cwk()][i]=v;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ns',D.dayState);}
 function gdn(i){return D.dayNotes[cwk()+'_'+i]||''}
-function sdn(i,t){D.dayNotes[cwk()+'_'+i]=t;saveToCloud();}
+function sdn(i,t){D.dayNotes[cwk()+'_'+i]=t;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nn',D.dayNotes);}
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function dfi(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toISOString().slice(0,10)}
 function gop(i){return D.offPlanLog[dfi(i)+'_'+i]||''}
-function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;saveToCloud();}
+function sop(i,t){D.offPlanLog[dfi(i)+'_'+i]=t;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('nop',D.offPlanLog);}
 // ── SUPPLEMENTS ──
 const SUPPS = [{id:'c',label:'⚡ Creatina'},{id:'o',label:'🐟 Omega-3'},{id:'v',label:'🍊 Vit. C'},{id:'z',label:'🦪 Zinc'}];
 function getSupp(ds){return D.suppLog[ds]||{c:false,o:false,v:false,z:false}}
 window.toggleSupp=function(ds,id){
   const s=getSupp(ds);s[id]=!s[id];D.suppLog[ds]=s;
-  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatarData);sv('nsupp',D.suppLog);sv('nslp',D.sleepLog);
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatarData);sv('nsupp',D.suppLog);
   haptic('light');renderPlan();
 }
 function renderSuppBar(ds){
@@ -805,274 +801,8 @@ function renderSuppBar(ds){
 }
 
 
-function buildWS(){
-  const wk=pwk();if(D.wsSeen[wk])return null;
-  const d=D.dayState[wk]||{};const done=Object.values(d).filter(v=>v==='done').length;
-  if(done===0&&Object.keys(d).length===0)return null;
-  let tp=0,tk=0,cd=0;
-  for(let i=0;i<7;i++){if(d[i]==='done'){tp+=DD[i].prot;tk+=DD[i].kcal;cd++;}}
-  return{wk,done,avgProt:cd?Math.round(tp/cd):0};
-}
-function calcStreak(){
-  const wk=D.dayState[cwk()]||{};let s=0;
-  for(let i=getTodayIndex();i>=0;i--){if(wk[i]==='done')s++;else break;}
-  return s;
-}
-function dayBalance(i){
-  const tdee=(D.profile&&D.profile.tdee)||2300;
-  return DD[i].kcal-(DD[i].train?tdee+150:tdee);
-}
-function calcBMR(p){
-  const e=p.edad||30;
-  return p.sexo==='hombre'
-    ?Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*e)
-    :Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*e);
-}
-function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
-window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ncf',D.coffeeLog);renderPlan();}
-window.subCoffee=function(ds,type){const c=getCoffee(ds);c[type]=Math.max(0,(c[type]||0)-1);D.coffeeLog[ds]=c;if(typeof saveToCloud!=='undefined')saveToCloud();else sv('ncf',D.coffeeLog);renderPlan();}
-function renderCoffeeBar(ds){
-  const c=getCoffee(ds);const total=(c.e||0)+(c.l||0);
-  return '<div class="coffee-bar"><div class="cf-header"><span class="coffee-label">Caf\u00E9s del d\u00EDa</span><span class="coffee-total">'+total+' total</span></div>'
-    +'<div style="display:flex;flex-direction:column;gap:8px">'
-    +'<div class="coffee-row"><span class="coffee-name">Espresso</span><span>\u2615</span>'
-    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'e\')">+</button>'
-    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'e\')">\u2212</button></div>'
-    +'<div class="coffee-row"><span class="coffee-name">Latte</span><span>\uD83E\uDD5B</span>'
-    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'l\')">+</button>'
-    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'l\')">\u2212</button></div>'
-    +'</div></div>';
-}
-function getSleep(ds){return D.sleepLog[ds]||{h:0,q:0}}
-function renderSleepBar(ds){
-  const s=getSleep(ds);
-  const hLabel=s.h===0?'Sin registrar':s.h+'h';
-  const stars=Array.from({length:5},(_,i)=>'<span class="sleep-star'+(i<s.q?' active':'')+'" data-sleep-ds="'+ds+'" data-sleep-q="'+(i+1)+'">\u2605</span>').join('');
-  const vals=[];for(let v=0;v<=12;v+=0.5)vals.push(v);
-  const si=Math.max(0,vals.indexOf(s.h));
-  const items=vals.map((v,i)=>'<div class="sleep-picker-item'+(i===si?' sel':'')+'" data-i="'+i+'">'+v+'</div>').join('');
-  const ty=(1-si)*40;
-  return '<div class="sleep-bar">'
-    +'<div class="sleep-header"><span class="sleep-label">\uD83D\uDE34 Horas de sue\u00F1o</span><span class="sleep-val">'+hLabel+'</span></div>'
-    +'<div class="sleep-picker-wrap">'
-    +'<div class="sleep-picker" data-ds="'+ds+'" data-si="'+si+'">'
-    +'<div class="sleep-picker-line"></div>'
-    +'<div class="sleep-picker-inner" style="transform:translateY('+ty+'px)">'+items+'</div>'
-    +'</div>'
-    +'<span class="sleep-picker-unit">h</span>'
-    +'</div>'
-    +(s.h>0?'<div class="sleep-quality">'+stars+'</div>':'')
-    +'</div>';
-}
-
-
 // ── SAVEPREF ──
 
-
-window.exportPDF = function() {
-  const { jsPDF } = window.jspdf;
-  if (!jsPDF) { alert('jsPDF no disponible'); return; }
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const p = D.profile || {};
-  const pageW = 210, margin = 14, contentW = pageW - margin * 2;
-  let y = margin;
-  const lineH = 6, sectionH = 10;
-  const amber = [200, 155, 60], green = [74, 155, 127], gray = [80, 90, 110], dark = [30, 35, 48], light = [232, 237, 247];
-
-  function checkPage(needed) {
-    if (y + needed > 280) { doc.addPage(); y = margin; }
-  }
-  function header(text) {
-    checkPage(sectionH + 2);
-    doc.setFillColor(...amber);
-    doc.rect(margin, y, contentW, sectionH, 'F');
-    doc.setTextColor(30, 35, 48);
-    doc.setFontSize(10); doc.setFont('helvetica','bold');
-    doc.text(text, margin + 3, y + 6.5);
-    y += sectionH + 2;
-    doc.setTextColor(...light);
-  }
-  function row(label, value, indent) {
-    checkPage(lineH);
-    doc.setFontSize(9); doc.setFont('helvetica','normal');
-    doc.setTextColor(...gray);
-    doc.text((indent ? '  ' : '') + label, margin + (indent?4:0), y);
-    doc.setTextColor(...light);
-    doc.setFont('helvetica','bold');
-    doc.text(String(value), margin + contentW - 2, y, { align: 'right' });
-    doc.setFont('helvetica','normal');
-    y += lineH;
-  }
-  function divider() {
-    checkPage(3);
-    doc.setDrawColor(...dark);
-    doc.setLineWidth(0.2);
-    doc.line(margin, y, margin + contentW, y);
-    y += 3;
-  }
-
-  // ── COVER ──
-  doc.setFillColor(...dark);
-  doc.rect(0, 0, pageW, 297, 'F');
-  doc.setFillColor(...amber);
-  doc.rect(0, 0, pageW, 40, 'F');
-  doc.setTextColor(30,35,48);
-  doc.setFontSize(22); doc.setFont('helvetica','bold');
-  doc.text('Plan Nutricional', pageW/2, 18, { align: 'center' });
-  doc.setFontSize(11); doc.setFont('helvetica','normal');
-  doc.text('Historial completo', pageW/2, 26, { align: 'center' });
-  doc.setTextColor(...light);
-  doc.setFontSize(9);
-  doc.text('Exportado el ' + new Date().toLocaleDateString('es-ES', {day:'numeric',month:'long',year:'numeric'}), pageW/2, 35, { align: 'center' });
-  y = 50;
-
-  // ── DATOS PERSONALES ──
-  doc.setTextColor(...light);
-  header('DATOS PERSONALES');
-  if (p.nombre) row('Nombre', p.nombre);
-  if (p.edad)   row('Edad', p.edad + ' años');
-  if (p.altura) row('Estatura', p.altura + ' cm');
-  if (p.peso)   row('Peso actual', p.peso + ' kg');
-  if (p.grasa)  row('Grasa corporal', p.grasa + '%');
-  if (p.tdee)   row('TDEE', p.tdee + ' kcal');
-  const bmr = p.sexo==='hombre'
-    ? Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*(p.edad||30))
-    : Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*(p.edad||30));
-  row('BMR (Harris-Benedict)', bmr + ' kcal');
-  y += 4;
-
-  // ── REGISTRO DE PESO ──
-  if (D.weightLog && D.weightLog.length) {
-    header('REGISTRO DE PESO');
-    [...D.weightLog].reverse().forEach(e => row(e.date, e.kg + ' kg'));
-    y += 4;
-  }
-
-  // ── HISTÓRICO DEXA ──
-  if (D.dexaLog && D.dexaLog.length) {
-    header('HISTÓRICO DEXA');
-    [...D.dexaLog].reverse().forEach(e => {
-      row(e.date, 'Grasa: '+e.grasa+'% · Magra: '+e.magra+'%');
-    });
-    y += 4;
-  }
-
-  // ── HISTÓRICO DE DÍAS ──
-  const allWeeks = Object.keys(D.dayState || {}).sort().reverse();
-  if (allWeeks.length) {
-    header('HISTÓRICO DE DÍAS');
-    const dayNames = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
-    allWeeks.forEach(wk => {
-      const wkData = D.dayState[wk] || {};
-      const hasDays = Object.keys(wkData).length > 0;
-      if (!hasDays) return;
-      checkPage(lineH + 2);
-      doc.setFontSize(9); doc.setFont('helvetica','bold');
-      doc.setTextColor(...amber);
-      doc.text('Semana ' + wk, margin, y); y += lineH;
-      doc.setFont('helvetica','normal');
-      doc.setTextColor(...light);
-      Object.keys(wkData).forEach(dayIdx => {
-        const status = wkData[dayIdx];
-        const dayName = dayNames[parseInt(dayIdx)] || ('Día ' + dayIdx);
-        const icon = status === 'done' ? '✓' : '✗';
-        const statusLabel = status === 'done' ? 'Completado' : 'No completado';
-        checkPage(lineH);
-        doc.setFontSize(8.5);
-        doc.text('  ' + icon + ' ' + dayName + ': ' + statusLabel, margin, y);
-
-        // Notes
-        const noteKey = wk + '_' + dayIdx;
-        const note = (D.dayNotes || {})[noteKey];
-        if (note) {
-          y += lineH - 1;
-          checkPage(lineH);
-          doc.setTextColor(...gray);
-          doc.setFontSize(7.5);
-          const noteLines = doc.splitTextToSize('    Nota: ' + note, contentW - 10);
-          noteLines.forEach(nl => { checkPage(lineH-1); doc.text(nl, margin, y); y += lineH-1; });
-          doc.setTextColor(...light);
-          doc.setFontSize(8.5);
-        } else {
-          y += lineH;
-        }
-
-        // Daily tracking data — find date for this day
-        // Use offPlanLog keys to find date
-        const offKeys = Object.keys(D.offPlanLog || {}).filter(k => k.endsWith('_'+dayIdx));
-        let dayDate = null;
-        if (offKeys.length) dayDate = offKeys[0].slice(0,10);
-
-        if (dayDate) {
-          // Supplements
-          const supp = (D.suppLog || {})[dayDate] || {};
-          const suppTaken = ['c','o','v','z'].filter(k=>supp[k]);
-          const suppNames = {c:'Creatina',o:'Omega-3',v:'Vit. C',z:'Zinc'};
-          if (suppTaken.length) {
-            checkPage(lineH-1);
-            doc.setTextColor(...green); doc.setFontSize(7.5);
-            doc.text('    Suplementos: ' + suppTaken.map(k=>suppNames[k]).join(', '), margin, y);
-            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
-          }
-          // Hydration
-          const water = (D.waterLog || {})[dayDate] || 0;
-          if (water > 0) {
-            checkPage(lineH-1); doc.setTextColor(...gray); doc.setFontSize(7.5);
-            doc.text('    Hidratación: ' + water + '/4 botellas', margin, y);
-            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
-          }
-          // Coffee
-          const coffee = (D.coffeeLog || {})[dayDate] || {};
-          if ((coffee.e||0)+(coffee.l||0) > 0) {
-            checkPage(lineH-1); doc.setTextColor(...gray); doc.setFontSize(7.5);
-            doc.text('    Cafés: ' + (coffee.e||0) + ' espresso · ' + (coffee.l||0) + ' latte', margin, y);
-            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
-          }
-          // Sleep
-          const sleep = (D.sleepLog || {})[dayDate] || {};
-          if (sleep.h > 0) {
-            checkPage(lineH-1); doc.setTextColor(...gray); doc.setFontSize(7.5);
-            const stars = sleep.q ? ' · Calidad: ' + '★'.repeat(sleep.q) + '☆'.repeat(5-sleep.q) : '';
-            doc.text('    Sueño: ' + sleep.h + 'h' + stars, margin, y);
-            y += lineH-1; doc.setTextColor(...light); doc.setFontSize(8.5);
-          }
-        }
-      });
-      y += 2; divider();
-    });
-  }
-
-  // ── ALIMENTOS DEL PLAN ──
-  header('PLAN NUTRICIONAL SEMANAL');
-  const DD_NAMES = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
-  if (typeof DD !== 'undefined') {
-    DD.forEach((day, di) => {
-      checkPage(sectionH + lineH * 3);
-      doc.setFontSize(9); doc.setFont('helvetica','bold');
-      doc.setTextColor(...amber);
-      doc.text(day.name + (day.train ? ' 🏋️' : '') + ' — ' + day.prot + 'g prot · ' + day.kcal + ' kcal', margin, y);
-      y += lineH;
-      doc.setFont('helvetica','normal');
-      day.meals.forEach(meal => {
-        checkPage(lineH * (meal.ingredients.length + 2));
-        doc.setTextColor(...green); doc.setFontSize(8);
-        doc.text('  ' + meal.type + ': ' + meal.title, margin, y); y += lineH - 1;
-        doc.setTextColor(...gray); doc.setFontSize(7.5);
-        meal.ingredients.forEach(ing => {
-          checkPage(lineH - 1);
-          doc.text('    · ' + ing, margin, y); y += lineH - 1;
-        });
-        y += 1;
-      });
-      y += 3;
-    });
-  }
-
-  // Save
-  const name = (p.nombre || 'historial').toLowerCase().replace(/\s+/g,'_');
-  doc.save('plan_nutricional_' + name + '_' + new Date().toISOString().slice(0,10) + '.pdf');
-  toast('PDF exportado correctamente ✓');
-};
 
 window.confirmReset=function(){
   if(!confirm('¿Seguro? Esto borrará todo el historial de días, suplementos, hidratación, cafés, peso, fotos y DEXA. Tu perfil y datos personales se conservan.'))return;
@@ -1081,7 +811,7 @@ window.confirmReset=function(){
   D.offPlanLog={};D.wsSeen={};D.cart=[];D.objective={pesoObj:null,semanas:null};
   if(typeof saveToCloud!=='undefined')saveToCloud();
   else{sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nwat',D.waterLog);sv('ncf',D.coffeeLog);
-    sv('nsupp',D.suppLog);sv('nslp',D.sleepLog);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nph',D.progressPhotos);
+    sv('nsupp',D.suppLog);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nph',D.progressPhotos);
     sv('nm',D.mealSwaps);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('nc',D.cart);sv('nobj',D.objective);}
   toast('Historial borrado ✓');
   renderProfile();
@@ -1091,15 +821,45 @@ window.confirmReset=function(){
 window.savePref=function(key,val){
   if(!D.prefs)D.prefs={supp:true,water:true,coffee:true};
   D.prefs[key]=val;
-  saveToCloud();
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);
   toast(val?'Activado':'Desactivado');
 };
 
+// ── COFFEE ──
+function getCoffee(ds){return D.coffeeLog[ds]||{e:0,l:0}}
+window.addCoffee=function(ds,type){const c=getCoffee(ds);c[type]=(c[type]||0)+1;D.coffeeLog[ds]=c;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
+window.subCoffee=function(ds,type){const c=getCoffee(ds);c[type]=Math.max(0,(c[type]||0)-1);D.coffeeLog[ds]=c;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
+function renderCoffeeBar(ds){
+  const c=getCoffee(ds);
+  const total=c.e+c.l;
+  const eDots=Array.from({length:Math.max(c.e,1)},(_,i)=>'<div class="coffee-dot'+(i<c.e?' filled-e':'')+'" onclick="addCoffee(\''+ds+'\',\'e\')">☕</div>').join('');
+  const lDots=Array.from({length:Math.max(c.l,1)},(_,i)=>'<div class="coffee-dot'+(i<c.l?' filled-l':'')+'" onclick="addCoffee(\''+ds+'\',\'l\')">🥛</div>').join('');
+  return '<div class="coffee-bar">'
+    +'<div class="coffee-header"><span class="coffee-label">Cafés del dia</span><span class="coffee-total">'+total+' total</span></div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px">'
+    +'<div class="coffee-row"><div class="coffee-type"><span class="coffee-name">Espresso</span><div class="coffee-dots">'+eDots+'</div></div>'
+    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'e\')">+</button>'
+    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'e\')">−</button></div>'
+    +'<div class="coffee-row"><div class="coffee-type"><span class="coffee-name">Latte</span><div class="coffee-dots">'+lDots+'</div></div>'
+    +'<button class="coffee-btn-add" onclick="addCoffee(\''+ds+'\',\'l\')">+</button>'
+    +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'l\')">−</button></div>'
+    +'</div></div>';
+}
+function getTodayIndex(){const d=new Date().getDay();return d===0?6:d-1}
+function getDateForDay(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}
+function calcBMR(p){const e=p.edad||30;return p.sexo==='hombre'?Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*e):Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*e)}
+function calcStreak(){const wk=D.dayState[cwk()]||{};let s=0;for(let i=getTodayIndex();i>=0;i--){if(wk[i]==='done')s++;else break}return s}
+function dayBalance(i){const tdee=(D.profile&&D.profile.tdee)||2300;return DD[i].kcal-(DD[i].train?tdee+150:tdee)}
 
-// ── SLEEP ──
-function getSleep(ds){return D.sleepLog[ds]||{h:0,q:0}}
-// Sleep picker touch handler — registered once after render
-window.dismissWS=function(wk){D.wsSeen[wk]=true;saveToCloud();document.getElementById('weeklySummaryBanner').innerHTML=''}
+// ── WEEKLY SUMMARY ──
+function buildWS(){
+  const wk=pwk();if(D.wsSeen[wk])return null;
+  const d=D.dayState[wk]||{};const done=Object.values(d).filter(v=>v==='done').length;
+  if(done===0&&Object.keys(d).length===0)return null;
+  let tp=0,tk=0,cd=0;for(let i=0;i<7;i++){if(d[i]==='done'){tp+=DD[i].prot;tk+=DD[i].kcal;cd++}}
+  return{wk,done,avgProt:cd?Math.round(tp/cd):0}
+}
+window.dismissWS=function(wk){D.wsSeen[wk]=true;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);document.getElementById('weeklySummaryBanner').innerHTML=''}
 function renderWS(){
   const el=document.getElementById('weeklySummaryBanner');const s=buildWS();if(!s){el.innerHTML='';return}
   const pct=Math.round((s.done/7)*100);
@@ -1121,7 +881,7 @@ window.completeOnboarding=function(){
   if(!tdee||tdee<1000){err.textContent='TDEE inválido';return}
   err.textContent='';
   D.profile={nombre,sexo,edad,altura,peso,grasa,tdee};
-  saveToCloud();updateNames();renderWS();renderPlan();switchScreen('plan');
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateNames();renderWS();renderPlan();switchScreen('plan');
   toast('Bienvenido, '+nombre+' 🎉');
 }
 
@@ -1129,14 +889,14 @@ window.completeOnboarding=function(){
 window.handleAvatarPick=function(input){
   const file=input.files[0];if(!file)return;
   const r=new FileReader();r.onload=e=>{
-    D.avatar=e.target.result;saveToCloud();
+    D.avatar=e.target.result;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);
     const img=document.getElementById('obAvatarImg');const icon=document.getElementById('obAvatarIcon');const ring=document.getElementById('obAvatarRing');
     img.src=D.avatar;img.style.display='block';icon.style.display='none';ring.classList.add('has-photo');
   };r.readAsDataURL(file);
 }
 window.handleProfileAvatarPick=function(input){
   const file=input.files[0];if(!file)return;
-  const r=new FileReader();r.onload=e=>{D.avatar=e.target.result;saveToCloud();updateNames()};r.readAsDataURL(file);
+  const r=new FileReader();r.onload=e=>{D.avatar=e.target.result;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateNames()};r.readAsDataURL(file);
 }
 function updateNames(){
   if(!D.profile)return;
@@ -1164,14 +924,14 @@ window.swapMeal=function(di,mi){
   const alts=[];for(let d=0;d<7;d++){if(d===di)continue;const c=DD[d].meals[mi];if(!c||c.title===orig.title)continue;alts.push({fromDay:d,diff:Math.abs(c.kcal-orig.kcal)})}
   alts.sort((a,b)=>a.diff-b.diff);if(!alts.length)return;
   if(!cur){D.mealSwaps[key]=alts[0]}else{const ci=alts.findIndex(a=>a.fromDay===cur.fromDay);const ni=(ci+1)%alts.length;if(ci===alts.length-1&&ni===0)delete D.mealSwaps[key];else D.mealSwaps[key]=alts[ni]}
-  saveToCloud();renderPlan();
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan();
 }
-window.restoreMeal=function(di,mi){delete D.mealSwaps[swapKey(di,mi)];saveToCloud();renderPlan()}
+window.restoreMeal=function(di,mi){delete D.mealSwaps[swapKey(di,mi)];sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
 function pruneSwaps(){const t=todayStr();Object.keys(D.mealSwaps).forEach(k=>{if(k.slice(0,10)<t)delete D.mealSwaps[k]})}
 
 // ── HYDRATION ──
 function getWater(ds){return D.waterLog[ds]||0}
-window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>idx?idx:idx+1;saveToCloud();renderPlan()}
+window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>idx?idx:idx+1;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPlan()}
 
 // ── PLAN ──
 window.changeDay=function(dir){currentDay=(currentDay+dir+7)%7;renderPlan()}
@@ -1228,7 +988,6 @@ function renderPlan(){
   const hydrationHTML=pr.water!==false?'<div class="hydration-bar"><div class="hydration-header"><span class="hydration-label">Hidrataci\u00F3n (500ml)</span><span class="hydration-count">'+wc+'/4 botellas</span></div><div class="hydration-glasses">'+glH+'</div></div>':'';
   const coffeeHTML=renderCoffeeBar(ds);
   const suppHTML=renderSuppBar(ds);
-  const sleepHTML=(pr.sleep!==false)?renderSleepBar(ds):'';
   const mH=DD[currentDay].meals.map((m,i)=>{
     const sw=getSwapped(currentDay,i);const meal=sw||m;const isS=!!sw;
     const iH=meal.ingredients.map(ing=>{const inC=isInCart(ing);const safeIng=ing.replace(/"/g,'&quot;');return'<li><span class="ing-text">'+ing+'</span><button class="ing-cart-btn'+(inC?' in-cart':'')+'" data-ing="'+safeIng+'">'+(inC?'✓ en lista':'+ lista')+'</button></li>'}).join('');
@@ -1239,7 +998,8 @@ function renderPlan(){
     ?'<div class="day-note-wrap"><textarea id="dayNoteInput" class="day-note-input" rows="2" placeholder="\u00BFQu\u00E9 pas\u00F3? Anota el motivo..." oninput="saveNote()">'+note+'</textarea></div>'
     :'';
   document.getElementById('dayContent').innerHTML='<div class="day-content">'
-    +'<div style="display:flex;justify-content:center">'+(day.train?(isWorkoutDone(currentDay)?'<div class="train-badge workout-done" data-workout-day="'+currentDay+'" style="cursor:pointer">✓ Entreno completado</div>':'<div class="train-badge" data-workout-day="'+currentDay+'" style="cursor:pointer">🏋️ Día de entreno</div>'):'<div class="rest-badge">💤 Día de descanso</div>')+'</div>'
+    +'<div style="display:flex;justify-content:center">'+(day.train?(isWorkoutDone(currentDay)?'<div class="train-badge workout-done" data-workout-day="'+currentDay+'" style="cursor:pointer">\u2713 Entreno completado</div>':'<div class="train-badge" data-workout-day="'+currentDay+'" style="cursor:pointer">\uD83C\uDFCB\uFE0F D\u00EDa de entreno</div>'):'<div class="rest-badge">\uD83D\uDCA4 D\u00EDa de descanso</div>')+''
+    +'</div>'
     +'<div class="day-complete-wrap">'
     +'<button class="btn-complete'+(isDone?' done':'')+'" onclick="markDay(\'done\')">'+(isDone?'\u2705':'\u25CB')+' Completado</button>'
     +'<button class="btn-complete'+(isFailed?' failed':'')+'" onclick="markDay(\'failed\')">'+(isFailed?'\u274C':'\u25CB')+' No completado</button>'
@@ -1248,7 +1008,6 @@ function renderPlan(){
     +(pr.supp!==false?suppHTML:'')
     +hydrationHTML
     +(pr.coffee!==false?coffeeHTML:'')
-    +sleepHTML
     +'<div class="divider"></div>'
     +'<div class="meals">'+mH+'</div>'
     +'<div class="divider" style="margin-top:16px"></div>'
@@ -1293,7 +1052,6 @@ function renderProfile(){
   const ps=document.getElementById('pref-supp');if(ps)ps.checked=pr2.supp!==false;
   const pw=document.getElementById('pref-water');if(pw)pw.checked=pr2.water!==false;
   const pc2=document.getElementById('pref-coffee');if(pc2)pc2.checked=pr2.coffee!==false;
-  const psl=document.getElementById('pref-sleep');if(psl)psl.checked=pr2.sleep!==false;
 }
 window.saveProfile=function(){
   const nombre=document.getElementById('f-nombre').value.trim();
@@ -1301,13 +1059,13 @@ window.saveProfile=function(){
   const sexo=document.getElementById('f-sexo').value;const edad=parseInt(document.getElementById('f-edad').value);
   const grasa=parseFloat(document.getElementById('f-grasa').value);const tdee=parseInt(document.getElementById('f-tdee').value);
   if(!nombre||!altura||!peso||!edad||!grasa||!tdee)return;
-  D.profile={nombre,altura,peso,sexo,edad,grasa,tdee};saveToCloud();renderProfile();
+  D.profile={nombre,altura,peso,sexo,edad,grasa,tdee};sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderProfile();
   toast('Perfil guardado ✓');
   const c=document.getElementById('saveConfirm');c.textContent='';  
 }
 window.saveObjective=function(){
   const po=parseFloat(document.getElementById('obj-peso').value);const s=parseInt(document.getElementById('obj-semanas').value);
-  D.objective={pesoObj:po||null,semanas:s||null};saveToCloud();renderObjProjection();
+  D.objective={pesoObj:po||null,semanas:s||null};sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderObjProjection();
 }
 function renderObjProjection(){
   const el=document.getElementById('objProjection');if(!el||!D.objective.pesoObj||!D.profile){if(el)el.innerHTML='';return}
@@ -1323,10 +1081,10 @@ function renderObjProjection(){
 window.addWeightEntry=function(){
   const kg=parseFloat(document.getElementById('w-peso').value);const date=document.getElementById('w-fecha').value;if(!kg||!date)return;
   D.weightLog=D.weightLog.filter(e=>e.date!==date);D.weightLog.push({date,kg});D.weightLog.sort((a,b)=>a.date.localeCompare(b.date));
-  saveToCloud();document.getElementById('w-peso').value='';renderWeightLog();
+  sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);document.getElementById('w-peso').value='';renderWeightLog();
   toast('Peso registrado ✓');
 }
-window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);saveToCloud();renderWeightLog()}
+window.deleteWeightEntry=function(date){D.weightLog=D.weightLog.filter(e=>e.date!==date);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderWeightLog()}
 function renderWeightLog(){
   const chart=document.getElementById('weightChart');const list=document.getElementById('weightList');
   if(!D.weightLog.length){
@@ -1383,11 +1141,11 @@ window.addProgressPhoto=function(input){
   const r=new FileReader();r.onload=e=>{
     D.progressPhotos.unshift({date,data:e.target.result});
     if(D.progressPhotos.length>30)D.progressPhotos=D.progressPhotos.slice(0,30);
-    saveToCloud();input.value='';renderPhotos();
+    sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);input.value='';renderPhotos();
     toast('Foto de progreso guardada ✓');
   };r.readAsDataURL(file);
 }
-window.deletePhoto=function(idx){D.progressPhotos.splice(idx,1);saveToCloud();renderPhotos()}
+window.deletePhoto=function(idx){D.progressPhotos.splice(idx,1);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderPhotos()}
 window.openLightbox=function(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open')}
 window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('open')}
 function renderPhotos(){
@@ -1398,11 +1156,11 @@ function renderPhotos(){
 // ── DEXA ──
 window.addDexaEntry=function(){
   const date=document.getElementById('d-fecha').value;const grasa=parseFloat(document.getElementById('d-grasa').value);const magra=parseFloat(document.getElementById('d-magra').value);
-  if(!date||!grasa||!magra)return;D.dexaLog=D.dexaLog.filter(e=>e.date!==date);D.dexaLog.push({date,grasa,magra});D.dexaLog.sort((a,b)=>a.date.localeCompare(b.date));saveToCloud();
+  if(!date||!grasa||!magra)return;D.dexaLog=D.dexaLog.filter(e=>e.date!==date);D.dexaLog.push({date,grasa,magra});D.dexaLog.sort((a,b)=>a.date.localeCompare(b.date));sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);
   document.getElementById('d-grasa').value='';document.getElementById('d-magra').value='';renderDexaLog();
   toast('Escáner DEXA guardado ✓');
 }
-window.deleteDexaEntry=function(date){D.dexaLog=D.dexaLog.filter(e=>e.date!==date);saveToCloud();renderDexaLog()}
+window.deleteDexaEntry=function(date){D.dexaLog=D.dexaLog.filter(e=>e.date!==date);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderDexaLog()}
 function renderDexaLog(){
   const el=document.getElementById('dexaList');if(!el)return;
   if(!D.dexaLog.length){el.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px 0">Aún no hay escáneres.</div>';return}
@@ -1427,19 +1185,18 @@ function updateCartButtons(){
     btn.textContent=inCart?'✓ en lista':'+ lista';
   });
   updateCartBadge();
-  setTimeout(initSleepPickers,0);
 }
 
 function isInCart(n){return D.cart.some(i=>i.name===n)}
 function decodeIng(n){try{return decodeURIComponent(n)}catch(e){return n}}
-window.toggleCartItem=function(raw){const n=decodeIng(raw);const i=D.cart.findIndex(i=>i.name===n);if(i>=0){D.cart.splice(i,1);}else{D.cart.push({name:n,checked:false});toast('✓ Añadido a la lista');}saveToCloud();updateCartButtons();}
+window.toggleCartItem=function(raw){const n=decodeIng(raw);const i=D.cart.findIndex(i=>i.name===n);if(i>=0){D.cart.splice(i,1);}else{D.cart.push({name:n,checked:false});toast('✓ Añadido a la lista');}sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateCartButtons();}
 function updateCartBadge(){const b=document.getElementById('cartBadge');if(D.cart.length>0){b.textContent=D.cart.length>99?'99+':D.cart.length;b.classList.add('visible')}else b.classList.remove('visible')}
 window.openCart=function(){renderCartPanel();document.getElementById('cartOverlay').classList.add('open')}
 window.closeCart=function(){document.getElementById('cartOverlay').classList.remove('open')}
 window.closeCartOnBg=function(e){if(e.target===document.getElementById('cartOverlay'))closeCart()}
-window.toggleCartCheck=function(n){const i=D.cart.find(i=>i.name===n);if(i){i.checked=!i.checked;saveToCloud();renderCartPanel()}}
-window.removeFromCart=function(n){D.cart=D.cart.filter(i=>i.name!==n);saveToCloud();updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
-window.clearCart=function(){D.cart=[];saveToCloud();updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
+window.toggleCartCheck=function(n){const i=D.cart.find(i=>i.name===n);if(i){i.checked=!i.checked;sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);renderCartPanel()}}
+window.removeFromCart=function(n){D.cart=D.cart.filter(i=>i.name!==n);sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
+window.clearCart=function(){D.cart=[];sv('ns',D.dayState);sv('nn',D.dayNotes);sv('nc',D.cart);sv('nw',D.weightLog);sv('nd',D.dexaLog);sv('nm',D.mealSwaps);sv('nwat',D.waterLog);sv('nph',D.progressPhotos);sv('nobj',D.objective);sv('nop',D.offPlanLog);sv('nws',D.wsSeen);sv('ncf',D.coffeeLog);sv('np',D.profile);sv('na',D.avatar);sv('nsupp',D.suppLog);sv('nprefs',D.prefs);updateCartBadge();renderCartPanel();if(currentScreen==='plan')renderPlan()}
 window.copyCart=function(){
   const u=D.cart.filter(i=>!i.checked).map(i=>'- '+i.name);const c=D.cart.filter(i=>i.checked).map(i=>'ok '+i.name);
   navigator.clipboard.writeText(['Lista de la compra','',...u,...(c.length?['','Ya tengo:',...c]:[])].join('\n')).then(()=>{const b=document.querySelector('.cart-copy');b.textContent='¡Copiado!';setTimeout(()=>b.textContent='Copiar lista',1800)})
@@ -1469,88 +1226,18 @@ document.addEventListener('touchend',e=>{
 },{passive:true});
 
 
-// ══════════════════════════════════════════════════════
 // AUTH — defined here so they have access to auth/db
-// ══════════════════════════════════════════════════════
-window.signInWithGoogle = async function() {
-  try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(provider);
-  } catch(e) {
-    console.error('signInWithGoogle popup error:', e.code, e.message);
-    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      try {
-        const provider2 = new GoogleAuthProvider();
-        await signInWithRedirect(auth, provider2);
-      } catch(e2) {
-        console.error('redirect fallback error:', e2);
-        alert('Error al iniciar sesion: ' + e2.message);
-      }
-    } else {
-      alert('Error al iniciar sesion: ' + e.message);
-    }
-  }
-};
 
-window.signOut = async function() {
-  if (unsub) { unsub(); unsub = null; }
-  await auth.signOut();
-  D = { profile:null, avatar:null, dayState:{}, dayNotes:{}, cart:[], weightLog:[],
-        dexaLog:[], mealSwaps:{}, waterLog:{}, progressPhotos:[],
-        objective:{pesoObj:null,semanas:null}, offPlanLog:{}, wsSeen:{}, coffeeLog:{}, suppLog:{}, sleepLog:{}, prefs:{supp:true,water:true,coffee:true,sleep:true} };
-  uid = null;
-  window.switchScreen('login');
-};
 
-// ── AUTH FLOW ──
-auth.getRedirectResult()
-  .then(result => { if (result) console.log('redirect result ok:', result.user.email); })
-  .catch(e => console.error('getRedirectResult error:', e));
 
-auth.onAuthStateChanged(async function(user) {
-  console.log('auth state:', user ? user.email : 'signed out');
-  if (user) {
-    uid = user.uid;
-    try { await loadFromCloud(); } catch(e) { console.error('loadFromCloud:', e); }
-    if (!D.profile) {
-      const gName = user.displayName ? user.displayName.split(' ')[0] : '';
-      const el = document.getElementById('ob-nombre');
-      if (el) el.value = gName;
-      const wn = document.getElementById('ob-welcome-name');
-      if (wn) wn.textContent = gName ? ', ' + gName : '';
-      if (user.photoURL) {
-        D.avatar = user.photoURL;
-        const img  = document.getElementById('obAvatarImg');
-        const icon = document.getElementById('obAvatarIcon');
-        const ring = document.getElementById('obAvatarRing');
-        if (img)  { img.src = D.avatar; img.style.display = 'block'; }
-        if (icon) icon.style.display = 'none';
-        if (ring) ring.classList.add('has-photo');
-      }
-      window.switchScreen('onboarding');
-    } else {
-      renderWS();
-      renderPlan();
-      window.switchScreen('plan');
-    }
-  } else {
-    uid = null;
-    window.switchScreen('login');
-  }
-});
+
+
 
 window.goToDay=function(i){currentDay=i;renderPlan()};
 window.renderPlan=renderPlan;
 
 // Single global listener for dynamic elements - registered once only
 document.addEventListener('click', function(e) {
-  var sleepStar = e.target.closest('[data-sleep-q]');
-  if (sleepStar) {
-    var ds2 = sleepStar.getAttribute('data-sleep-ds');
-    var q = parseInt(sleepStar.getAttribute('data-sleep-q'));
-    window.setSleepQuality(ds2, q);
-    return;
-  }
   var workoutEl = e.target.closest('[data-workout-day]');
   if (workoutEl) {
     window.toggleWorkout(parseInt(workoutEl.getAttribute('data-workout-day')));
@@ -1586,7 +1273,6 @@ document.addEventListener('click', function(e) {
 
 
 pruneSwaps();
-
 
 
 
