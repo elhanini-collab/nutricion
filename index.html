@@ -76,7 +76,7 @@ body{display:flex;justify-content:center;min-height:100vh;padding:0 0 48px}
 .header-right{display:flex;align-items:center;gap:8px}
 .cart-btn{width:40px;height:40px;border-radius:50%;background:var(--surface);border:.5px solid var(--border);color:var(--text-2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .15s;position:relative}
 .cart-btn:hover{background:var(--card)}
-.cart-badge{position:absolute;top:-3px;right:-3px;background:var(--amber);color:#171B23;font-size:9px;font-weight:500;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center}
+.cart-badge{position:absolute;top:-3px;right:-3px;background:var(--amber);color:#171B23;font-size:9px;font-weight:500;width:22px;height:22px;border-radius:50%;display:none;align-items:center;justify-content:center}
 .cart-badge.visible{display:flex}
 /* weekly summary */
 .weekly-summary{background:var(--surface);border:.5px solid var(--amber);border-radius:14px;padding:14px 16px;margin-bottom:22px;animation:fadeUp .3s ease}
@@ -672,58 +672,53 @@ auth.onAuthStateChanged(async function(user) {
 
 // APP CODE
 const DD=[
-  {name:'Lunes',short:'L',train:false,prot:198.1,kcal:2252,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,
-     ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
-     note:'Creatina disuelta en agua'},
-    {type:'Tentempié',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:377,prot:34,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)'],
+  // ── SEMANA 1 ──
+  {name:'Lunes',short:'L',train:false,prot:186.6,kcal:2297,week:1,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y zumo de arándanos',kcal:406,prot:25.4,
+     ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Zumo de arándanos (200ml)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua.'},
+    {type:'Tentempié',icon:'🐟',title:'Sardinas con tomate cherry',kcal:217,prot:24,
+     ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (100g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Pollo con arroz y guisantes',kcal:551,prot:45,
+     ingredients:['Pechuga de pollo Extra Tierna (150g)','Arroz blanco hervido (167g)','Guisantes (100g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:377,prot:34,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)'],
      note:'Sándwich pavo + huevo frito + cottage'},
-    {type:'Comida',icon:'🍽️',title:'Pollo a la plancha con arroz y brócoli',kcal:679,prot:56.1,
-     ingredients:['Pechuga de pollo Extra Tierna (200g)','Arroz blanco hervido (167g)','Brócoli (200g)','Aceite de oliva (20g)'],
-     note:null},
-    {type:'Merienda',icon:'🐟',title:'Sardinas con tomate cherry y frutos secos',kcal:305,prot:24.5,
-     ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (100g)','Frutos secos (25g)'],
-     note:null},
-    {type:'Cena',icon:'🌙',title:'Higaditos con habas y espárragos',kcal:486,prot:56.1,
-     ingredients:['Higaditos de pollo (250g)','Habas baby (150g)','Espárragos (100g)','Aceite de oliva (10g)'],
-     note:'Higaditos salteados con habas y espárragos'}
+    {type:'Cena',icon:'🌙',title:'Higaditos con patatas air-fryer y habas',kcal:745,prot:58.2,
+     ingredients:['Higaditos de pollo (250g)','Patata frita air-fryer (185g)','Habas baby (150g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Martes',short:'M',train:true,prot:188.4,kcal:2204,meals:[
+  {name:'Martes',short:'M',train:true,prot:189.7,kcal:2227,week:1,meals:[
     {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frambuesas',kcal:384,prot:25.9,
      ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
      note:'Creatina en agua. Zumo reservado para el batido.'},
     {type:'Tentempié',icon:'💪',title:'Whey + zumo de naranja y frutos secos',kcal:352,prot:28,
      ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (25g)'],
      note:'Batido post-entreno en zumo de naranja'},
-    {type:'Comida',icon:'🍽️',title:'Arroz con gambas y espárragos',kcal:579,prot:41.9,
-     ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Espárrago verde troceado (150g)','Aceite de oliva (20g)'],
-     note:null},
-    {type:'Merienda',icon:'🥪',title:'Sándwich B: Pavo + Clara + Cottage',kcal:353,prot:39.4,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Loncha de Pavo ×4 (48g)','Clara de huevo (80g)','Queso Cottage (80g)','Café con leche (250ml)'],
-     note:'Sándwich pavo + clara + cottage'},
+    {type:'Comida',icon:'🍽️',title:'Gambas con arroz y cebolla',kcal:452,prot:37.7,
+     ingredients:['Gambas medianas (220g)','Arroz blanco hervido (167g)','Cebolla roja (20g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Sándwich B: Pavo + Clara + Cottage',kcal:503,prot:44.9,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Clara de huevo (80g)','Queso Cottage (80g)','Café con leche (250ml)','Frutos secos (25g)'],
+     note:'Sándwich pavo + clara + cottage + frutos secos'},
     {type:'Cena',icon:'🌙',title:'Filete de ternera con pisto',kcal:536,prot:53.2,
-     ingredients:['Fileta ternera normal (250g)','Pisto de verduras (200g)','Aceite de oliva (10g)'],
-     note:null}
+     ingredients:['Fileta ternera normal (250g)','Pisto de verduras (200g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Miércoles',short:'X',train:false,prot:186.4,kcal:2208,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,
-     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],
-     note:'Tortilla con tostada. Creatina en agua.'},
-    {type:'Tentempié',icon:'🐟',title:'Caballa con tomate cherry',kcal:218,prot:26.4,
-     ingredients:['Lata de caballa en tomate (120g)','Tomate cherry (100g)','Café con leche (250ml)'],
-     note:null},
-    {type:'Comida',icon:'🥗',title:'Ensalada mediterránea con aliño de yogur',kcal:500,prot:41,
+  {name:'Miércoles',short:'X',train:false,prot:178.5,kcal:2228,week:1,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada, guacamole y cottage',kcal:518,prot:43.9,
+     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Guacamole (25g)','Queso Cottage (80g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua.'},
+    {type:'Tentempié',icon:'🥪',title:'Sándwich C: Huevo Duro + Guacamole',kcal:437,prot:20.8,
+     ingredients:['Pan Espelta ×2 (64g)','Guacamole (25g)','Huevo duro machacado (60g)','Frutos secos (25g)'],
+     note:'Sin pescado.'},
+    {type:'Comida',icon:'🥗',title:'Ensalada mediterránea',kcal:500,prot:41,
      ingredients:['Lechuga Iceberg (100g)','Tomate cherry (100g)','Cebolla roja (20g)','Caballa en tomate (120g)','Garbanzos en ensalada (100g)','Queso Feta (50g)','Remolacha (80g)','Yogur Griego Light aliño (50g)'],
-     note:'Ensalada mediterránea con aliño de yogur griego'},
-    {type:'Merienda',icon:'🥪',title:'Sándwich C: Guacamole + Huevo Duro',kcal:587,prot:26.3,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Guacamole (25g)','Huevo duro (60g)','Frutos secos (50g)'],
-     note:'Sándwich guacamole + huevo duro + frutos secos'},
-    {type:'Cena',icon:'🌙',title:'Muslos al horno con coliflor y guisantes',kcal:502,prot:58.9,
-     ingredients:['Muslos de pollo al horno (250g)','Coliflor (100g)','Guisantes (100g)','Aceite de oliva (10g)'],
-     note:null}
+     note:'⚠️ Caballa en ensalada → resto del día SIN caballa ni sardinas'},
+    {type:'Merienda',icon:'🫐',title:'Yogur con frutos rojos, frutos secos y sandía',kcal:322,prot:17.1,
+     ingredients:['Yogur Griego Hacendado Light (150g)','Moras (50g)','Frutos secos (25g)','Sandía (200g)'],
+     note:'Sin pescado.'},
+    {type:'Cena',icon:'🌙',title:'Muslos con brócoli y coliflor',kcal:452,prot:55.7,
+     ingredients:['Muslos de pollo al horno (250g)','Brócoli (100g)','Coliflor (100g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Jueves',short:'J',train:true,prot:194.2,kcal:2263,meals:[
+  {name:'Jueves',short:'J',train:true,prot:194.2,kcal:2263,week:1,meals:[
     {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y moras',kcal:390,prot:26.9,
      ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
      note:'Creatina en agua. Zumo reservado para el batido.'},
@@ -731,65 +726,164 @@ const DD=[
      ingredients:['Whey Protein (30g) + Zumo antioxidante (200ml)','Frutos secos (25g)'],
      note:'Batido post-entreno en zumo antioxidante'},
     {type:'Comida',icon:'🍽️',title:'Hígado encebollado con arroz y coles',kcal:688,prot:56.5,
-     ingredients:['Hígado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],
-     note:null},
+     ingredients:['Hígado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
     {type:'Merienda',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:440,prot:39,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)','Café con leche (250ml)'],
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)','Café con leche (250ml)'],
      note:'Sándwich pavo + huevo frito + cottage'},
     {type:'Cena',icon:'🌙',title:'Ternera marinada con espinacas a la crema',kcal:416,prot:43.8,
-     ingredients:['Fileta extra tierna marinada ternera (200g)','Espinacas a la crema (200g)','Aceite de oliva (10g)'],
-     note:null}
+     ingredients:['Fileta extra tierna marinada ternera (200g)','Espinacas a la crema (200g)','Aceite de oliva (10g)'],note:null}
   ]},
-  {name:'Viernes',short:'V',train:false,prot:170.5,kcal:2164,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,
-     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],
-     note:'Tortilla con tostada. Creatina en agua.'},
+  {name:'Viernes',short:'V',train:false,prot:183.9,kcal:2287,week:1,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada, guacamole y cottage',kcal:518,prot:43.9,
+     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Guacamole (25g)','Queso Cottage (80g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua.'},
     {type:'Tentempié',icon:'🐟',title:'Sardinas con tomate cherry',kcal:217,prot:24,
-     ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (100g)','Café con leche (250ml)'],
-     note:null},
-    {type:'Comida',icon:'🍽️',title:'Crema de lentejas con pechuga de pollo',kcal:551,prot:62.1,
-     ingredients:['Crema de lentejas (350g)','Pechuga de pollo (200g)','Aceite de oliva (10g)'],
-     note:null},
-    {type:'Merienda',icon:'🥪',title:'Sándwich C: Guacamole + Huevo Duro',kcal:437,prot:20.8,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Guacamole (25g)','Huevo duro (60g)','Frutos secos (25g)'],
-     note:null},
-    {type:'Cena',icon:'🌙',title:'Merluza con espárragos y brócoli',kcal:558,prot:29.8,
-     ingredients:['Merluza al huevo (200g)','Espárragos (100g)','Brócoli (200g)','Aceite de oliva (10g)'],
-     note:null}
+     ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (100g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Crema de lentejas con pechuga de pollo',kcal:497,prot:50.6,
+     ingredients:['Crema de lentejas (350g)','Pechuga de pollo Extra Tierna (150g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Sándwich B: Pavo + Clara + Cottage',kcal:441,prot:39.9,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Clara de huevo (80g)','Queso Cottage (80g)','Frutos secos (25g)'],
+     note:'Sándwich pavo + clara + cottage + frutos secos'},
+    {type:'Cena',icon:'🌙',title:'Merluza con patatas air-fryer',kcal:614,prot:25.6,
+     ingredients:['Merluza al huevo (200g)','Patata frita air-fryer (155g)'],note:null}
   ]},
-  {name:'Sábado',short:'S',train:false,prot:196.9,kcal:2250,meals:[
+  {name:'Sábado',short:'S',train:false,prot:160.7,kcal:2191,week:1,meals:[
     {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,
      ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
-     note:'Creatina en agua.'},
+     note:'Creatina en agua'},
     {type:'Tentempié',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,
-     ingredients:['Lata de caballa en tomate (120g)','Pan Espelta 1 rebanada (32g)','Café con leche (250ml)'],
-     note:null},
-    {type:'Comida',icon:'🌯',title:'Taco francés / Burrito de pollo',kcal:582,prot:40.1,
-     ingredients:['Pechuga de pollo (70g)','Queso Cheddar ×2 lonchas (50g)','Tortita de avena (60g)','Salsa burguer (30g)','Tomate cherry (100g)','Lechuga Iceberg (100g)'],
-     note:'🧀 Cheddar solo aquí. Taco francés con pollo, cheddar, tortita y salsa burguer.'},
-    {type:'Merienda',icon:'🥪',title:'Sándwich B: Pavo + Clara + Cottage',kcal:291,prot:34.4,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Loncha de Pavo ×4 (48g)','Clara de huevo (80g)','Queso Cottage (80g)'],
-     note:null},
-    {type:'Cena',icon:'🌙',title:'Pollo con patatas air-fryer y espárragos',kcal:707,prot:66.5,
-     ingredients:['Pechuga de pollo Extra Tierna (250g)','Patata frita air-fryer (200g)','Espárrago verde troceado (150g)','Aceite de oliva (10g)'],
-     note:null}
+     ingredients:['Lata de caballa en tomate (120g)','Pan Espelta 1 rebanada (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🌯',title:'Taco francés / Burrito de pollo',kcal:478,prot:40.6,
+     ingredients:['Pechuga de pollo (70g)','Queso Cheddar ×2 lonchas (50g)','Tortita de avena (60g)','Salsa yogur griego light (50g)'],
+     note:'🧀 Cheddar SOLO aquí.'},
+    {type:'Merienda',icon:'🍉',title:'Sandía con frutos secos, cottage y pavo',kcal:302,prot:18.7,
+     ingredients:['Sandía (200g)','Frutos secos (25g)','Queso Cottage (80g)','Loncha de Pavo ×1 (12g)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Pollo Crispy con patatas y brócoli',kcal:742,prot:45.4,
+     ingredients:['Pollo marinado rebozado Crispy (250g)','Patata frita air-fryer (100g)','Brócoli (200g)'],note:null}
   ]},
-  {name:'Domingo',short:'D',train:true,prot:185,kcal:2292,meals:[
-    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada',kcal:401,prot:33.8,
-     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+  {name:'Domingo',short:'D',train:true,prot:193.9,kcal:2274,week:1,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada, guacamole y cottage',kcal:518,prot:43.9,
+     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Guacamole (25g)','Queso Cottage (80g)','Café con leche (250ml)','Agua + Creatina (4g)'],
      note:'Creatina en agua. Zumo reservado para el batido.'},
     {type:'Tentempié',icon:'💪',title:'Whey + zumo de naranja y frutos secos',kcal:352,prot:28,
      ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (25g)'],
      note:'Batido post-entreno en zumo de naranja'},
-    {type:'Comida',icon:'🥗',title:'Ensalada mediterránea con aliño de yogur',kcal:500,prot:41,
+    {type:'Comida',icon:'🥗',title:'Ensalada mediterránea',kcal:500,prot:41,
      ingredients:['Lechuga Iceberg (100g)','Tomate cherry (100g)','Cebolla roja (20g)','Caballa en tomate (120g)','Garbanzos en ensalada (100g)','Queso Feta (50g)','Remolacha (80g)','Yogur Griego Light aliño (50g)'],
-     note:'Ensalada mediterránea con aliño de yogur griego'},
+     note:'⚠️ Caballa en ensalada → resto del día SIN caballa ni sardinas'},
     {type:'Merienda',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:440,prot:39,
-     ingredients:['Pan Espelta ×2 rebanadas (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)','Café con leche (250ml)'],
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)','Café con leche (250ml)'],
      note:'Sándwich pavo + huevo frito + cottage'},
-    {type:'Cena',icon:'🌙',title:'Macarrones boloñesa con pisto',kcal:600,prot:43.2,
-     ingredients:['Carne picada de Ternera (200g)','Macarrones hervidos (80g)','Pisto de verduras (200g)'],
-     note:'Sin aceite extra'}
+    {type:'Cena',icon:'🌙',title:'Ternera picada con guisantes',kcal:464,prot:42,
+     ingredients:['Carne picada de Ternera (200g)','Guisantes (100g)'],note:null}
+  ]},
+  // ── SEMANA 2 ──
+  {name:'Lunes',short:'L',train:false,prot:164.9,kcal:2223,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,
+     ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua'},
+    {type:'Tentempié',icon:'🐟',title:'Sardinas con tomate cherry',kcal:217,prot:24,
+     ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (100g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Lentejas con pechuga de pollo',kcal:728,prot:59.2,
+     ingredients:['Ración de Lentejas (450g)','Pechuga de pollo Extra Tierna (100g)','Cebolla roja (20g)','Aceite de oliva (10g)'],
+     note:'Ración completa de lentejas con pechuga (1x en 2 semanas)'},
+    {type:'Merienda',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:377,prot:34,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)'],
+     note:'Sándwich pavo + huevo frito + cottage'},
+    {type:'Cena',icon:'🌙',title:'Filete ruso con patatas y pisto',kcal:496,prot:20.3,
+     ingredients:['Filete ruso (94g)','Patata frita air-fryer (50g)','Pisto de verduras (200g)','Aceite de oliva (10g)'],note:null}
+  ]},
+  {name:'Martes',short:'M',train:true,prot:184.5,kcal:2224,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y zumo de arándanos',kcal:406,prot:25.4,
+     ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Zumo de arándanos (200ml)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua. Zumo reservado para el batido.'},
+    {type:'Tentempié',icon:'💪',title:'Whey + zumo de naranja y frutos secos',kcal:352,prot:28,
+     ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (25g)'],
+     note:'Batido post-entreno en zumo de naranja'},
+    {type:'Comida',icon:'🍽️',title:'Pechuga con arroz y guisantes',kcal:551,prot:45,
+     ingredients:['Pechuga de pollo Extra Tierna (150g)','Arroz blanco hervido (167g)','Guisantes (100g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Sándwich B: Pavo + Clara + Cottage',kcal:503,prot:44.9,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Clara de huevo (80g)','Queso Cottage (80g)','Café con leche (250ml)','Frutos secos (25g)'],
+     note:'Sándwich pavo + clara + cottage + frutos secos'},
+    {type:'Cena',icon:'🌙',title:'Ternera marinada con pisto',kcal:410,prot:41.2,
+     ingredients:['Fileta extra tierna marinada ternera (200g)','Pisto de verduras (200g)','Aceite de oliva (10g)'],note:null}
+  ]},
+  {name:'Miércoles',short:'X',train:false,prot:171.1,kcal:2277,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada, guacamole y cottage',kcal:518,prot:43.9,
+     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Guacamole (25g)','Queso Cottage (80g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua.'},
+    {type:'Tentempié',icon:'🥪',title:'Sándwich C: Huevo Duro + Guacamole',kcal:437,prot:20.8,
+     ingredients:['Pan Espelta ×2 (64g)','Guacamole (25g)','Huevo duro machacado (60g)','Frutos secos (25g)'],
+     note:'Sin pescado.'},
+    {type:'Comida',icon:'🥗',title:'Ensalada mediterránea',kcal:500,prot:41,
+     ingredients:['Lechuga Iceberg (100g)','Tomate cherry (100g)','Cebolla roja (20g)','Caballa en tomate (120g)','Garbanzos en ensalada (100g)','Queso Feta (50g)','Remolacha (80g)','Yogur Griego Light aliño (50g)'],
+     note:'⚠️ Caballa en ensalada → resto del día SIN caballa ni sardinas'},
+    {type:'Merienda',icon:'🫐',title:'Yogur con frutos rojos y frutos secos',kcal:262,prot:15.9,
+     ingredients:['Yogur Griego Hacendado Light (150g)','Moras (50g)','Frutos secos (25g)'],
+     note:'Sin pescado.'},
+    {type:'Cena',icon:'🌙',title:'Bolitas de pollo con patatas y espárragos',kcal:561,prot:49.5,
+     ingredients:['Bolitas de pollo Hacendado (250g)','Patata frita air-fryer (100g)','Espárragos (100g)'],note:null}
+  ]},
+  {name:'Jueves',short:'J',train:true,prot:187.8,kcal:2297,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frambuesas',kcal:384,prot:25.9,
+     ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua. Zumo reservado para el batido.'},
+    {type:'Tentempié',icon:'💪',title:'Whey + zumo antioxidante y frutos secos',kcal:328,prot:28,
+     ingredients:['Whey Protein (30g) + Zumo antioxidante (200ml)','Frutos secos (25g)'],
+     note:'Batido post-entreno en zumo antioxidante'},
+    {type:'Comida',icon:'🍽️',title:'Hígado encebollado con arroz y coles',kcal:688,prot:56.5,
+     ingredients:['Hígado de ternera (250g)','Arroz blanco hervido (167g)','Coles de bruselas (100g)','Aceite de oliva (10g)'],note:null},
+    {type:'Merienda',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:440,prot:39,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)','Café con leche (250ml)'],
+     note:'Sándwich pavo + huevo frito + cottage'},
+    {type:'Cena',icon:'🌙',title:'Gambas con patatas air-fryer y espárragos',kcal:457,prot:38.4,
+     ingredients:['Gambas medianas (220g)','Patata frita air-fryer (138g)','Espárragos (100g)','Aceite de oliva (10g)'],note:null}
+  ]},
+  {name:'Viernes',short:'V',train:false,prot:191.6,kcal:2225,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada, guacamole y cottage',kcal:518,prot:43.9,
+     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Guacamole (25g)','Queso Cottage (80g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua.'},
+    {type:'Tentempié',icon:'🐟',title:'Sardinas con tomate cherry',kcal:217,prot:24,
+     ingredients:['Lata de sardinas en tomate (90g)','Tomate cherry (100g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🍽️',title:'Garbanzos con pechuga de pollo',kcal:537,prot:52.5,
+     ingredients:['Ración de Garbanzos (300g)','Pechuga de pollo Extra Tierna (150g)'],
+     note:'1x en 2 semanas'},
+    {type:'Merienda',icon:'🥪',title:'Sándwich B: Pavo + Clara + Cottage',kcal:441,prot:39.9,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Clara de huevo (80g)','Queso Cottage (80g)','Frutos secos (25g)'],
+     note:'Sándwich pavo + clara + cottage + frutos secos'},
+    {type:'Cena',icon:'🍝',title:'Pasta con pollo, tomate, queso y pesto',kcal:512,prot:31.4,
+     ingredients:['Bolsa pasta con pollo, tomate, queso y pesto (320g)'],
+     note:'Pasta bolsa completa (≈1 ración). Sin preparación necesaria.'}
+  ]},
+  {name:'Sábado',short:'S',train:false,prot:178.5,kcal:2190,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Yogur griego, muesli y frutos rojos',kcal:405,prot:27.4,
+     ingredients:['Yogur Griego Hacendado Light (300g)','Muesli Crunchy (30g)','Moras (50g) + Frambuesas (50g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua'},
+    {type:'Tentempié',icon:'🐟',title:'Caballa con tostada',kcal:265,prot:28.6,
+     ingredients:['Lata de caballa en tomate (120g)','Pan Espelta 1 rebanada (32g)','Café con leche (250ml)'],note:null},
+    {type:'Comida',icon:'🌯',title:'Taco francés / Burrito de pollo',kcal:478,prot:40.6,
+     ingredients:['Pechuga de pollo (70g)','Queso Cheddar ×2 lonchas (50g)','Tortita de avena (60g)','Salsa yogur griego light (50g)'],
+     note:'🧀 Cheddar SOLO aquí.'},
+    {type:'Merienda',icon:'🍉',title:'Sandía con frutos secos y cottage',kcal:290,prot:16.3,
+     ingredients:['Sandía (200g)','Frutos secos (25g)','Queso Cottage (80g)'],note:null},
+    {type:'Cena',icon:'🌙',title:'Muslos con patatas, habas y aceite',kcal:752,prot:65.7,
+     ingredients:['Muslos de pollo al horno (250g)','Patata frita air-fryer (185g)','Habas baby (150g)','Aceite de oliva (10g)'],note:null}
+  ]},
+  {name:'Domingo',short:'D',train:true,prot:190.1,kcal:2293,week:2,meals:[
+    {type:'Desayuno',icon:'☀️',title:'Tortilla con tostada, guacamole y cottage',kcal:518,prot:43.9,
+     ingredients:['Huevo frito (2 uds / 120g)','Clara de huevo (80g)','Pan Espelta 1 rebanada (32g)','Guacamole (25g)','Queso Cottage (80g)','Café con leche (250ml)','Agua + Creatina (4g)'],
+     note:'Creatina en agua. Zumo reservado para el batido.'},
+    {type:'Tentempié',icon:'💪',title:'Whey + zumo de naranja y frutos secos',kcal:352,prot:28,
+     ingredients:['Whey Protein (30g) + Zumo de naranja (200ml)','Frutos secos (25g)'],
+     note:'Batido post-entreno en zumo de naranja'},
+    {type:'Comida',icon:'🥗',title:'Ensalada mediterránea',kcal:500,prot:41,
+     ingredients:['Lechuga Iceberg (100g)','Tomate cherry (100g)','Cebolla roja (20g)','Caballa en tomate (120g)','Garbanzos en ensalada (100g)','Queso Feta (50g)','Remolacha (80g)','Yogur Griego Light aliño (50g)'],
+     note:'⚠️ Caballa en ensalada → resto del día SIN caballa ni sardinas'},
+    {type:'Merienda',icon:'🥪',title:'Sándwich A: Pavo + Huevo Frito + Cottage',kcal:440,prot:39,
+     ingredients:['Pan Espelta ×2 (64g)','Loncha de Pavo ×4 (48g)','Huevo frito (60g)','Queso Cottage (80g)','Café con leche (250ml)'],
+     note:'Sándwich pavo + huevo frito + cottage'},
+    {type:'Cena',icon:'🌙',title:'Ternera picada con arroz',kcal:483,prot:38.2,
+     ingredients:['Carne picada de Ternera (200g)','Arroz blanco hervido (80g)'],note:null}
   ]}
 ];
 
@@ -914,7 +1008,16 @@ function renderCoffeeBar(ds){
     +'<button class="coffee-btn-sub" onclick="subCoffee(\''+ds+'\',\'l\')">−</button></div>'
     +'</div></div>';
 }
-function getTodayIndex(){const d=new Date().getDay();return d===0?6:d-1}
+function getTodayIndex(){
+  const d=new Date();
+  const dow=d.getDay();
+  const dayIdx=dow===0?6:dow-1;
+  // ISO week number parity determines which week of the 14-day cycle
+  const startOfYear=new Date(d.getFullYear(),0,1);
+  const weekNum=Math.ceil(((d-startOfYear)/86400000+startOfYear.getDay()+1)/7);
+  const weekOffset=(weekNum%2===1)?0:7;
+  return dayIdx+weekOffset;
+}
 function getDateForDay(i){const d=new Date();d.setDate(d.getDate()+(i-getTodayIndex()));return d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}
 function calcBMR(p){const e=p.edad||30;return p.sexo==='hombre'?Math.round(88.36+13.4*p.peso+4.8*p.altura-5.7*e):Math.round(447.6+9.2*p.peso+3.1*p.altura-4.3*e)}
 function calcStreak(){const wk=D.dayState[cwk()]||{};let s=0;for(let i=getTodayIndex();i>=0;i--){if(wk[i]==='done')s++;else break}return s}
@@ -1003,7 +1106,7 @@ function getWater(ds){return D.waterLog[ds]||0}
 window.toggleGlass=function(ds,idx){const cur=getWater(ds);D.waterLog[ds]=cur>idx?idx:idx+1;saveToCloud();renderPlan()}
 
 // ── PLAN ──
-window.changeDay=function(dir){currentDay=(currentDay+dir+7)%7;renderPlan()}
+window.changeDay=function(dir){currentDay=(currentDay+dir+14)%14;renderPlan()}
 window.markDay=function(status){sds(currentDay,status);haptic(status==='done'?'success':'medium');renderPlan();toast(status==='done'?'Día completado ✓':'Día marcado como no completado')}
 window.saveNote=function(){const t=document.getElementById('dayNoteInput');if(t)sdn(currentDay,t.value)}
 window.saveOffPlan=function(){const t=document.getElementById('offPlanInput');if(t)sop(currentDay,t.value)}
@@ -1032,19 +1135,38 @@ function renderPlan(){
   if(!D.profile){return}
   updateNames();
   const day=DD[currentDay];const todayIdx=getTodayIndex();const wk=D.dayState[cwk()]||{};
-  document.getElementById('weekProgress').textContent=Object.values(wk).filter(v=>v==='done').length+'/7 días completados';
-  document.getElementById('streakDays').innerHTML=DD.map((d,i)=>{
-    const s=wk[i];const isT=i===todayIdx;const icon=s==='done'?'✓':s==='failed'?'✗':isT?'·':'';
-    const cls='streak-dot'+(s==='done'?' done':s==='failed'?' failed':isT?' today':'');
-    return'<div class="streak-day"><div class="'+cls+'" onclick="goToDay('+i+')" title="'+d.name+'">'+icon+'</div><div class="streak-label">'+d.short+'</div></div>'
-  }).join('');
+  document.getElementById('weekProgress').textContent=Object.values(wk).filter(v=>v==='done').length+'/14 días completados';
+  // Sliding window of 7 dots centered around currentDay
+  (function(){
+    const winSize=7;
+    let winStart=Math.max(0,currentDay-3);
+    let winEnd=winStart+winSize-1;
+    if(winEnd>=DD.length){winEnd=DD.length-1;winStart=Math.max(0,winEnd-winSize+1);}
+    let html='';
+    for(let i=winStart;i<=winEnd;i++){
+      const d=DD[i];const s=wk[i];const isT=i===todayIdx;const isCur=i===currentDay;
+      const icon=s==='done'?'✓':s==='failed'?'✗':isT?'·':'';
+      const cls='streak-dot'+(s==='done'?' done':s==='failed'?' failed':'')+((isT||isCur)?' today':'');
+      html+='<div class="streak-day"><div class="'+cls+'" onclick="goToDay('+i+')" title="'+d.name+'">'+icon+'</div><div class="streak-label">'+d.short+'</div></div>';
+    }
+    document.getElementById('streakDays').innerHTML=html;
+  })();
   document.getElementById('streakNum').textContent=calcStreak();
   document.getElementById('navDay').textContent=day.name;
   document.getElementById('navDate').textContent=getDateForDay(currentDay);
-  document.getElementById('weekDots').innerHTML=DD.map((d,i)=>{
-    const s=wk[i];let cls='week-dot';if(s==='done')cls+=' done-dot';if(s==='failed')cls+=' failed-dot';if(i===currentDay)cls+=' active';
-    return'<div class="'+cls+'" onclick="goToDay('+i+')" title="'+d.name+'"></div>'
-  }).join('');
+  (function(){
+    const winSize=7;
+    let winStart=Math.max(0,currentDay-3);
+    let winEnd=winStart+winSize-1;
+    if(winEnd>=DD.length){winEnd=DD.length-1;winStart=Math.max(0,winEnd-winSize+1);}
+    let html='';
+    for(let i=winStart;i<=winEnd;i++){
+      const d=DD[i];const s=wk[i];let cls='week-dot';
+      if(s==='done')cls+=' done-dot';if(s==='failed')cls+=' failed-dot';if(i===currentDay)cls+=' active';
+      html+='<div class="'+cls+'" onclick="goToDay('+i+')" title="'+d.name+'"></div>';
+    }
+    document.getElementById('weekDots').innerHTML=html;
+  })();
   const kcalOk=day.kcal>=2100&&day.kcal<=2300;const protOk=day.prot>=160;
   const isDone=wk[currentDay]==='done';const isFailed=wk[currentDay]==='failed';
   const note=gdn(currentDay);
